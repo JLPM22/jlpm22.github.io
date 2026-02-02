@@ -1,0 +1,52 @@
+projects:
+  - id: proj-phd
+    name: PhD Research
+    emoji: 🎓
+    summary: Doctoral research on human-robot interaction and social robotics
+    color: "#10b981"
+    tasks:
+      - id: task-1
+        title: Literature review on HRI
+        status: todo
+        due_date: "2026-01-15"
+        priority: high
+      - id: task-2
+        title: Write methodology chapter
+        status: todo
+        due_date: "2026-02-15"
+        priority: high
+      - id: task-3
+        title: Prepare experiment protocol
+        status: todo
+        due_date: "2026-02-28"
+        priority: medium
+    notes:
+      - id: note-1770060675567
+        title: Test
+        content: |-
+          # Hola
+          This is a **test** 2
+        date: "2026-02-02"
+        type: meeting
+      - id: note-1
+        title: Meeting with advisor
+        content: Discussed timeline for thesis completion. Need to focus on methodology chapter first.
+        date: "2026-01-30"
+        type: meeting
+  - id: proj-teaching
+    name: Teaching
+    emoji: 📚
+    summary: Teaching assistant responsibilities and course materials
+    color: "#6366f1"
+    tasks:
+      - id: task-1
+        title: Grade midterm exams
+        status: done
+        due_date: "2026-02-10"
+        priority: high
+      - id: task-2
+        title: Prepare lab session materials
+        status: done
+        due_date: "2026-02-05"
+        priority: medium
+    notes: []

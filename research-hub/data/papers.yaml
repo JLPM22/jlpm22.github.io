@@ -1,0 +1,218 @@
+# Papers Database
+# Unified format for conference and journal papers
+
+papers:
+  # ===== JOURNAL PAPERS =====
+  - title: "Environment-aware Motion Matching"
+    type: "journal"
+    authors:
+      - "Jose Luis Ponton"
+      - "Sheldon Andrews"
+      - "Carlos Andujar"
+      - "Nuria Pelechano"
+    year: 2025
+    venue: "ACM Transactions on Graphics"
+    publisher: "ACM"
+    conference: "SIGGRAPH Asia 2025"
+    doi: "https://doi.org/10.1145/3763334"
+    quartile: ""
+    impact_factor: ""
+    category: "COMPUTER SCIENCE SOFTWARE ENGINEERING"
+    status: "published"
+    tags: ["motion matching", "animation", "character"]
+
+  - title: "DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization"
+    type: "journal"
+    authors:
+      - "Jose Luis Ponton"
+      - "Eduard Pujol"
+      - "Andreas Aristidou"
+      - "Carlos Andujar"
+      - "Nuria Pelechano"
+    year: 2025
+    venue: "Computer Graphics Forum"
+    publisher: "Wiley"
+    conference: "Eurographics 2025"
+    doi: "https://doi.org/10.1111/cgf.70026"
+    quartile: ""
+    impact_factor: ""
+    status: "published"
+    tags: ["motion reconstruction", "VR", "avatar"]
+
+  - title: "Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles"
+    type: "journal"
+    authors:
+      - "Jose Luis Ponton"
+      - "Eduardo Alvarado"
+      - "Lin Geng Foo"
+      - "Nuria Pelechano"
+      - "Carlos Andujar"
+      - "Marc Habermann"
+    year: 2026
+    venue: ""
+    publisher: ""
+    doi: ""
+    status: "in_progress"
+    tags: ["motion reconstruction", "wearables", "locomotion"]
+
+  - title: "XR4ED: An Extended Reality Platform for Education"
+    type: "journal"
+    authors:
+      - "Fotis Liarokapis"
+      - "Václav Milata"
+      - "Jose Luis Ponton"
+      - "Nuria Pelechano"
+      - "Haris Zacharatos"
+    year: 2024
+    venue: "IEEE Computer Graphics and Applications"
+    publisher: "IEEE"
+    doi: "https://doi.org/10.1109/MCG.2024.3406139"
+    quartile: "Q3"
+    impact_factor: "1.4"
+    category: "COMPUTER SCIENCE SOFTWARE ENGINEERING"
+    ranking: "87/128"
+    status: "published"
+    tags: ["XR", "education", "platform"]
+
+  - title: "PADELVIC: Multicamera videos and motion capture data in padel matches"
+    type: "journal"
+    authors:
+      - "Mohammadreza Javadiha"
+      - "Carlos Andujar"
+      - "Michele Calvanese"
+      - "Enrique Lacasa"
+      - "Jordi Moyes"
+      - "Jose Luis Ponton"
+      - "Antonio Susín"
+      - "Jiabo Wang"
+    year: 2024
+    venue: "Padel Scientific Journal"
+    publisher: "Universidad de Extremadura"
+    conference: "CONGRESO NACIONAL DE PÁDEL"
+    doi: "https://doi.org/10.17398/2952-2218.2.89"
+    status: "published"
+    tags: ["sports", "motion capture", "dataset"]
+
+  - title: "SparsePoser: Real-time Full-body Motion Reconstruction from Sparse Data"
+    type: "journal"
+    authors:
+      - "Jose Luis Ponton"
+      - "Haoran Yun"
+      - "Andreas Aristidou"
+      - "Carlos Andujar"
+      - "Nuria Pelechano"
+    year: 2023
+    venue: "ACM Transactions on Graphics"
+    publisher: "ACM"
+    conference: "SIGGRAPH Asia 2023"
+    doi: "https://doi.org/10.1145/3625264"
+    quartile: "Q1"
+    impact_factor: "7.8"
+    category: "COMPUTER SCIENCE SOFTWARE ENGINEERING"
+    ranking: "5/132"
+    status: "published"
+    tags: ["motion reconstruction", "VR", "avatar", "sparse tracking"]
+
+  - title: "Fitted avatars: automatic skeleton adjustment for self-avatars in virtual reality"
+    type: "journal"
+    authors:
+      - "Jose Luis Ponton"
+      - "Víctor Ceballos"
+      - "Lesly Acosta"
+      - "Alejandro Ríos"
+      - "Eva Monclús"
+      - "Nuria Pelechano"
+    year: 2023
+    venue: "Virtual Reality"
+    publisher: "Springer"
+    doi: "https://doi.org/10.1007/s10055-023-00821-z"
+    quartile: "Q1"
+    impact_factor: "4.4"
+    category: "COMPUTER SCIENCE SOFTWARE ENGINEERING"
+    ranking: "15/132"
+    status: "published"
+    tags: ["avatar", "VR", "skeleton", "calibration"]
+
+  - title: "Combining Motion Matching and Orientation Prediction to Animate Avatars for Consumer-Grade VR"
+    type: "journal"
+    authors:
+      - "Jose Luis Ponton"
+      - "Haoran Yun"
+      - "Carlos Andujar"
+      - "Nuria Pelechano"
+    year: 2023
+    venue: "Computer Graphics Forum"
+    publisher: "Wiley"
+    conference: "SCA 2022"
+    doi: "https://doi.org/10.1111/cgf.14628"
+    quartile: "Q2"
+    impact_factor: "2.7"
+    category: "COMPUTER SCIENCE SOFTWARE ENGINEERING"
+    ranking: "44/132"
+    status: "published"
+    tags: ["motion matching", "VR", "avatar", "animation"]
+
+  # ===== CONFERENCE PAPERS =====
+  - title: "Stretch your reach: Studying Self-Avatar and Controller Misalignment in Virtual Reality Interaction"
+    type: "conference"
+    authors:
+      - "Jose Luis Ponton"
+      - "Reza Keshavarz"
+      - "Alejandro Beacco"
+      - "Nuria Pelechano"
+    year: 2024
+    venue: "CHI '24: Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems"
+    location: "Honolulu, USA"
+    doi: "https://doi.org/10.1145/3613904.3642268"
+    ggs_rating: "A++"
+    core_rating: ""
+    status: "published"
+    tags: ["VR", "avatar", "interaction", "user study"]
+
+  - title: "Exploring the Role of Expected Collision Feedback in Crowded Virtual Environments"
+    type: "conference"
+    authors:
+      - "Haoran Yun"
+      - "Jose Luis Ponton"
+      - "Alejandro Beacco"
+      - "Carlos Andujar"
+      - "Nuria Pelechano"
+    year: 2024
+    venue: "2024 IEEE Conference Virtual Reality and 3D User Interfaces (VR)"
+    location: "Orlando, USA"
+    doi: "https://doi.org/10.1109/VR58804.2024.00068"
+    ggs_rating: "A"
+    core_rating: ""
+    status: "published"
+    tags: ["VR", "crowds", "collision", "haptics"]
+
+  - title: "Animation Fidelity in Self-Avatars: Impact on User Performance and Sense of Agency"
+    type: "conference"
+    authors:
+      - "Haoran Yun"
+      - "Jose Luis Ponton"
+      - "Carlos Andujar"
+      - "Nuria Pelechano"
+    year: 2023
+    venue: "30th IEEE Conference on Virtual Reality and 3D User Interfaces"
+    location: "Shanghai, China"
+    doi: "https://doi.org/10.1109/VR55154.2023.00044"
+    ggs_rating: "A"
+    core_rating: "A*"
+    status: "published"
+    tags: ["VR", "avatar", "animation", "user study"]
+
+  - title: "AvatarGo: Plug and Play self-avatars for VR"
+    type: "conference"
+    authors:
+      - "Jose Luis Ponton"
+      - "Eva Monclús"
+      - "Nuria Pelechano"
+    year: 2022
+    venue: "Eurographics 2022"
+    location: "Reims, France"
+    doi: "https://doi.org/10.2312/egs.20221037"
+    ggs_rating: ""
+    core_rating: ""
+    status: "published"
+    tags: ["VR", "avatar", "plug-and-play"]

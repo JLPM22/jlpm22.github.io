@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f8faf9;
+    color: #1a2e24;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+  }
+}

@@ -1,0 +1,52 @@
+researcher:
+  name: "Jose Luis Ponton"
+  email: "jose.luis.ponton@upc.edu"
+  institution: "Universitat Politecnica de Catalunya"
+  website: "https://joseluisponton.com/"
+  orcid: "https://orcid.org/0000-0001-6576-4528"
+
+papers:
+  - title: "Example Paper: A Novel Approach to AI Research"
+    venue: "NeurIPS"
+    year: 2025
+    status: "published"
+    authors:
+      - "Your Name"
+      - "Collaborator One"
+    url: ""
+    arxiv: ""
+    notes: "Best paper award"
+
+  - title: "Work in Progress: Exploring New Frontiers"
+    venue: "ICML"
+    year: 2026
+    status: "in_progress"
+    authors:
+      - "Your Name"
+    url: ""
+    notes: "Target submission: February 2026"
+
+reviews:
+  - venue: "NeurIPS"
+    year: 2025
+    papers_reviewed: 4
+    role: "reviewer"
+
+  - venue: "ICML"
+    year: 2026
+    papers_reviewed: 0
+    role: "area_chair"
+    notes: "Upcoming"
+
+committees:
+  - name: "Department AI Committee"
+    role: "Member"
+    start_date: "2024-01"
+    end_date: "2026-12"
+    description: "Advisory committee for AI curriculum"
+
+  - name: "Conference Organization"
+    role: "Workshop Organizer"
+    start_date: "2025-06"
+    end_date: "2025-12"
+    description: "Organizing workshop at major conference"

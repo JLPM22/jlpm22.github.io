@@ -1,0 +1,39 @@
+project:
+  name: PhD Research
+  description: Main research project and thesis work
+  status: active
+  created: "2026-01-30"
+  color: "#6366f1"
+tasks:
+  - id: 1
+    title: Review related work section
+    status: in_progress
+    priority: high
+    due_date: "2026-02-05"
+    notes: Focus on recent 2025 papers
+    created: "2026-01-30"
+    completed: null
+  - id: 2
+    title: Run baseline experiments
+    status: todo
+    priority: high
+    due_date: "2026-02-10"
+    notes: ""
+    created: "2026-01-30"
+    completed: null
+  - id: 3
+    title: Write introduction draft
+    status: todo
+    priority: medium
+    due_date: "2026-02-15"
+    notes: ""
+    created: "2026-01-30"
+    completed: null
+  - id: 4
+    title: Set up experiment infrastructure
+    status: done
+    priority: high
+    due_date: "2026-01-25"
+    notes: Completed ahead of schedule
+    created: "2026-01-20"
+    completed: "2026-01-24"

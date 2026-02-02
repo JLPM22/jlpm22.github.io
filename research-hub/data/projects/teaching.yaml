@@ -1,0 +1,31 @@
+project:
+  name: Teaching
+  description: Course preparation and student supervision
+  status: active
+  created: "2026-01-30"
+  color: "#10b981"
+tasks:
+  - id: 1
+    title: Prepare lecture slides for Week 5
+    status: todo
+    priority: high
+    due_date: "2026-02-03"
+    notes: "Topic: Neural Networks"
+    created: "2026-01-30"
+    completed: null
+  - id: 2
+    title: Grade assignment 2
+    status: todo
+    priority: medium
+    due_date: "2026-02-07"
+    notes: 15 students
+    created: "2026-01-30"
+    completed: null
+  - id: 3
+    title: Meet with PhD student
+    status: todo
+    priority: medium
+    due_date: "2026-02-01"
+    notes: Progress review meeting
+    created: "2026-01-30"
+    completed: null
