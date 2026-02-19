@@ -72,35 +72,12 @@ export async function PUT(request, { params }) {
             project.tasks = project.tasks?.filter(t => t.id !== updates.deleteTask) || [];
         }
 
-        // Add note
-        if (updates.addNote) {
-            const newNote = {
-                id: `note-${Date.now()}`,
-                title: updates.addNote.title,
-                content: updates.addNote.content || '',
-                date: new Date().toISOString().split('T')[0],
-                type: updates.addNote.type || 'note'
-            };
-            project.notes = project.notes || [];
-            project.notes.unshift(newNote); // Add to beginning
+        // Update external links
+        if (updates.notebook_lm !== undefined) {
+            project.notebook_lm = updates.notebook_lm;
         }
-
-        // Delete note
-        if (updates.deleteNote) {
-            project.notes = project.notes?.filter(n => n.id !== updates.deleteNote) || [];
-        }
-
-        // Update note
-        if (updates.updateNote) {
-            const noteIndex = project.notes?.findIndex(n => n.id === updates.updateNote.id);
-            if (noteIndex !== -1) {
-                project.notes[noteIndex] = {
-                    ...project.notes[noteIndex],
-                    title: updates.updateNote.title,
-                    content: updates.updateNote.content,
-                    type: updates.updateNote.type
-                };
-            }
+        if (updates.google_drive !== undefined) {
+            project.google_drive = updates.google_drive;
         }
 
         data.projects[projectIndex] = project;

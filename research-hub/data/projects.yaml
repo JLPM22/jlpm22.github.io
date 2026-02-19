@@ -20,19 +20,8 @@ projects:
         status: todo
         due_date: "2026-02-28"
         priority: medium
-    notes:
-      - id: note-1770060675567
-        title: Test
-        content: |-
-          # Hola
-          This is a **test** 2
-        date: "2026-02-02"
-        type: meeting
-      - id: note-1
-        title: Meeting with advisor
-        content: Discussed timeline for thesis completion. Need to focus on methodology chapter first.
-        date: "2026-01-30"
-        type: meeting
+    notebook_lm: https://notebooklm.google.com/notebook/74805953-e47b-4c56-b22a-86bfbd2c26d2
+    google_drive: https://docs.google.com/document/d/1m0f8SeZgcgmLFKj8ObA9VMW23vJdn0CIGM_wSNx9-Mk/edit?tab=t.0
   - id: proj-teaching
     name: Teaching
     emoji: 📚
@@ -49,4 +38,5 @@ projects:
         status: done
         due_date: "2026-02-05"
         priority: medium
-    notes: []
+    notebook_lm: ""
+    google_drive: ""

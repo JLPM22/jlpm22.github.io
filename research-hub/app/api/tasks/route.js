@@ -1,73 +1,75 @@
 import { NextResponse } from 'next/server';
-import { readProjectFiles, writeProjectFile } from '@/lib/yaml';
+import { readYamlFile, writeYamlFile } from '@/lib/yaml';
 
+// GET all global tasks
 export async function GET() {
     try {
-        const projects = readProjectFiles();
-        const tasks = [];
-
-        for (const project of projects) {
-            if (project.tasks) {
-                for (const task of project.tasks) {
-                    const taskId = `${project.project.name}-${task.title}`.replace(/\s+/g, '-').toLowerCase();
-                    const isOverdue = task.due_date && new Date(task.due_date) < new Date();
-
-                    tasks.push({
-                        ...task,
-                        id: taskId,
-                        projectName: project.project.name,
-                        projectColor: project.project.color || '#0a0a0a',
-                        _filename: project._filename,
-                        isOverdue
-                    });
-                }
-            }
-        }
-
-        // Sort: active first (by due date), then done
-        tasks.sort((a, b) => {
-            if (a.status !== b.status) {
-                return a.status === 'done' ? 1 : -1;
-            }
-            if (!a.due_date) return 1;
-            if (!b.due_date) return -1;
-            return new Date(a.due_date) - new Date(b.due_date);
-        });
-
-        return NextResponse.json({ tasks });
+        const data = readYamlFile('tasks.yaml');
+        return NextResponse.json(data?.tasks || []);
     } catch (error) {
         console.error('Failed to load tasks:', error);
-        return NextResponse.json({ error: 'Failed to load tasks' }, { status: 500 });
+        return NextResponse.json([], { status: 500 });
     }
 }
 
+// POST create task
+export async function POST(request) {
+    try {
+        const newTask = await request.json();
+        const data = readYamlFile('tasks.yaml') || { tasks: [] };
+
+        const task = {
+            id: `global-task-${Date.now()}`,
+            ...newTask,
+            status: 'todo',
+            created_at: new Date().toISOString().split('T')[0]
+        };
+
+        data.tasks = data.tasks || [];
+        data.tasks.push(task);
+        writeYamlFile('tasks.yaml', data);
+
+        return NextResponse.json(task);
+    } catch (error) {
+        console.error('Failed to create task:', error);
+        return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
+    }
+}
+
+// PUT update task
 export async function PUT(request) {
     try {
-        const { taskId, done } = await request.json();
-        const projects = readProjectFiles();
+        const updates = await request.json();
+        const data = readYamlFile('tasks.yaml');
 
-        for (const project of projects) {
-            if (project.tasks) {
-                const taskIndex = project.tasks.findIndex(t => {
-                    const id = `${project.project.name}-${t.title}`.replace(/\s+/g, '-').toLowerCase();
-                    return id === taskId;
-                });
-
-                if (taskIndex !== -1) {
-                    project.tasks[taskIndex].status = done ? 'done' : 'todo';
-
-                    // Remove internal fields before writing
-                    const { _filename, ...dataToWrite } = project;
-                    writeProjectFile(_filename, dataToWrite);
-
-                    return NextResponse.json({ success: true });
-                }
-            }
+        const taskIndex = data.tasks?.findIndex(t => t.id === updates.id);
+        if (taskIndex === -1) {
+            return NextResponse.json({ error: 'Task not found' }, { status: 404 });
         }
 
-        return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+        data.tasks[taskIndex] = { ...data.tasks[taskIndex], ...updates };
+        writeYamlFile('tasks.yaml', data);
+
+        return NextResponse.json(data.tasks[taskIndex]);
     } catch (error) {
         console.error('Failed to update task:', error);
         return NextResponse.json({ error: 'Failed to update task' }, { status: 500 });
+    }
+}
+
+// DELETE task
+export async function DELETE(request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
+
+        const data = readYamlFile('tasks.yaml');
+        data.tasks = data.tasks.filter(t => t.id !== id);
+        writeYamlFile('tasks.yaml', data);
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('Failed to delete task:', error);
+        return NextResponse.json({ error: 'Failed to delete task' }, { status: 500 });
     }
 }

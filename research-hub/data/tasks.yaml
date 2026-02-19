@@ -1,0 +1,7 @@
+tasks:
+  - id: global-task-1
+    title: Explore grant opportunities
+    status: todo
+    due_date: "2026-03-01"
+    priority: medium
+    created_at: "2026-02-19"
