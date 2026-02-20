@@ -353,10 +353,10 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                     return (
                                         <div key={idx} className="bg-white rounded-xl shadow-sm border border-border hover:shadow-lg hover:border-accent/40 transition-all duration-300 relative">
                                             {/* Main card */}
-                                            <a href={paperLink} target="_blank" rel="noopener noreferrer" className="group flex flex-col md:flex-row gap-5 p-4 relative block">
+                                            <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-5 p-4 relative cursor-pointer">
                                                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-xl"></div>
 
-                                                <div className="md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md group-hover:shadow-glow hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in">
+                                                <div className="md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md group-hover:shadow-glow hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
                                                     {paper.video_url ? (
                                                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
                                                             <video autoPlay loop muted playsInline className="w-full h-auto object-contain rounded-xl">
@@ -374,7 +374,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                     <h3 className="text-lg font-bold text-text group-hover:text-accent transition-colors leading-snug">
                                                         {paper.title}
                                                     </h3>
-                                                    <p className="text-text-secondary text-sm font-medium mt-1">
+                                                    <p className="text-text-secondary text-sm font-medium mt-1" onClick={(e) => e.stopPropagation()}>
                                                         {renderAuthors(paper.authors, coauthors)}
                                                     </p>
 
@@ -427,7 +427,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                         )}
                                                     </div>
                                                 </div>
-                                            </a>
+                                            </div>
 
                                             {/* Action buttons — below the card */}
                                             <div className="flex flex-wrap gap-1.5 px-4 py-2.5 border-t border-border/50 bg-gray-50/50 rounded-b-xl">

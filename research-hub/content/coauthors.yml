@@ -25,3 +25,15 @@ liarokapis:
 andrews:
   firstname: ["Sheldon", "S."]
   url: https://profs.etsmtl.ca/sandrews/
+  
+habermann:
+  firstname: ["Marc", "M."]
+  url: https://people.mpi-inf.mpg.de/~mhaberma/
+  
+alvarado:
+  firstname: ["Eduardo", "E."]
+  url: https://edualvarado.com/
+  
+foo:
+  firstname: ["Lin Geng", "L. G."]
+  url: https://lingeng.foo/
