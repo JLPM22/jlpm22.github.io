@@ -34,6 +34,7 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
+                outfit: ['Outfit', 'sans-serif'],
             },
             borderRadius: {
                 DEFAULT: '14px',
@@ -52,5 +53,7 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/typography'),
+    ],
 }

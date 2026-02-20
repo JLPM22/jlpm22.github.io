@@ -1,0 +1,14 @@
+- name: MotionMatching
+  repo: JLPM22/MotionMatching
+  description: Motion Matching implementation for Unity
+  url: https://github.com/JLPM22/MotionMatching
+  docs: https://jlpm22.github.io/motionmatching-docs
+  language: C#
+  topics: [animation, character-animation, motion-capture, motion-matching, unity, unity3d]
+
+- name: pymotion
+  repo: UPC-ViRVIG/pymotion
+  description: A Python library for working with motion data in numpy or PyTorch
+  url: https://github.com/UPC-ViRVIG/pymotion
+  language: Python
+  topics: [blender, character-animation, deep-learning, quaternion, pytorch, numpy]

@@ -1,0 +1,27 @@
+pelechano:
+  firstname: ["Nuria", "N."]
+  url: https://www.cs.upc.edu/~npelechano/
+
+andujar:
+  firstname: ["Carlos", "C."]
+  url: https://www.cs.upc.edu/~virtual/home/index.html
+
+yun:
+  firstname: ["Haoran", "H."]
+  url: https://haoranyun.com/
+
+rios:
+  firstname: ["Alejandro", "Alex", "A."]
+  url: https://www.cs.upc.edu/~arios/
+
+aristidou:
+  firstname: ["Andreas", "A."]
+  url: http://andreasaristidou.com/
+
+liarokapis:
+  firstname: ["Fotis", "F."]
+  url: https://cyens.org.cy/personnel/fotis-liarokapis/
+
+andrews:
+  firstname: ["Sheldon", "S."]
+  url: https://profs.etsmtl.ca/sandrews/

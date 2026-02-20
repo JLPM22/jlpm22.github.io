@@ -1,0 +1,11 @@
+SIGGRAPH Asia=#e74c3c
+IEEE VR=#3498db
+CHI=#9b59b6
+Eurographics=#2ecc71
+CGF=#f39c12
+TOG=#e74c3c
+SCA=#e67e22
+VR=#1abc9c
+Transactions on Graphics=#e74c3c
+Computer Graphics Forum=#2ecc71
+Virtual Reality=#ffae42
