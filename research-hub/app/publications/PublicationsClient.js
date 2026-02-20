@@ -359,11 +359,11 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                 <div className="md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md group-hover:shadow-glow hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
                                                     {paper.video_url ? (
                                                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
-                                                            <video autoPlay loop muted playsInline className="w-full h-auto object-contain rounded-xl">
+                                                            <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-xl">
                                                                 <source src={paper.video_url} type={`video/${paper.video_url.split('.').pop()}`} />
                                                             </video>
                                                         ) : (
-                                                            <img src={paper.video_url} alt={`Preview for ${paper.title}`} className="w-full h-auto object-contain rounded-xl" />
+                                                            <img src={paper.video_url} alt={`Preview for ${paper.title}`} loading="lazy" className="w-full h-auto object-contain rounded-xl" />
                                                         )
                                                     ) : (
                                                         <div className="text-center text-text-muted text-xs font-medium py-8">No preview</div>

@@ -57,32 +57,32 @@ export default function HomePage() {
                 CV
               </a>
               {profile.email && (
-                <a href={`mailto:${profile.email}`} className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform">
+                <a href={`mailto:${profile.email}`} className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="Email">
                   {icons.email}
                 </a>
               )}
               {social.github && (
-                <a href={social.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform">
+                <a href={social.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="GitHub">
                   {icons.github}
                 </a>
               )}
               {social.linkedin && (
-                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform">
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="LinkedIn">
                   {icons.linkedin}
                 </a>
               )}
               {social.orcid && (
-                <a href={social.orcid} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform">
+                <a href={social.orcid} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="ORCID">
                   {icons.orcid}
                 </a>
               )}
               {social.researchgate && (
-                <a href={social.researchgate} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform">
+                <a href={social.researchgate} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="ResearchGate">
                   {icons.researchgate}
                 </a>
               )}
               {social.scholar && (
-                <a href={social.scholar} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform">
+                <a href={social.scholar} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="Google Scholar">
                   {icons.scholar}
                 </a>
               )}

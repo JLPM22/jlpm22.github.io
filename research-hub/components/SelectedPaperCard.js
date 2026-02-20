@@ -50,11 +50,11 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                 <div className="sm:w-32 shrink-0 bg-transparent rounded-md flex items-center justify-center overflow-visible shadow-md group-hover:shadow-glow hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 relative z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
                     {paper.video_url ? (
                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
-                            <video autoPlay loop muted playsInline className="w-full h-auto object-contain rounded-md">
+                            <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-md">
                                 <source src={paper.video_url} type={`video/${paper.video_url.split('.').pop()}`} />
                             </video>
                         ) : (
-                            <img src={paper.video_url} alt="Preview" className="w-full h-auto object-contain rounded-md" />
+                            <img src={paper.video_url} alt="Preview" loading="lazy" className="w-full h-auto object-contain rounded-md" />
                         )
                     ) : (
                         <span className="text-xs text-text-muted py-6">No Media</span>

@@ -27,14 +27,14 @@ module.exports = {
                 text: {
                     DEFAULT: '#1a2e24',
                     secondary: '#4b6358',
-                    muted: '#7a9989',
+                    muted: '#5a7a69',
                 },
                 danger: '#ef4444',
                 warning: '#f59e0b',
             },
             fontFamily: {
-                sans: ['Inter', 'system-ui', 'sans-serif'],
-                outfit: ['Outfit', 'sans-serif'],
+                sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+                outfit: ['var(--font-outfit)', 'sans-serif'],
             },
             borderRadius: {
                 DEFAULT: '14px',

@@ -1,23 +1,51 @@
 import './globals.css';
+import { Inter, Outfit } from 'next/font/google';
 import Particles from '@/components/Particles';
 
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
+
 export const metadata = {
-  title: 'Research Hub',
-  description: 'Personal research productivity hub',
+  title: {
+    default: 'Jose Luis Ponton - Research Scientist',
+    template: '%s | Jose Luis Ponton',
+  },
+  description: 'Personal website of Jose Luis Ponton, Research Scientist specializing in character animation, motion matching, and computer graphics.',
+  keywords: ['research', 'character animation', 'motion matching', 'computer graphics', 'machine learning', 'Unity'],
+  authors: [{ name: 'Jose Luis Ponton' }],
+  metadataBase: new URL('https://jlpm22.github.io'),
+  openGraph: {
+    title: 'Jose Luis Ponton - Research Scientist',
+    description: 'Research in character animation, motion matching, and computer graphics.',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Jose Luis Ponton - Research Scientist',
+    description: 'Research in character animation, motion matching, and computer graphics.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
+    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body className="font-sans bg-bg text-text min-h-screen flex flex-col antialiased">
         <Particles className="fixed inset-0 z-0 pointer-events-none opacity-40" />
-        <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-border/60 shadow-sm">
+        <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-border/60 shadow-sm" role="navigation" aria-label="Main navigation">
           <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="/" className="font-outfit font-bold text-xl tracking-tight text-text hover:text-accent transition-colors">
               Jose Luis Ponton
