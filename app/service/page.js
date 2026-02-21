@@ -11,10 +11,12 @@ export default function ServicePage() {
     // Group items by year
     const groupedItems = serviceItems.reduce((acc, item) => {
         const year = item.year || 'Ongoing';
-        if (!acc[year]) acc[year] = { roles: [], reviews: [] };
+        if (!acc[year]) acc[year] = { roles: [], reviews: [], pcMembers: [] };
 
         if (item.role === 'Reviewer') {
             acc[year].reviews.push(item.organization);
+        } else if (item.role === 'PC Member') {
+            acc[year].pcMembers.push(item.organization);
         } else {
             acc[year].roles.push(item);
         }
@@ -56,9 +58,29 @@ export default function ServicePage() {
                                 </div>
                             )}
 
+                            {/* Aggregated PC Members */}
+                            {groupedItems[year].pcMembers.length > 0 && (
+                                <div className={groupedItems[year].roles.length > 0 ? "pt-4 border-t border-border/50" : ""}>
+                                    <span className="font-semibold text-text block mb-3">Program Committee</span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {Array.from(new Set(groupedItems[year].pcMembers)).map((org, idx) => {
+                                            const count = groupedItems[year].pcMembers.filter(r => r === org).length;
+                                            return (
+                                                <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-1 bg-bg-subtle rounded-md text-xs text-text border border-border/80">
+                                                    {org}
+                                                    {count > 1 && (
+                                                        <span className="text-[9px] font-bold text-accent bg-accent/10 px-1 py-px rounded-full">×{count}</span>
+                                                    )}
+                                                </span>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Aggregated Reviews — each venue as a chip */}
                             {groupedItems[year].reviews.length > 0 && (
-                                <div className={groupedItems[year].roles.length > 0 ? "pt-4 border-t border-border/50" : ""}>
+                                <div className={(groupedItems[year].roles.length > 0 || groupedItems[year].pcMembers.length > 0) ? "pt-4 border-t border-border/50" : ""}>
                                     <span className="font-semibold text-text block mb-3">Reviewer</span>
                                     <div className="flex flex-wrap gap-2">
                                         {Array.from(new Set(groupedItems[year].reviews)).map((org, idx) => {

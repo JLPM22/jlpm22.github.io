@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter, Outfit } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Particles from '@/components/Particles';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -59,7 +60,7 @@ export default function RootLayout({ children }) {
               <a href="/publications" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Publications</a>
               <a href="/opensource" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Open Source</a>
               <a href="/teaching" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Teaching</a>
-              <a href="/service" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Service</a>
+              <a href="/service" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Academic Service</a>
               <a href="/cv_joseluis_ponton.pdf" target="_blank" rel="noopener noreferrer" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">CV</a>
             </div>
           </div>
@@ -74,6 +75,7 @@ export default function RootLayout({ children }) {
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
+        <ScrollToTop />
       </body>
     </html>
   );
