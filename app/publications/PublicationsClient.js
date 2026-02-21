@@ -270,37 +270,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                 </button>
             </div>
 
-            {/* Active Filters Display */}
-            {hasActiveFilters && (
-                <div className="flex flex-wrap items-center gap-2 mb-4 bg-accent/5 p-3 rounded-xl border border-accent/20 shadow-inner">
-                    <span className="text-xs font-bold text-accent uppercase tracking-wider mr-1 sm:mr-3">Active Filters:</span>
 
-                    {selectedVenues.map(v => (
-                        <span key={v} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium text-white shadow-sm" style={{ backgroundColor: venueColors[v] || '#10b981' }}>
-                            {v}
-                            <button onClick={() => toggleVenue(v)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
-                        </span>
-                    ))}
-
-                    {selectedTopics.map(t => (
-                        <span key={t} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium bg-gray-700 text-white shadow-sm">
-                            {t}
-                            <button onClick={() => toggleTopic(t)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
-                        </span>
-                    ))}
-
-                    <button
-                        onClick={() => { setSelectedVenues([]); setSelectedTopics([]); }}
-                        className="text-xs font-bold text-red-500 hover:text-white hover:bg-red-500 rounded-lg px-2 py-1 transition-colors ml-auto flex items-center gap-1 border border-red-500/30"
-                    >
-                        Clear All
-                    </button>
-                </div>
-            )}
 
             {/* Venue Filter chips */}
             {showVenueFilter && (
@@ -343,6 +313,38 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                             </button>
                         );
                     })}
+                </div>
+            )}
+
+            {/* Active Filters Display */}
+            {hasActiveFilters && (
+                <div className="flex flex-wrap items-center gap-2 mb-4 bg-accent/5 p-3 rounded-xl border border-accent/20 shadow-inner">
+                    <span className="text-xs font-bold text-accent uppercase tracking-wider mr-1 sm:mr-3">Active Filters:</span>
+
+                    {selectedVenues.map(v => (
+                        <span key={v} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium text-white shadow-sm" style={{ backgroundColor: venueColors[v] || '#10b981' }}>
+                            {v}
+                            <button onClick={() => toggleVenue(v)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </span>
+                    ))}
+
+                    {selectedTopics.map(t => (
+                        <span key={t} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium bg-gray-700 text-white shadow-sm">
+                            {t}
+                            <button onClick={() => toggleTopic(t)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </span>
+                    ))}
+
+                    <button
+                        onClick={() => { setSelectedVenues([]); setSelectedTopics([]); }}
+                        className="text-xs font-bold text-red-500 hover:text-white hover:bg-red-500 rounded-lg px-2 py-1 transition-colors ml-auto flex items-center gap-1 border border-red-500/30"
+                    >
+                        Clear All
+                    </button>
                 </div>
             )}
 
