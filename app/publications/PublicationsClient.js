@@ -222,22 +222,22 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header + Search row */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
-                <h1 className="text-4xl font-outfit font-bold text-text relative inline-block">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                <h1 className="text-4xl font-outfit font-bold text-text relative inline-block self-start">
                     Publications
                     <div className="absolute -bottom-2 left-0 w-1/3 h-1 bg-accent rounded-full"></div>
                 </h1>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
                     <input
                         type="text"
                         placeholder="Search papers..."
-                        className="px-4 py-2 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 w-56 text-sm"
+                        className="px-4 py-2.5 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 w-full sm:w-56 text-sm"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <select
-                        className="px-3 py-2 pr-8 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 cursor-pointer text-sm text-text-secondary font-medium appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat"
+                        className="px-3 py-2.5 pr-8 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 cursor-pointer text-sm text-text-secondary font-medium appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat w-full sm:w-auto"
                         value={filterType}
                         onChange={(e) => setFilterType(e.target.value)}
                     >
@@ -248,46 +248,59 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                 </div>
             </div>
 
-            {/* Filter toggles row */}
-            <div className="flex items-center gap-4 mb-4 flex-wrap">
+            <div className="flex items-center gap-4 mb-4 flex-wrap bg-white/50 p-2 rounded-xl border border-border/50">
                 <button
                     onClick={() => setShowVenueFilter(!showVenueFilter)}
-                    className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${showVenueFilter ? 'text-accent' : 'text-text-secondary hover:text-accent'}`}
+                    className={`text-sm font-medium transition-colors flex items-center gap-1.5 px-3 py-2 rounded-lg ${showVenueFilter ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:text-accent hover:bg-black/5'}`}
                 >
                     <svg className={`w-4 h-4 transition-transform ${showVenueFilter ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                     Filter by Venue
-                    {selectedVenues.length > 0 && (
-                        <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-accent text-white text-[10px] font-bold">{selectedVenues.length}</span>
-                    )}
                 </button>
 
                 <button
                     onClick={() => setShowTopicFilter(!showTopicFilter)}
-                    className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${showTopicFilter ? 'text-accent' : 'text-text-secondary hover:text-accent'}`}
+                    className={`text-sm font-medium transition-colors flex items-center gap-1.5 px-3 py-2 rounded-lg ${showTopicFilter ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:text-accent hover:bg-black/5'}`}
                 >
                     <svg className={`w-4 h-4 transition-transform ${showTopicFilter ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                     Filter by Topic
-                    {selectedTopics.length > 0 && (
-                        <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-accent text-white text-[10px] font-bold">{selectedTopics.length}</span>
-                    )}
                 </button>
+            </div>
 
-                {hasActiveFilters && (
+            {/* Active Filters Display */}
+            {hasActiveFilters && (
+                <div className="flex flex-wrap items-center gap-2 mb-4 bg-accent/5 p-3 rounded-xl border border-accent/20 shadow-inner">
+                    <span className="text-xs font-bold text-accent uppercase tracking-wider mr-1 sm:mr-3">Active Filters:</span>
+
+                    {selectedVenues.map(v => (
+                        <span key={v} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium text-white shadow-sm" style={{ backgroundColor: venueColors[v] || '#10b981' }}>
+                            {v}
+                            <button onClick={() => toggleVenue(v)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </span>
+                    ))}
+
+                    {selectedTopics.map(t => (
+                        <span key={t} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium bg-gray-700 text-white shadow-sm">
+                            {t}
+                            <button onClick={() => toggleTopic(t)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </span>
+                    ))}
+
                     <button
                         onClick={() => { setSelectedVenues([]); setSelectedTopics([]); }}
-                        className="text-xs font-medium text-red-500 hover:text-red-600 transition-colors flex items-center gap-1"
+                        className="text-xs font-bold text-red-500 hover:text-white hover:bg-red-500 rounded-lg px-2 py-1 transition-colors ml-auto flex items-center gap-1 border border-red-500/30"
                     >
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Clear all filters
+                        Clear All
                     </button>
-                )}
-            </div>
+                </div>
+            )}
 
             {/* Venue Filter chips */}
             {showVenueFilter && (
@@ -356,7 +369,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                             <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-5 p-4 relative cursor-pointer">
                                                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-xl"></div>
 
-                                                <div className="md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md group-hover:shadow-glow hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
+                                                <div className="w-full md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
                                                     {paper.video_url ? (
                                                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
                                                             <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-xl">

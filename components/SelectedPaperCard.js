@@ -47,7 +47,7 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
             <div onClick={() => window.open(paperLink, '_blank')} className="flex flex-col sm:flex-row gap-4 p-3 relative cursor-pointer">
                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"></div>
 
-                <div className="sm:w-32 shrink-0 bg-transparent rounded-md flex items-center justify-center overflow-visible shadow-md group-hover:shadow-glow hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 relative z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
+                <div className="w-full sm:w-32 shrink-0 bg-transparent rounded-md flex items-center justify-center overflow-visible shadow-md hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 relative z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
                     {paper.video_url ? (
                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
                             <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-md">

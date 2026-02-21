@@ -87,7 +87,7 @@ export default function OpenSourceClient({ projects = [] }) {
                             )}
 
                             {/* Stats bar */}
-                            <div className="flex items-center gap-4 text-sm text-text-muted pt-3 border-t border-border/50">
+                            <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted pt-3 border-t border-border/50">
                                 {/* Language */}
                                 <span className="flex items-center gap-1.5">
                                     <span className="w-3 h-3 rounded-full" style={{ backgroundColor: langColor }}></span>
