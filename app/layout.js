@@ -39,6 +39,9 @@ export const metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🤖</text></svg>',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -47,17 +50,17 @@ export default function RootLayout({ children }) {
       <body className="font-sans bg-bg text-text min-h-screen flex flex-col antialiased">
         <Particles className="fixed inset-0 z-0 pointer-events-none opacity-40" />
         <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-border/60 shadow-sm" role="navigation" aria-label="Main navigation">
-          <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="/" className="font-outfit font-bold text-xl tracking-tight text-text hover:text-accent transition-colors">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 h-auto sm:h-16 flex flex-col sm:flex-row items-center justify-between py-3 sm:py-0">
+            <a href="/" className="font-outfit font-bold text-xl tracking-tight text-text hover:text-accent transition-colors flex-shrink-0 mb-3 sm:mb-0">
               Jose Luis Ponton
             </a>
-            <div className="flex gap-1 font-medium text-sm">
-              <a href="/" className="px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">About</a>
-              <a href="/publications" className="px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Publications</a>
-              <a href="/opensource" className="px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Open Source</a>
-              <a href="/teaching" className="px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Teaching</a>
-              <a href="/service" className="px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Service</a>
-              <a href="/cv_joseluis_ponton.pdf" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">CV</a>
+            <div className="flex gap-1 font-medium text-sm overflow-x-auto w-full sm:w-auto no-scrollbar justify-start sm:justify-end pb-1 sm:pb-0 px-2 sm:px-0 scroll-smooth">
+              <a href="/" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">About</a>
+              <a href="/publications" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Publications</a>
+              <a href="/opensource" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Open Source</a>
+              <a href="/teaching" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Teaching</a>
+              <a href="/service" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">Service</a>
+              <a href="/cv_joseluis_ponton.pdf" target="_blank" rel="noopener noreferrer" className="whitespace-nowrap px-3 py-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/5 transition-all">CV</a>
             </div>
           </div>
         </nav>

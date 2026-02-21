@@ -1,4 +1,5 @@
 'use client';
+import { useRef, useEffect, useState } from 'react';
 
 const DEFAULT_VENUE_COLOR = '#94a3b8';
 
@@ -42,8 +43,29 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
     const isJournalNoConf = paper.type === 'Journal' && !paper.journalConference;
     const btnCls = "inline-flex items-center justify-center px-2 py-0.5 text-[11px] font-bold rounded bg-bg-subtle text-text hover:bg-accent hover:text-white hover:border-accent transition-colors border border-border";
 
+    const [isIntersecting, setIntersecting] = useState(false);
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+        // Only activate this observer on devices that don't support hover (mobile)
+        if (window.matchMedia('(hover: hover)').matches) return;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            setIntersecting(entry.isIntersecting);
+        }, {
+            root: null,
+            rootMargin: '-35% 0px -35% 0px', // Triggers when the item is in the middle 30% of the screen
+            threshold: 0
+        });
+
+        if (cardRef.current) {
+            observer.observe(cardRef.current);
+        }
+        return () => observer.disconnect();
+    }, []);
+
     return (
-        <div className="group bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-accent/30 transition-all duration-300 overflow-visible relative">
+        <div ref={cardRef} className="group bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-accent/30 transition-all duration-300 overflow-visible relative">
             <div onClick={() => window.open(paperLink, '_blank')} className="flex flex-col sm:flex-row gap-4 p-3 relative cursor-pointer">
                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"></div>
 
@@ -113,8 +135,8 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                 </div>
             </div>
 
-            {/* Buttons — slide down on hover */}
-            <div className="max-h-0 group-hover:max-h-16 overflow-hidden transition-all duration-300 ease-in-out">
+            {/* Buttons — slide down on hover (desktop) or when in center of screen (mobile) */}
+            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isIntersecting ? 'max-h-16' : 'max-h-0 group-hover:max-h-16'}`}>
                 <div className="flex flex-wrap gap-1 px-3 py-2 border-t border-border/40 bg-gray-50/50 rounded-b-xl">
                     {paper.pdf_url && <a href={paper.pdf_url} target="_blank" rel="noopener noreferrer" className={btnCls}>PDF</a>}
                     {doiUrl && <a href={doiUrl} target="_blank" rel="noopener noreferrer" className={btnCls}>DOI</a>}
