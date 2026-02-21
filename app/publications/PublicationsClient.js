@@ -409,7 +409,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                             <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-5 p-4 relative cursor-pointer">
                                                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-xl"></div>
 
-                                                <div className="w-full md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md hover:!shadow-2xl hover:scale-[1.5] hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
+                                                <div className="w-full md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md md:hover:!shadow-2xl md:hover:scale-[1.5] md:hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
                                                     {paper.video_url ? (
                                                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
                                                             <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-xl">

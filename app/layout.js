@@ -65,7 +65,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </nav>
-        <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12 relative z-10">
+        <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12">
           {children}
         </main>
         <footer className="mt-12 text-center text-sm text-text-muted">
