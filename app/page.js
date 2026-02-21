@@ -92,7 +92,7 @@ export default function HomePage() {
 
         {/* About Content Section */}
         <div className="md:w-2/3 space-y-8">
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-white/40 prose prose-base prose-headings:font-outfit prose-headings:text-text prose-p:text-text-secondary prose-a:text-accent hover:prose-a:text-accent-dark text-justify">
+          <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-white/40 prose prose-base prose-headings:font-outfit prose-headings:text-text prose-p:text-text-secondary prose-a:text-accent hover:prose-a:text-accent-dark text-left md:text-justify">
             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </div>
 

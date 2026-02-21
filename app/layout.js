@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body className="font-sans bg-bg text-text min-h-screen flex flex-col antialiased">
-        <Particles className="fixed inset-0 z-0 pointer-events-none opacity-40" />
+        <Particles className="hidden md:block fixed inset-0 z-0 pointer-events-none opacity-40" />
         <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-border/60 shadow-sm" role="navigation" aria-label="Main navigation">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 h-auto sm:h-16 flex flex-col sm:flex-row items-center justify-between py-3 sm:py-0">
             <a href="/" className="font-outfit font-bold text-xl tracking-tight text-text hover:text-accent transition-colors flex-shrink-0 mb-3 sm:mb-0">
