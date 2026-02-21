@@ -1,5 +1,6 @@
 import './globals.css';
 import { Inter, Outfit } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import Particles from '@/components/Particles';
 
 const inter = Inter({
@@ -67,6 +68,9 @@ export default function RootLayout({ children }) {
           <div className="h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
           <p className="py-8">© {new Date().getFullYear()} Jose Luis Ponton. All rights reserved.</p>
         </footer>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );
