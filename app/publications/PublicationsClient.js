@@ -394,14 +394,17 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                         <div key={year} className="space-y-6">
                             <h2 className="text-2xl font-bold text-text border-b border-border pb-2">{year}</h2>
                             <div className="space-y-5">
-                                {groupedPapers[year].map((paper, idx) => {
+                                {groupedPapers[year].map((paper) => {
                                     const doiUrl = paper.doi ? `https://${paper.doi}` : '';
                                     const paperLink = paper.pdf_url || doiUrl || '#';
                                     const hasVenueTag = !!paper.venueTag;
                                     const isJournalNoConf = paper.type === 'Journal' && !paper.journalConference;
 
+                                    // Use a unique key based on the title and year to ensure proper React reconciliation when filtering
+                                    const uniqueKey = `${paper.title}-${year}`;
+
                                     return (
-                                        <div key={idx} className="bg-white rounded-xl shadow-sm border border-border hover:shadow-lg hover:border-accent/40 transition-all duration-300 relative">
+                                        <div key={uniqueKey} className="bg-white rounded-xl shadow-sm border border-border hover:shadow-lg hover:border-accent/40 transition-all duration-300 relative">
                                             {/* Main card */}
                                             <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-5 p-4 relative cursor-pointer">
                                                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-xl"></div>
