@@ -190,16 +190,40 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
         );
     };
 
-    const filteredPapers = initialPapers.filter(paper => {
-        const matchesSearch = paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            paper.authors.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesType = filterType === 'All' || paper.type === filterType;
-        const matchesVenue = selectedVenues.length === 0 ||
-            selectedVenues.some(v => paper.venueTag === v || paper.venue === v);
-        const matchesTopics = selectedTopics.length === 0 ||
-            selectedTopics.every(t => paper.topicTags.includes(t));
-        return matchesSearch && matchesType && matchesVenue && matchesTopics;
+    const venueMap = {};
+    initialPapers.forEach(paper => {
+        if (paper.venueTag) venueMap[paper.venueTag] = paper.venueTag;
+        if (paper.type === 'Journal' && paper.venue) {
+            venueMap[paper.venue] = paper.publisher ? `${paper.publisher} · ${paper.venue}` : paper.venue;
+        }
     });
+
+    const isTopicMatch = (paper, topics) => topics.length === 0 || topics.some(t => paper.topicTags.includes(t));
+    const isVenueMatch = (paper, venues) => venues.length === 0 || venues.some(v => paper.venueTag === v || paper.venue === v);
+    const isSearchMatch = (paper, search) => paper.title.toLowerCase().includes(search.toLowerCase()) || paper.authors.toLowerCase().includes(search.toLowerCase());
+    const isTypeMatch = (paper, type) => type === 'All' || paper.type === type;
+
+    const filteredPapers = initialPapers.filter(paper => {
+        return isSearchMatch(paper, searchTerm) &&
+            isTypeMatch(paper, filterType) &&
+            isVenueMatch(paper, selectedVenues) &&
+            isTopicMatch(paper, selectedTopics);
+    });
+
+    const venueCounts = {};
+    allVenueOptions.forEach(v => venueCounts[v] = 0);
+    initialPapers.filter(paper => isSearchMatch(paper, searchTerm) && isTypeMatch(paper, filterType) && isTopicMatch(paper, selectedTopics))
+        .forEach(paper => {
+            if (paper.venueTag && venueCounts[paper.venueTag] !== undefined) venueCounts[paper.venueTag]++;
+            if (paper.type === 'Journal' && paper.venue && venueCounts[paper.venue] !== undefined) venueCounts[paper.venue]++;
+        });
+
+    const topicCounts = {};
+    allTopicTags.forEach(t => topicCounts[t] = 0);
+    initialPapers.filter(paper => isSearchMatch(paper, searchTerm) && isTypeMatch(paper, filterType) && isVenueMatch(paper, selectedVenues))
+        .forEach(paper => {
+            paper.topicTags.forEach(t => { if (topicCounts[t] !== undefined) topicCounts[t]++ });
+        });
 
     const groupedPapers = filteredPapers.reduce((acc, paper) => {
         const year = paper.year === 9999 ? 'Pre-print' : paper.year;
@@ -277,18 +301,24 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                 <div className="flex flex-wrap gap-2 mb-4 p-4 bg-white rounded-xl border border-border shadow-sm">
                     {allVenueOptions.map(venue => {
                         const isActive = selectedVenues.includes(venue);
+                        const count = venueCounts[venue] || 0;
+                        const isDisabled = count === 0 && !isActive;
                         const color = venueColors[venue];
+                        const displayName = venueMap[venue] || venue;
                         return (
                             <button
                                 key={venue}
-                                onClick={() => toggleVenue(venue)}
-                                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-200 ${isActive
+                                onClick={() => !isDisabled && toggleVenue(venue)}
+                                disabled={isDisabled}
+                                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-200 flex items-center gap-1.5 ${isActive
                                     ? 'text-white border-transparent shadow-sm'
-                                    : 'bg-bg-subtle text-text-secondary border-border hover:border-accent/40 hover:text-accent'
+                                    : isDisabled
+                                        ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-50'
+                                        : 'bg-bg-subtle text-text-secondary border-border hover:border-accent/40 hover:text-accent'
                                     }`}
                                 style={isActive && color ? { backgroundColor: color } : isActive ? { backgroundColor: '#10b981' } : {}}
                             >
-                                {venue}
+                                {displayName} <span className={`text-[10px] ${isActive ? 'text-white/80' : isDisabled ? 'text-gray-400' : 'text-text-muted/60'}`}>({count})</span>
                             </button>
                         );
                     })}
@@ -300,16 +330,21 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                 <div className="flex flex-wrap gap-2 mb-4 p-4 bg-white rounded-xl border border-border shadow-sm">
                     {allTopicTags.map(topic => {
                         const isActive = selectedTopics.includes(topic);
+                        const count = topicCounts[topic] || 0;
+                        const isDisabled = count === 0 && !isActive;
                         return (
                             <button
                                 key={topic}
-                                onClick={() => toggleTopic(topic)}
-                                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-200 ${isActive
+                                onClick={() => !isDisabled && toggleTopic(topic)}
+                                disabled={isDisabled}
+                                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all duration-200 flex items-center gap-1.5 ${isActive
                                     ? 'bg-accent text-white border-accent shadow-sm'
-                                    : 'bg-bg-subtle text-text-secondary border-border hover:border-accent/40 hover:text-accent'
+                                    : isDisabled
+                                        ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-50'
+                                        : 'bg-bg-subtle text-text-secondary border-border hover:border-accent/40 hover:text-accent'
                                     }`}
                             >
-                                {topic}
+                                {topic} <span className={`text-[10px] ${isActive ? 'text-white/80' : isDisabled ? 'text-gray-400' : 'text-text-muted/60'}`}>({count})</span>
                             </button>
                         );
                     })}
@@ -323,7 +358,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
                     {selectedVenues.map(v => (
                         <span key={v} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium text-white shadow-sm" style={{ backgroundColor: venueColors[v] || '#10b981' }}>
-                            {v}
+                            {venueMap[v] || v}
                             <button onClick={() => toggleVenue(v)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
