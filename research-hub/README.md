@@ -1,4 +1,4 @@
-# Minimalist Academic Research Hub
+# Minimalist Academic Research Personal Website
 
 A lightning-fast, highly optimized Next.js personal website template for research scientists, academics, and developers. Designed to be statically exported and hosted seamlessly on GitHub Pages.
 
