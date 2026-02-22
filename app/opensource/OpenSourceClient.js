@@ -53,12 +53,10 @@ export default function OpenSourceClient({ projects = [] }) {
                     const langColor = langColors[project.language] || '#6b7280';
 
                     return (
-                        <a
+                        <div
                             key={idx}
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group bg-white rounded-xl shadow-sm border border-border hover:shadow-lg hover:border-accent/40 transition-all duration-300 p-6 flex flex-col"
+                            onClick={() => window.open(project.url, '_blank')}
+                            className="group bg-white rounded-xl shadow-sm border border-border hover:shadow-lg hover:border-accent/40 transition-all duration-300 p-6 flex flex-col cursor-pointer"
                         >
                             <div className="flex items-start justify-between gap-3 mb-3">
                                 <div className="flex items-center gap-2 min-w-0">
@@ -113,12 +111,18 @@ export default function OpenSourceClient({ projects = [] }) {
 
                                 {/* Docs link if available */}
                                 {project.docs && (
-                                    <span className="ml-auto text-accent text-xs font-medium">
+                                    <a
+                                        href={project.docs}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="ml-auto text-accent text-xs font-medium hover:text-emerald-500 hover:underline transition-colors"
+                                    >
                                         Docs →
-                                    </span>
+                                    </a>
                                 )}
                             </div>
-                        </a>
+                        </div>
                     );
                 })}
             </div>
