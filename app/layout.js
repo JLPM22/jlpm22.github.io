@@ -30,11 +30,20 @@ export const metadata = {
     description: 'Research in character animation, motion matching, and computer graphics.',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: 'https://jlpm22.github.io/prof_pic.jpg',
+        width: 800,
+        height: 800,
+        alt: 'Jose Luis Ponton',
+      },
+    ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Jose Luis Ponton - Research Scientist',
     description: 'Research in character animation, motion matching, and computer graphics.',
+    images: ['https://jlpm22.github.io/prof_pic.jpg'],
   },
   robots: {
     index: true,

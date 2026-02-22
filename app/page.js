@@ -32,8 +32,23 @@ export default function HomePage() {
   const profile = getProfile();
   const social = profile.social || {};
 
+  // Construct JSON-LD structured data for Google Rich Snippets
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.name,
+    jobTitle: profile.title,
+    url: 'https://jlpm22.github.io',
+    image: 'https://jlpm22.github.io/prof_pic.jpg',
+    sameAs: Object.values(social).filter(Boolean),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="flex flex-col md:flex-row gap-12 items-start mt-8">
 
         {/* Profile Section */}
