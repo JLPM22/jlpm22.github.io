@@ -1,19 +1,19 @@
-Name,Authors,Year,Month,DOI,Editorial,Journal,Quartile JCR,Impact Factor JCR,Category JCR,Ranking JCR,Quartile SJR,Impact Factor SJR,Category SJR,Conference,Location,Venue Tag,Topic Tag,Video,Code,Website,BibTeX
-Combining Motion Matching and Orientation Prediction to Animate Avatars for Consumer‑Grade VR,"Jose Luis Ponton, Haoran Yun, Carlos Andujar, Nuria Pelechano",2023,March,doi.org/10.1111/cgf.14628,Wiley,Computer Graphics Forum,Q2,2.7,COMPUTER SCIENCE SOFTWARE ENGINEERING,44/132,Q1,1.968,Computer Graphics and Computer-Aided Design,THE 21ST ACM SIGGRAPH / Eurographics SYMPOSIUM ON COMPUTER ANIMATION (SCA 2022),"Durham, UK",SCA,"Motion Matching, Motion Reconstruction, VR",https://youtu.be/crU9oLX0GnM,https://github.com/UPC-ViRVIG/MMVR,https://upc-virvig.github.io/MMVR/,"@article{2022:ponton:mmvr,
-	author = {Ponton, Jose Luis and Yun, Haoran and Andujar, Carlos and Pelechano, Nuria},
+Name,Authors,Year,Month,DOI,Editorial,Journal,Quartile JCR,Impact Factor JCR,Category JCR,Ranking JCR,Quartile SJR,Impact Factor SJR,Category SJR,Conference,Year Conference,Location,Venue Tag,Topic Tag,Video,Code,Website,BibTeX
+Combining Motion Matching and Orientation Prediction to Animate Avatars for Consumer‑Grade VR,"Jose Luis Ponton, Haoran Yun, Carlos Andujar, Nuria Pelechano",2023,March,doi.org/10.1111/cgf.14628,Wiley,Computer Graphics Forum,Q2,2.7,COMPUTER SCIENCE SOFTWARE ENGINEERING,44/132,Q1,1.968,Computer Graphics and Computer-Aided Design,THE 21ST ACM SIGGRAPH / Eurographics SYMPOSIUM ON COMPUTER ANIMATION (SCA 2022),2022,"Durham, UK",SCA,"Motion Matching, Motion Reconstruction, VR",https://youtu.be/crU9oLX0GnM,https://github.com/UPC-ViRVIG/MMVR,https://upc-virvig.github.io/MMVR/,"@article{2022:ponton:mmvr,
+        author = {Ponton, Jose Luis and Yun, Haoran and Andujar, Carlos and Pelechano, Nuria},
     title = {{Combining Motion Matching and Orientation Prediction to Animate Avatars for Consumer-Grade VR Devices}},
-	booktitle = {ACM SIGGRAPH / Eurographics Symposium on Computer Animation},
+        booktitle = {ACM SIGGRAPH / Eurographics Symposium on Computer Animation},
     journal = {Computer Graphics Forum},
-	volume = {41},
-	number = {8},
-	pages = {107-118},
-	ISSN = {1467-8659},
-	DOI = {10.1111/cgf.14628},
-	year  = {2022},
-	month = {September},
+        volume = {41},
+        number = {8},
+        pages = {107-118},
+        ISSN = {1467-8659},
+        DOI = {10.1111/cgf.14628},
+        year  = {2023},
+        month = {March},
 }
 "
-Fitted avatars: automatic skeleton adjustment for self‑avatars in virtual reality,"Jose Luis Ponton, Víctor Ceballos, Lesly Acosta, Alejandro Ríos, Eva Monclús, Nuria Pelechano",2023,July,doi.org/10.1007/s10055-023-00821-z,Springer,Virtual Reality,Q1,4.4,COMPUTER SCIENCE SOFTWARE ENGINEERING,15/132,Q1,1.354,Computer Graphics and Computer-Aided Design,,,,"Inverse Kinematics, Motion Reconstruction, VR",https://youtu.be/U7KOhTGByyc,,,"@article{2023:ponton:fittedavatars,
+Fitted avatars: automatic skeleton adjustment for self‑avatars in virtual reality,"Jose Luis Ponton, Víctor Ceballos, Lesly Acosta, Alejandro Ríos, Eva Monclús, Nuria Pelechano",2023,July,doi.org/10.1007/s10055-023-00821-z,Springer,Virtual Reality,Q1,4.4,COMPUTER SCIENCE SOFTWARE ENGINEERING,15/132,Q1,1.354,Computer Graphics and Computer-Aided Design,,,,,"Inverse Kinematics, Motion Reconstruction, VR",https://youtu.be/U7KOhTGByyc,,,"@article{2023:ponton:fittedavatars,
   title = {Fitted avatars: automatic skeleton adjustment for self-avatars in virtual reality},
   author = {Ponton, Jose Luis and Ceballos, Victor and Acosta, Lesly and Rios, Alejandro and Monclus, Eva and Pelechano, Nuria},
   journal = {Virtual Reality},
@@ -25,7 +25,7 @@ Fitted avatars: automatic skeleton adjustment for self‑avatars in virtual real
   publisher = {Springer},
   DOI = {10.1007/s10055-023-00821-z},
 }"
-SparsePoser: Real‑time Full‑body Motion Reconstruction from Sparse Data,"Jose Luis Ponton, Haoran Yun, Andreas Aristidou, Carlos Andujar, Nuria Pelechano",2023,October,doi.org/10.1145/3625264,ACM,Transactions on Graphics,Q1,7.8,COMPUTER SCIENCE SOFTWARE ENGINEERING,5/132,Q1,7.766,Computer Graphics and Computer-Aided Design,SIGGRAPH Asia 2023,"Sydney, Australia",SIGGRAPH Asia,"Inverse Kinematics, Motion Reconstruction, VR, Motion Capture",https://youtu.be/BAi4KoHtehY,https://github.com/UPC-ViRVIG/SparsePoser,https://upc-virvig.github.io/SparsePoser/,"@article{2023:ponton:sparseposer,
+SparsePoser: Real‑time Full‑body Motion Reconstruction from Sparse Data,"Jose Luis Ponton, Haoran Yun, Andreas Aristidou, Carlos Andujar, Nuria Pelechano",2023,October,doi.org/10.1145/3625264,ACM,Transactions on Graphics,Q1,7.8,COMPUTER SCIENCE SOFTWARE ENGINEERING,5/132,Q1,7.766,Computer Graphics and Computer-Aided Design,SIGGRAPH Asia 2023,2023,"Sydney, Australia",SIGGRAPH Asia,"Inverse Kinematics, Motion Reconstruction, VR, Motion Capture",https://youtu.be/BAi4KoHtehY,https://github.com/UPC-ViRVIG/SparsePoser,https://upc-virvig.github.io/SparsePoser/,"@article{2023:ponton:sparseposer,
   author = {Ponton, Jose Luis and Yun, Haoran and Aristidou, Andreas and Andujar, Carlos and Pelechano, Nuria},
   title = {SparsePoser: Real-Time Full-Body Motion Reconstruction from Sparse Data},
   year = {2023},
@@ -42,7 +42,7 @@ SparsePoser: Real‑time Full‑body Motion Reconstruction from Sparse Data,"Jos
   articleno = {5},
   numpages = {14},
 }"
-PADELVIC: Multicamera videos and motion capture data in padel matches,"Mohammadreza Javadiha, Carlos Andujar, Michele Calvanese, Enrique Lacasa, Jordi Moyes, Jose Luis Ponton, Antonio Susín, Jiabo Wang",2024,January,doi.org/10.17398/2952-2218.2.89,Universidad de Extremadura,Padel Scientific Journal,,,,,,,,CONGRESO NACIONAL DE PÁDEL,"Cáceres, Spain",Padel,"Dataset, Motion Capture",,https://github.com/UPC-ViRVIG/PadelVic,,"@article{2024:javadiha:padelvic,
+PADELVIC: Multicamera videos and motion capture data in padel matches,"Mohammadreza Javadiha, Carlos Andujar, Michele Calvanese, Enrique Lacasa, Jordi Moyes, Jose Luis Ponton, Antonio Susín, Jiabo Wang",2024,January,doi.org/10.17398/2952-2218.2.89,Universidad de Extremadura,Padel Scientific Journal,,,,,,,,CONGRESO NACIONAL DE PÁDEL,2024,"Cáceres, Spain",Padel,"Dataset, Motion Capture",,https://github.com/UPC-ViRVIG/PadelVic,,"@article{2024:javadiha:padelvic,
   author = {Javadiha, Mohammadreza and Andujar, Carlos and Calvanese, Michele and Lacasa, Enrique and Moyes, Jordi and Ponton, Jose Luis and Susin, Antonio and Wang, Jiabo},
   title = {{PADELVIC: Multicamera Videos and Motion Capture Data in Padel Matches}},
   year = {2024},
@@ -53,7 +53,7 @@ PADELVIC: Multicamera videos and motion capture data in padel matches,"Mohammadr
   pages = {89--106},
   doi = {10.17398/2952-2218.2.89},
 }"
-XR4ED: An Extended Reality Platform for Education,"Fotis Liarokapis, Václav Milata, Jose Luis Ponton, Nuria Pelechano, Haris Zacharatos",2024,August,doi.org/10.1109/MCG.2024.3406139,IEEE,Computer Graphics And Applications,Q3,1.4,COMPUTER SCIENCE SOFTWARE ENGINEERING,87/128,Q3,0.334,Computer Graphics and Computer-Aided Design,,,,VR,,,https://xr4ed.eu/,"@article{2024:liarokapis:xr4ed,
+XR4ED: An Extended Reality Platform for Education,"Fotis Liarokapis, Václav Milata, Jose Luis Ponton, Nuria Pelechano, Haris Zacharatos",2024,August,doi.org/10.1109/MCG.2024.3406139,IEEE,Computer Graphics And Applications,Q3,1.4,COMPUTER SCIENCE SOFTWARE ENGINEERING,87/128,Q3,0.334,Computer Graphics and Computer-Aided Design,,,,,VR,,,https://xr4ed.eu/,"@article{2024:liarokapis:xr4ed,
   author={Liarokapis, Fotis and Milata, Václav and Ponton, Jose Luis and Pelechano, Nuria and Zacharatos, Haris},
   journal={IEEE Computer Graphics and Applications}, 
   title={XR4ED: An Extended Reality Platform for Education}, 
@@ -63,7 +63,7 @@ XR4ED: An Extended Reality Platform for Education,"Fotis Liarokapis, Václav Mil
   pages={79-88},
   doi={10.1109/MCG.2024.3406139},
 }"
-DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization,"Jose Luis Ponton, Eduard Pujol, Andreas Aristidou, Carlos Andujar, Nuria Pelechano",2025,April,doi.org/10.1111/cgf.70026,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics 2025,"London, UK",Eurographics,"Inverse Kinematics, Motion Reconstruction, VR, Motion Capture, Generative AI",https://youtu.be/vyboiIBe0kc,https://github.com/UPC-ViRVIG/DragPoser,https://upc-virvig.github.io/DragPoser/,"@article{2025:ponton:dragposer,
+DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization,"Jose Luis Ponton, Eduard Pujol, Andreas Aristidou, Carlos Andujar, Nuria Pelechano",2025,April,doi.org/10.1111/cgf.70026,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics 2025,2025,"London, UK",Eurographics,"Inverse Kinematics, Motion Reconstruction, VR, Motion Capture, Generative AI",https://youtu.be/vyboiIBe0kc,https://github.com/UPC-ViRVIG/DragPoser,https://upc-virvig.github.io/DragPoser/,"@article{2025:ponton:dragposer,
   author = {Ponton, Jose Luis and Pujol, Eduard and Aristidou, Andreas and Andujar, Carlos and Pelechano, Nuria},
   title = {DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization},
   journal = {Computer Graphics Forum},
@@ -74,7 +74,7 @@ DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Laten
   year = {2025},
   doi = {10.1111/cgf.70026},
 }"
-Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos Andujar, Nuria Pelechano",2025,December,doi.org/10.1145/3763334,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,SIGGRAPH Asia 2025,"Hong Kong, China",SIGGRAPH Asia,"Motion Matching, Motion Controller",https://youtu.be/u8LISEkGsyk?si=TReQOlEM95Hfo-mi,https://github.com/UPC-ViRVIG/Environment-aware-Motion-Matching,https://upc-virvig.github.io/Environment-aware-Motion-Matching/,"@article{2025:ponton:emm,
+Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos Andujar, Nuria Pelechano",2025,December,doi.org/10.1145/3763334,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,SIGGRAPH Asia 2025,2025,"Hong Kong, China",SIGGRAPH Asia,"Motion Matching, Motion Controller",https://youtu.be/u8LISEkGsyk?si=TReQOlEM95Hfo-mi,https://github.com/UPC-ViRVIG/Environment-aware-Motion-Matching,https://upc-virvig.github.io/Environment-aware-Motion-Matching/,"@article{2025:ponton:emm,
         author = {Ponton, Jose Luis and Andrews, Sheldon and Andujar, Carlos and Pelechano, Nuria},
         title = {Environment-aware Motion Matching},
         year = {2025},
@@ -91,4 +91,4 @@ Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos A
         articleno = {232},
         numpages = {18}
 }"
-Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis Ponton, Eduardo Alvarado, Lin Geng Foo, Nuria Pelechano, Carlos Andujar, Marc Habermann",2026,May,doi.org/10.1111/cgf.70405,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics 2026,"Aachen, Germany",Eurographics,"Generative AI, Motion Reconstruction, Motion Capture",,,,
+Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis Ponton, Eduardo Alvarado, Lin Geng Foo, Nuria Pelechano, Carlos Andujar, Marc Habermann",2026,May,doi.org/10.1111/cgf.70405,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics 2026,2026,"Aachen, Germany",Eurographics,"Generative AI, Motion Reconstruction, Motion Capture",,,,
