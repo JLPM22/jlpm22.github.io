@@ -174,6 +174,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [showVenueFilter, setShowVenueFilter] = useState(false);
     const [showTopicFilter, setShowTopicFilter] = useState(false);
+    const [showMetrics, setShowMetrics] = useState(false);
     const [bibtexModal, setBibtexModal] = useState(null);
 
     const allVenueOptions = [...new Set([...allVenueTags, ...allJournalNames])].sort();
@@ -292,6 +293,18 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                     </svg>
                     Filter by Topic
                 </button>
+
+                <div className="ml-auto flex items-center gap-2">
+                    <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer hover:text-text transition-colors select-none">
+                        <input
+                            type="checkbox"
+                            className="rounded border-border text-accent focus:ring-accent/50 cursor-pointer w-4 h-4"
+                            checked={showMetrics}
+                            onChange={(e) => setShowMetrics(e.target.checked)}
+                        />
+                        Show Metrics
+                    </label>
+                </div>
             </div>
 
 
@@ -479,6 +492,25 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                             </>
                                                         )}
                                                     </div>
+
+                                                    {/* Conditional Metrics Display */}
+                                                    {showMetrics && paper.metrics && (paper.metrics.jcrQuartile || paper.metrics.sjrQuartile) && (
+                                                        <div className="flex flex-wrap items-center gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
+                                                            {paper.metrics.jcrQuartile && (
+                                                                <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200/50">
+                                                                    JCR {paper.metrics.jcrQuartile}
+                                                                    {paper.metrics.jcrIf && <span className="opacity-75">(IF: {paper.metrics.jcrIf})</span>}
+                                                                    {paper.metrics.jcrRank && <span className="opacity-60 text-[9px] ml-0.5">{paper.metrics.jcrRank}</span>}
+                                                                </span>
+                                                            )}
+                                                            {paper.metrics.sjrQuartile && (
+                                                                <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200/50">
+                                                                    SJR {paper.metrics.sjrQuartile}
+                                                                    {paper.metrics.sjrIf && <span className="opacity-75">(IF: {paper.metrics.sjrIf})</span>}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
