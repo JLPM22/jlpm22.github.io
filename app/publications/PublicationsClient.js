@@ -294,16 +294,24 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                     Filter by Topic
                 </button>
 
-                <div className="ml-auto flex items-center gap-2">
-                    <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer hover:text-text transition-colors select-none">
-                        <input
-                            type="checkbox"
-                            className="rounded border-border text-accent focus:ring-accent/50 cursor-pointer w-4 h-4"
-                            checked={showMetrics}
-                            onChange={(e) => setShowMetrics(e.target.checked)}
-                        />
-                        Show Metrics
-                    </label>
+                <div className="ml-auto flex items-center">
+                    <button
+                        onClick={() => setShowMetrics(!showMetrics)}
+                        className={`text-[10px] font-medium transition-colors flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${showMetrics ? 'bg-accent text-white border-accent shadow-sm' : 'bg-transparent text-text-muted border-border/60 hover:text-text hover:border-border'}`}
+                        title="Toggle Academic Metrics"
+                    >
+                        {showMetrics ? (
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        ) : (
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        )}
+                        Metrics
+                    </button>
                 </div>
             </div>
 
@@ -495,18 +503,18 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
                                                     {/* Conditional Metrics Display */}
                                                     {showMetrics && paper.metrics && (paper.metrics.jcrQuartile || paper.metrics.sjrQuartile) && (
-                                                        <div className="flex flex-wrap items-center gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
+                                                        <div className="flex flex-wrap items-center gap-1.5 mt-2" onClick={(e) => e.stopPropagation()}>
                                                             {paper.metrics.jcrQuartile && (
-                                                                <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200/50">
-                                                                    JCR {paper.metrics.jcrQuartile}
-                                                                    {paper.metrics.jcrIf && <span className="opacity-75">(IF: {paper.metrics.jcrIf})</span>}
-                                                                    {paper.metrics.jcrRank && <span className="opacity-60 text-[9px] ml-0.5">{paper.metrics.jcrRank}</span>}
+                                                                <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 text-text-secondary border border-black/10 transition-colors hover:bg-black/10 hover:text-text">
+                                                                    JCR <span className="font-bold">{paper.metrics.jcrQuartile}</span>
+                                                                    {paper.metrics.jcrIf && <span className="opacity-70 mx-0.5">• IF {paper.metrics.jcrIf}</span>}
+                                                                    {paper.metrics.jcrRank && <span className="opacity-60">{paper.metrics.jcrRank}</span>}
                                                                 </span>
                                                             )}
                                                             {paper.metrics.sjrQuartile && (
-                                                                <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200/50">
-                                                                    SJR {paper.metrics.sjrQuartile}
-                                                                    {paper.metrics.sjrIf && <span className="opacity-75">(IF: {paper.metrics.sjrIf})</span>}
+                                                                <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 text-text-secondary border border-black/10 transition-colors hover:bg-black/10 hover:text-text">
+                                                                    SJR <span className="font-bold">{paper.metrics.sjrQuartile}</span>
+                                                                    {paper.metrics.sjrIf && <span className="opacity-70 mx-0.5">• IF {paper.metrics.sjrIf}</span>}
                                                                 </span>
                                                             )}
                                                         </div>
