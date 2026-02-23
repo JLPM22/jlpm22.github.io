@@ -262,7 +262,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <select
-                        className="px-3 py-2.5 pr-8 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 cursor-pointer text-sm text-text-secondary font-medium appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat w-full sm:w-auto"
+                        className="px-3 py-2.5 pr-8 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 cursor-pointer text-sm text-text-secondary font-medium appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat w-full sm:w-auto shrink-0"
                         value={filterType}
                         onChange={(e) => setFilterType(e.target.value)}
                     >
@@ -270,6 +270,24 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                         <option value="Conference">Conference</option>
                         <option value="Journal">Journal</option>
                     </select>
+
+                    <button
+                        onClick={() => setShowMetrics(!showMetrics)}
+                        className={`text-sm font-medium transition-colors shrink-0 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border ${showMetrics ? 'bg-accent text-white border-accent shadow-sm' : 'bg-white text-text-secondary border-border hover:border-accent/50 hover:text-text'}`}
+                        title="Toggle Academic Metrics"
+                    >
+                        {showMetrics ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        )}
+                        Metrics
+                    </button>
                 </div>
             </div>
 
@@ -293,26 +311,6 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                     </svg>
                     Filter by Topic
                 </button>
-
-                <div className="ml-auto flex items-center">
-                    <button
-                        onClick={() => setShowMetrics(!showMetrics)}
-                        className={`text-[10px] font-medium transition-colors flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${showMetrics ? 'bg-accent text-white border-accent shadow-sm' : 'bg-transparent text-text-muted border-border/60 hover:text-text hover:border-border'}`}
-                        title="Toggle Academic Metrics"
-                    >
-                        {showMetrics ? (
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                            </svg>
-                        ) : (
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                        )}
-                        Metrics
-                    </button>
-                </div>
             </div>
 
 
@@ -502,7 +500,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                     </div>
 
                                                     {/* Conditional Metrics Display */}
-                                                    {showMetrics && paper.metrics && (paper.metrics.jcrQuartile || paper.metrics.sjrQuartile) && (
+                                                    {showMetrics && paper.metrics && (paper.metrics.jcrQuartile || paper.metrics.sjrQuartile || paper.metrics.ggsRating || paper.metrics.coreRating) && (
                                                         <div className="flex flex-wrap items-center gap-1.5 mt-2" onClick={(e) => e.stopPropagation()}>
                                                             {paper.metrics.jcrQuartile && (
                                                                 <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 text-text-secondary border border-black/10 transition-colors hover:bg-black/10 hover:text-text">
@@ -515,6 +513,16 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                                 <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 text-text-secondary border border-black/10 transition-colors hover:bg-black/10 hover:text-text">
                                                                     SJR <span className="font-bold">{paper.metrics.sjrQuartile}</span>
                                                                     {paper.metrics.sjrIf && <span className="opacity-70 mx-0.5">• IF {paper.metrics.sjrIf}</span>}
+                                                                </span>
+                                                            )}
+                                                            {paper.metrics.ggsRating && (
+                                                                <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 text-text-secondary border border-black/10 transition-colors hover:bg-black/10 hover:text-text">
+                                                                    GGS <span className="font-bold">{paper.metrics.ggsRating}</span>
+                                                                </span>
+                                                            )}
+                                                            {paper.metrics.coreRating && (
+                                                                <span className="inline-flex items-center gap-1 text-[9px] font-medium px-1.5 py-0.5 rounded bg-black/5 text-text-secondary border border-black/10 transition-colors hover:bg-black/10 hover:text-text">
+                                                                    CORE <span className="font-bold">{paper.metrics.coreRating}</span>
                                                                 </span>
                                                             )}
                                                         </div>
