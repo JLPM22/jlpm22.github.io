@@ -77,7 +77,7 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                                 title={paper.journalConference || paper.venue}
                             >
                                 {paper.venueTag}
-                                <span className="ml-1 opacity-80">'{String(paper.year).slice(-2)}</span>
+                                <span className="ml-1 opacity-80">'{String(paper.conferenceYear || paper.year).slice(-2)}</span>
                                 <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gray-900/95 backdrop-blur-sm whitespace-nowrap opacity-0 group-hover/pill:opacity-100 transition-opacity duration-200 shadow-lg z-[100]">
                                     {paper.journalConference || paper.venue}
                                     <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-gray-900/95"></span>
@@ -85,7 +85,7 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                             </span>
                         ) : isJournalNoConf ? (
                             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white" style={{ backgroundColor: DEFAULT_VENUE_COLOR }}>
-                                {paper.year}
+                                {paper.conferenceYear || paper.year}
                             </span>
                         ) : (
                             <span
@@ -94,7 +94,7 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                                 title={paper.venue}
                             >
                                 {paper.type}
-                                <span className="ml-1 opacity-80">'{String(paper.year).slice(-2)}</span>
+                                <span className="ml-1 opacity-80">'{String(paper.conferenceYear || paper.year).slice(-2)}</span>
                                 <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gray-900/95 backdrop-blur-sm whitespace-nowrap opacity-0 group-hover/pill:opacity-100 transition-opacity duration-200 shadow-lg z-[100]">
                                     {paper.venue}
                                     <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-gray-900/95"></span>

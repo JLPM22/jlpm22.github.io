@@ -457,19 +457,19 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                                 tag={paper.venueTag}
                                                                 color={venueColors[paper.venueTag]}
                                                                 venue={paper.journalConference || paper.venue}
-                                                                year={paper.year}
+                                                                year={paper.conferenceYear || paper.year}
                                                                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleVenue(paper.venueTag); }}
                                                             />
                                                         ) : isJournalNoConf ? (
                                                             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white" style={{ backgroundColor: DEFAULT_VENUE_COLOR }}>
-                                                                {paper.year}
+                                                                {paper.conferenceYear || paper.year}
                                                             </span>
                                                         ) : (
                                                             <VenueTagPill
                                                                 tag={paper.type}
                                                                 color={DEFAULT_VENUE_COLOR}
                                                                 venue={paper.venue}
-                                                                year={paper.year}
+                                                                year={paper.conferenceYear || paper.year}
                                                             />
                                                         )}
                                                         {/* Journal name — clickable */}
