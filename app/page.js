@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { getAboutContent, getSelectedPapers, getVenueColors, getCoauthors, getProfile } from '@/lib/content';
 import SelectedPaperCard from '@/components/SelectedPaperCard';
 
+export const dynamic = 'force-dynamic';
+
 // Social icon components
 const icons = {
   email: (
