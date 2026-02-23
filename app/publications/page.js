@@ -6,8 +6,6 @@ export const metadata = {
     description: 'List of research publications',
 };
 
-export const dynamic = 'force-dynamic';
-
 export default function PublicationsPage() {
     const papers = getPapers();
     const venueColors = getVenueColors();
