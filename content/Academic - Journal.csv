@@ -91,4 +91,13 @@ Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos A
         articleno = {232},
         numpages = {18}
 }"
-Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis Ponton, Eduardo Alvarado, Lin Geng Foo, Nuria Pelechano, Carlos Andujar, Marc Habermann",2026,May,doi.org/10.1111/cgf.70405,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics 2026,2026,"Aachen, Germany",Eurographics,"Generative AI, Motion Reconstruction, Motion Capture",,,,
+Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis Ponton, Eduardo Alvarado, Lin Geng Foo, Nuria Pelechano, Carlos Andujar, Marc Habermann",2026,May,doi.org/10.1111/cgf.70405,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics 2026,2026,"Aachen, Germany",Eurographics,"Generative AI, Motion Reconstruction, Motion Capture",https://www.youtube.com/watch?v=IPpb-YNyiSw&feature=youtu.be,https://github.com/JLPM22/Step2Motion,https://vcai.mpi-inf.mpg.de/projects/Step2Motion/,"@article{2026:ponton:step2motion,
+  author = {Ponton, Jose Luis and Alvarado, Eduardo and Foo, Lin Geng and Pelechano, Nuria and Andujar, Carlos and Habermann, Marc},
+  title = {Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles},
+  journal = {Computer Graphics Forum},
+  booktitle = {Eurographics 2026},
+  volume = {45},
+  number = {2},
+  year = {2026},
+  doi = {10.1111/cgf.70405},
+}"
