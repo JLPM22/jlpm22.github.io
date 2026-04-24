@@ -37,3 +37,19 @@ alvarado:
 foo:
   firstname: ["Lin Geng", "L. G."]
   url: https://lingeng.foo/
+  
+huang:
+  firstname: ["Kexiang", "K. H."]
+  url: https://yellcanfly.github.io/
+
+yin:
+  firstname: ["Tairan", "T. Y."]
+  url: https://xn--5ftw20b19c.com/
+
+itatani:
+  firstname: ["Reiya", "R. I."]
+  url: https://reiyaitatani.work/en/
+  
+argudo:
+  firstname: ["Oscar", "O. A."]
+  url: https://www.oargudo.com/

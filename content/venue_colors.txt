@@ -9,3 +9,4 @@ VR=#1abc9c
 Transactions on Graphics=#e74c3c
 Computer Graphics Forum=#2ecc71
 Virtual Reality=#ffae42
+Transactions on Visualization and Computer Graphics=#3498db
