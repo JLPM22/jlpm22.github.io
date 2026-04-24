@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react';
+import BibTeXModal from '@/components/BibTeXModal';
+
 const DEFAULT_VENUE_COLOR = '#94a3b8';
 
 function renderAuthors(authorStr, coauthors) {
@@ -36,6 +39,7 @@ function renderAuthors(authorStr, coauthors) {
 }
 
 export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
+    const [showBibtex, setShowBibtex] = useState(false);
     const doiUrl = paper.doi ? `https://${paper.doi}` : '';
     const paperLink = paper.pdf_url || doiUrl || '#';
     const hasVenueTag = !!paper.venueTag;
@@ -121,8 +125,23 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                     {paper.video_ext_url && <a href={paper.video_ext_url} target="_blank" rel="noopener noreferrer" className={btnCls}>Video</a>}
                     {paper.code_url && <a href={paper.code_url} target="_blank" rel="noopener noreferrer" className={btnCls}>Code</a>}
                     {paper.website_url && <a href={paper.website_url} target="_blank" rel="noopener noreferrer" className={btnCls}>Website</a>}
+                    {paper.bibtex && (
+                        <button
+                            className={btnCls}
+                            onClick={(e) => { e.stopPropagation(); setShowBibtex(true); }}
+                        >
+                            BibTeX
+                        </button>
+                    )}
                 </div>
             </div>
+
+            {showBibtex && (
+                <BibTeXModal
+                    bibtex={paper.bibtex}
+                    onClose={() => setShowBibtex(false)}
+                />
+            )}
         </div>
     );
 }
