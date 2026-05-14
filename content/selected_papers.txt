@@ -1,3 +1,4 @@
+STyMo
 Step2Motion
 Environment-aware Motion Matching
 DragPoser

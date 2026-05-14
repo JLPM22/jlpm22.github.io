@@ -1,4 +1,5 @@
 SIGGRAPH Asia=#e74c3c
+SIGGRAPH=#e74c3c
 IEEE VR=#3498db
 CHI=#9b59b6
 Eurographics=#2ecc71

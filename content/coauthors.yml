@@ -53,3 +53,15 @@ itatani:
 argudo:
   firstname: ["Oscar", "O. A."]
   url: https://www.oargudo.com/
+  
+winkler:
+  firstname: ["Alexander", "A."]
+  url: https://www.alex-winkler.com/
+  
+kavan:
+  firstname: ["Ladislav", "L."]
+  url: https://users.cs.utah.edu/~ladislav/
+  
+ye:
+  firstname: ["Yuting", "Y."]
+  url: https://yutingye.info/
