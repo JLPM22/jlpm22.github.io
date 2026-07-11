@@ -1,5 +1,7 @@
-Name,Acronym,Role,Location,Start Date,End Date,URL
-CLIPE Workshop Creating Lively Interactive Populated Environments,CLIWEG24,IPC Member,"Limassol, Cyprus","April 23, 2024","April 23, 2024",https://www.clipe-itn.eu/eg2024workshop
-"18th ACM SIGGRAPH conference on Motion, Interaction and Games",MIG ‘25,IPC Member,"Zurich, Switzerland","December 3, 2025","December 5, 2025",https://mig.siggraph.org/2025/
-XXXV Spanish Conference on Computer Graphics,CEIG26,IPC Member,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/
-25th ACM SIGGRAPH / Eurographics Symposium On Computer Animation,SCA 2026,IPC Member,"Barcelona, Spain","July 8, 2026","July 10, 2026",https://computeranimation.org/
+Name,Acronym,Role,Location,Start Date,End Date,URL,Proof
+CLIPE Workshop Creating Lively Interactive Populated Environments,CLIWEG24,IPC Member,"Limassol, Cyprus","April 23, 2024","April 23, 2024",https://www.clipe-itn.eu/eg2024workshop,CLIWEG24.pdf
+"18th ACM SIGGRAPH conference on Motion, Interaction and Games",MIG 2025,IPC Member,"Zurich, Switzerland","December 3, 2025","December 5, 2025",https://mig.siggraph.org/2025/,MIG25.pdf
+XXXV Spanish Conference on Computer Graphics,CEIG 2026,IPC Member,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/,CEIG26.pdf
+25th ACM SIGGRAPH / Eurographics Symposium On Computer Animation,SCA 2026,IPC Member,"Barcelona, Spain","July 8, 2026","July 10, 2026",https://computeranimation.org/,SCA2026.pdf
+XXXV Spanish Conference on Computer Graphics,CEIG 2026,Paper Awards Committee,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/,
+"19th annual ACM SIGGRAPH conference on Motion, Interaction and Games",MIG 2026,IPC Member,"Charleston, South Carolina, USA","December 11, 2026","December 13, 2026",https://mig.siggraph.org/2026/index.htm,

@@ -5,8 +5,8 @@ CHI,2024,
 Behaviour & Information Technology,2024,
 Eurographics,2024,Eurographics 2024 Shorts
 Computer Graphics International,2024,
-Eurographics,2024,Eurographics 2024 CLIPE Workshop
-Eurographics,2024,Eurographics 2024 CLIPE Workshop
+Eurographics,2024,"Eurographics 2024 CLIPE Workshop, IPC"
+Eurographics,2024,"Eurographics 2024 CLIPE Workshop, IPC"
 SIGGRAPH,2024,
 SCA,2024,
 SIGGRAPH Asia,2024,
@@ -25,8 +25,8 @@ SIGGRAPH Asia,2025,
 SIGGRAPH Asia,2025,
 SIGGRAPH Asia,2025,
 Pacific Graphics,2025,
-MIG,2025,
-MIG,2025,
+MIG,2025,IPC
+MIG,2025,IPC
 IEEE VR,2025,
 IEEE VR,2025,
 IEEE VR,2025,
@@ -35,11 +35,18 @@ IEEE TVCG,2026,
 Computers & Graphics,2026,
 SIGGRAPH,2026,
 SIGGRAPH,2026,
-CEIG,2026,
+CEIG,2026,IPC
 IEEE TVCG,2026,
 IEEE Transactions on Consumer Electronics,2026,
 Computers & Graphics,2026,from CEIG 2026
-SCA,2026,
-SCA,2026,
-SCA,2026,
-SCA,2026,
+SCA,2026,"IPC, primary"
+SCA,2026,IPC
+SCA,2026,IPC
+SCA,2026,IPC
+SIGGRAPH Asia,2026,
+SIGGRAPH Asia,2026,Reviewer Continuity from SIGGRAPH 2026
+SIGGRAPH Asia,2026,
+Computer Graphics Forum,2026,
+Computers & Graphics,2026,Extension from MIG 2025
+SIGGRAPH Asia,2026,
+IEEE TVCG,2026,
