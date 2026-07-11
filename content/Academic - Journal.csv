@@ -109,7 +109,6 @@ Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis 
   volume={32},
   number={5},
   pages={3583-3593},
-  keywords={Apertures;Radio broadcasting;Frequency modulation;Contacts;Feedback;MIMICs;Circuits;Millimeter wave integrated circuits;Monolithic integrated circuits;Graphical user interfaces;Social imitation;rule breaking;virtual reality;crowd simulation},
   doi={10.1109/TVCG.2026.3679141}}
 "
 STyMo: Fast and Controllable Few-Shot Motion Style Transfer,"Jose Luis Ponton, Alexander Winkler, Ladislav Kavan, Yuting Ye, Petr Kadlecek",2026,July,doi.org/10.1145/3811356,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,SIGGRAPH,2026,"Los Angeles, USA",SIGGRAPH,Motion Style,https://youtu.be/krncQ599r8g?si=k8pjhXNqa9yEGg8J,https://github.com/facebookresearch/STyMo,https://joseluisponton.com/stymo-project-page/,"@article{2026:ponton:stymo,
@@ -124,10 +123,9 @@ number = {4},
 issn = {0730-0301},
 url = {https://doi.org/10.1145/3811356},
 doi = {10.1145/3811356},
-abstract = {Supporting a wide variety of motion styles is critical for creating diverse virtual characters, but current methods either require large stylized datasets or pre-trained models that cannot generalize beyond their training distribution. We present STyMo, a few-shot approach that learns motion style from only seconds of paired data and trains in one to two minutes. Our key insight is to decompose style into two components: a static component capturing time-invariant posture, and a temporal component capturing frame-wise dynamics. This decomposition yields an interpretable system where posture intensity, temporal exaggeration, and per-body-region style can be adjusted at runtime. Furthermore, the reduction in required training data and computation time structurally permits an iterative authoring workflow. To ensure robustness on arbitrary inputs, we further introduce a stylizability gate that automatically prevents artifacts on out-of-distribution motions. We demonstrate results across diverse motion styles, from subtle emotional variations to exaggerated character archetypes, and release our processed paired dataset to facilitate future research. The source code used in this paper can be found at: https://github.com/facebookresearch/STyMo},
 journal = {ACM Trans. Graph.},
+booktitle = {SIGGRAPH 2026},
 month = jul,
 articleno = {95},
-numpages = {13},
-keywords = {motion style transfer, motion synthesis, motion editing, character animation, deep learning}
+numpages = {13}
 }"
