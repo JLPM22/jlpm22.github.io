@@ -87,7 +87,7 @@ Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos A
         doi = {10.1145/3763334},
         journal = {ACM Trans. Graph.},
         booktitle = {SIGGRAPH Asia 2025},
-        month = dec,
+        month = {dec},
         articleno = {232},
         numpages = {18}
 }"
@@ -109,7 +109,8 @@ Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis 
   volume={32},
   number={5},
   pages={3583-3593},
-  doi={10.1109/TVCG.2026.3679141}}
+  doi={10.1109/TVCG.2026.3679141}
+}
 "
 STyMo: Fast and Controllable Few-Shot Motion Style Transfer,"Jose Luis Ponton, Alexander Winkler, Ladislav Kavan, Yuting Ye, Petr Kadlecek",2026,July,doi.org/10.1145/3811356,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,SIGGRAPH,2026,"Los Angeles, USA",SIGGRAPH,Motion Style,https://youtu.be/krncQ599r8g?si=k8pjhXNqa9yEGg8J,https://github.com/facebookresearch/STyMo,https://joseluisponton.com/stymo-project-page/,"@article{2026:ponton:stymo,
 author = {Ponton, Jose Luis and Winkler, Alexander and Kavan, Ladislav and Ye, Yuting and Kadlecek, Petr},
@@ -125,7 +126,7 @@ url = {https://doi.org/10.1145/3811356},
 doi = {10.1145/3811356},
 journal = {ACM Trans. Graph.},
 booktitle = {SIGGRAPH 2026},
-month = jul,
+month = {jul},
 articleno = {95},
 numpages = {13}
 }"
