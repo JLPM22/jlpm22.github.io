@@ -20,4 +20,7 @@ function copyMediaFiles(src, dest) {
     }
 }
 
-copyMediaFiles(contentDir, publicDir);
+fs.readdirSync(contentDir).forEach((childItemName) => {
+    const destinationName = childItemName === 'awards' ? 'award-certificates' : childItemName;
+    copyMediaFiles(path.join(contentDir, childItemName), path.join(publicDir, destinationName));
+});

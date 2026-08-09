@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import BibTeXModal from '@/components/BibTeXModal';
+import PublicationVenueLine from '@/components/PublicationVenueLine';
+import NewPublicationBadge from '@/components/NewPublicationBadge';
 
 const DEFAULT_VENUE_COLOR = '#94a3b8';
 
@@ -10,10 +12,11 @@ function renderAuthors(authorStr, coauthors) {
     const parts = authorStr.split(',').map(a => a.trim());
 
     return parts.map((author, i) => {
-        const sep = i < parts.length - 1 ? ', ' : '';
+        const prefix = i > 0 ? ' ' : '';
+        const sep = i < parts.length - 1 ? ',' : '';
 
         if (author.toLowerCase().includes('jose luis ponton')) {
-            return <span key={i}><strong className="text-text">{author}</strong>{sep}</span>;
+            return <span key={i}>{prefix}<strong className="text-text">{author}</strong>{sep}</span>;
         }
 
         const nameParts = author.split(' ');
@@ -27,14 +30,14 @@ function renderAuthors(authorStr, coauthors) {
             );
             if (matches && coauthor.url) {
                 return (
-                    <span key={i}>
+                    <span key={i}>{prefix}
                         <a href={coauthor.url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">{author}</a>{sep}
                     </span>
                 );
             }
         }
 
-        return <span key={i}>{author}{sep}</span>;
+        return <span key={i}>{prefix}{author}{sep}</span>;
     });
 }
 
@@ -44,17 +47,18 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
     const paperLink = paper.pdf_url || doiUrl || '#';
     const hasVenueTag = !!paper.venueTag;
     const isJournalNoConf = paper.type === 'Journal' && !paper.journalConference;
-    const btnCls = "inline-flex items-center justify-center px-2 py-0.5 text-[11px] font-bold rounded bg-bg-subtle text-text hover:bg-accent hover:text-white hover:border-accent transition-colors border border-border";
+    const btnCls = "inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-full bg-white text-text-secondary hover:bg-accent hover:text-white hover:border-accent transition-colors border border-border";
 
     return (
-        <div className="group bg-white rounded-xl shadow-sm border border-border hover:shadow-md hover:border-accent/30 transition-all duration-300 overflow-visible relative">
-            <div onClick={() => window.open(paperLink, '_blank')} className="flex flex-col sm:flex-row gap-4 p-3 relative cursor-pointer">
+        <article className="group bg-white rounded-2xl shadow-sm border border-border hover:shadow-card hover:border-accent/40 transition-all duration-300 overflow-visible relative">
+            <NewPublicationBadge year={paper.year} month={paper.month} className="absolute right-3 top-3 z-40" />
+            <div onClick={() => window.open(paperLink, '_blank')} className="flex flex-col sm:flex-row gap-4 p-4 relative cursor-pointer rounded-t-2xl">
                 <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"></div>
 
-                <div className="w-full sm:w-32 shrink-0 bg-transparent rounded-md flex items-center justify-center overflow-visible shadow-md md:hover:!shadow-2xl md:hover:scale-[1.5] md:hover:!z-50 transition-all duration-300 relative z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
+                <div className="w-full sm:w-36 shrink-0 bg-bg-subtle rounded-xl flex items-center justify-center overflow-hidden shadow-sm ring-1 ring-black/5 md:hover:shadow-lg md:hover:scale-[1.04] transition-all duration-500 ease-out relative z-20 self-center" onClick={(e) => e.stopPropagation()}>
                     {paper.video_url ? (
                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
-                            <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-md">
+                            <video autoPlay loop muted playsInline preload="metadata" className="w-full h-auto object-contain rounded-xl">
                                 <source src={paper.video_url} type={`video/${paper.video_url.split('.').pop()}`} />
                             </video>
                         ) : (
@@ -65,60 +69,22 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                     )}
                 </div>
 
-                <div className="flex-1 min-w-0 z-30 flex flex-col justify-center">
-                    <h3 className="font-bold text-text group-hover:text-accent transition-colors leading-snug">
+                <div className="flex-1 min-w-0 z-30 flex flex-col justify-center sm:pr-14">
+                    <PublicationVenueLine paper={paper} venueColors={venueColors} className="mb-1" />
+                    <h3 className={`${paper.title.length > 95 ? 'text-[15px]' : paper.title.length > 64 ? 'text-base' : 'text-lg'} font-outfit font-bold text-text group-hover:text-accent transition-colors leading-snug`}>
                         {paper.title}
                     </h3>
-                    <p className="text-sm text-text-secondary mt-0.5" onClick={(e) => e.stopPropagation()}>
+                    <p className={`${paper.authors.length > 145 ? 'text-[10px]' : paper.authors.length > 105 ? 'text-xs' : 'text-sm'} text-text-secondary mt-0.5 leading-snug [text-wrap:pretty]`} onClick={(e) => e.stopPropagation()}>
                         {renderAuthors(paper.authors, coauthors)}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                        {hasVenueTag ? (
-                            <span
-                                className="relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white cursor-default group/pill z-40"
-                                style={{ backgroundColor: venueColors[paper.venueTag] || DEFAULT_VENUE_COLOR }}
-                                title={paper.journalConference || paper.venue}
-                            >
-                                {paper.venueTag}
-                                <span className="ml-1 opacity-80">'{String(paper.conferenceYear || paper.year).slice(-2)}</span>
-                                <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gray-900/95 backdrop-blur-sm whitespace-nowrap opacity-0 group-hover/pill:opacity-100 transition-opacity duration-200 shadow-lg z-[100]">
-                                    {paper.journalConference || paper.venue}
-                                    <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-gray-900/95"></span>
-                                </span>
-                            </span>
-                        ) : isJournalNoConf ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white" style={{ backgroundColor: DEFAULT_VENUE_COLOR }}>
-                                {paper.conferenceYear || paper.year}
-                            </span>
-                        ) : (
-                            <span
-                                className="relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white cursor-default group/pill z-40"
-                                style={{ backgroundColor: DEFAULT_VENUE_COLOR }}
-                                title={paper.venue}
-                            >
-                                {paper.type}
-                                <span className="ml-1 opacity-80">'{String(paper.conferenceYear || paper.year).slice(-2)}</span>
-                                <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gray-900/95 backdrop-blur-sm whitespace-nowrap opacity-0 group-hover/pill:opacity-100 transition-opacity duration-200 shadow-lg z-[100]">
-                                    {paper.venue}
-                                    <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-gray-900/95"></span>
-                                </span>
-                            </span>
-                        )}
-                        {paper.type === 'Journal' && paper.venue && (
-                            <span
-                                className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold text-white z-30"
-                                style={{ backgroundColor: venueColors[paper.venue] || '#6b7280' }}
-                            >
-                                {paper.publisher ? `${paper.publisher} · ${paper.venue}` : paper.venue}
-                            </span>
-                        )}
-                    </div>
+                    {paper.awards?.length > 0 && <div className="flex flex-wrap gap-2 mt-2">{paper.awards.map(award => <a key={award.name} href={award.url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 hover:text-amber-800"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 21h8m-4-4v4M7 4h10v4a5 5 0 01-10 0V4zm0 2H4v1a4 4 0 004 4m9-5h3v1a4 4 0 01-4 4" /></svg>{award.name}{award.entity ? ` · ${award.entity}` : ''}<span aria-hidden="true">↗</span></a>)}</div>}
+
                 </div>
             </div>
 
             {/* Buttons — always open on mobile, slide down on hover on desktop */}
-            <div className="overflow-hidden transition-all duration-300 ease-in-out max-h-16 md:max-h-0 md:group-hover:max-h-16">
+            <div className="overflow-hidden transition-all duration-300 ease-in-out max-h-20 md:max-h-0 md:group-hover:max-h-20">
                 <div className="flex flex-wrap gap-1 px-3 py-2 border-t border-border/40 bg-gray-50/50 rounded-b-xl">
                     {paper.pdf_url && <a href={paper.pdf_url} target="_blank" rel="noopener noreferrer" className={btnCls}>PDF</a>}
                     {doiUrl && <a href={doiUrl} target="_blank" rel="noopener noreferrer" className={btnCls}>DOI</a>}
@@ -142,6 +108,6 @@ export default function SelectedPaperCard({ paper, venueColors, coauthors }) {
                     onClose={() => setShowBibtex(false)}
                 />
             )}
-        </div>
+        </article>
     );
 }

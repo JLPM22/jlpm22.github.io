@@ -1,4 +1,4 @@
-import { getProjects } from '@/lib/content';
+import { getProjects, getProfile } from '@/lib/content';
 import OpenSourceClient from './OpenSourceClient';
 
 export const metadata = {
@@ -8,5 +8,6 @@ export const metadata = {
 
 export default function OpenSourcePage() {
     const projects = getProjects();
-    return <OpenSourceClient projects={projects} />;
+    const profile = getProfile();
+    return <OpenSourceClient projects={projects} githubUrl={profile.social?.github} />;
 }

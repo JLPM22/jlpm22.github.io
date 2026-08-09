@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getAboutContent, getSelectedPapers, getVenueColors, getCoauthors, getProfile } from '@/lib/content';
+import { getAboutContent, getSelectedPapers, getVenueColors, getCoauthors, getProfile, getNews } from '@/lib/content';
 import SelectedPaperCard from '@/components/SelectedPaperCard';
 
 // Social icon components
@@ -25,11 +25,12 @@ const icons = {
 };
 
 export default function HomePage() {
-  const { htmlContent } = getAboutContent();
+  const { data: about, htmlContent } = getAboutContent();
   const selectedPapers = getSelectedPapers();
   const venueColors = getVenueColors();
   const coauthors = getCoauthors();
   const profile = getProfile();
+  const news = getNews();
   const social = profile.social || {};
 
   // Construct JSON-LD structured data for Google Rich Snippets
@@ -38,8 +39,8 @@ export default function HomePage() {
     '@type': 'Person',
     name: profile.name,
     jobTitle: profile.title,
-    url: 'https://jlpm22.github.io',
-    image: 'https://jlpm22.github.io/prof_pic.jpg',
+    url: 'https://joseluisponton.com',
+    image: 'https://joseluisponton.com/prof_pic.jpg',
     sameAs: Object.values(social).filter(Boolean),
   };
 
@@ -49,12 +50,12 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="flex flex-col md:flex-row gap-12 items-start mt-8">
+      <div className="flex flex-col md:flex-row gap-12 items-start mt-8 min-w-0">
 
         {/* Profile Section */}
-        <div className="md:w-1/3 flex flex-col items-center md:items-start space-y-6 md:sticky md:top-24 text-center md:text-left">
+        <div className="w-full min-w-0 md:w-1/3 flex flex-col items-center md:items-start space-y-6 md:sticky md:top-24 text-center md:text-left">
           <div className="relative w-48 h-48 sm:w-56 sm:h-56">
-            <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-20 animate-pulse"></div>
+            <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-15"></div>
             <Image
               src="/prof_pic.jpg"
               alt={profile.name || 'Profile'}
@@ -63,41 +64,45 @@ export default function HomePage() {
               priority
             />
           </div>
-          <div>
+          <div className="w-full min-w-0">
             <h1 className="font-outfit text-4xl font-bold tracking-tight text-text mb-2">{profile.name}</h1>
-            <p className="text-xl text-accent font-medium mb-4">{profile.title}</p>
+            <p className="text-xl text-accent font-medium mb-4 break-words">{profile.title}</p>
             <div className="flex gap-3 justify-center md:justify-start flex-wrap">
-              <a href="/cv_joseluis_ponton.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-text-secondary hover:text-accent transition-colors px-3 py-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform text-sm font-medium">
+              <a href="/publications" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-accent text-white shadow-sm hover:bg-accent-dark hover:shadow-md hover:-translate-y-0.5 transition-all text-sm font-semibold">
+                View publications
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </a>
+              <a href="/cv_joseluis_ponton.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-text-secondary hover:text-accent transition-all px-4 py-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-0.5 text-sm font-medium">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 CV
               </a>
               {profile.email && (
-                <a href={`mailto:${profile.email}`} className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="Email">
+                <a href={`mailto:${profile.email}`} className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="Email" title="Email">
                   {icons.email}
                 </a>
               )}
               {social.github && (
-                <a href={social.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="GitHub">
+                <a href={social.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="GitHub" title="GitHub">
                   {icons.github}
                 </a>
               )}
               {social.linkedin && (
-                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="LinkedIn">
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="LinkedIn" title="LinkedIn">
                   {icons.linkedin}
                 </a>
               )}
               {social.orcid && (
-                <a href={social.orcid} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="ORCID">
+                <a href={social.orcid} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="ORCID" title="ORCID">
                   {icons.orcid}
                 </a>
               )}
               {social.researchgate && (
-                <a href={social.researchgate} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="ResearchGate">
+                <a href={social.researchgate} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="ResearchGate" title="ResearchGate">
                   {icons.researchgate}
                 </a>
               )}
               {social.scholar && (
-                <a href={social.scholar} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="Google Scholar">
+                <a href={social.scholar} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent transition-colors p-2 bg-white rounded-full shadow-sm border border-border hover:shadow-md hover:-translate-y-1 transform" aria-label="Google Scholar" title="Google Scholar">
                   {icons.scholar}
                 </a>
               )}
@@ -106,10 +111,78 @@ export default function HomePage() {
         </div>
 
         {/* About Content Section */}
-        <div className="md:w-2/3 space-y-8">
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-white/40 prose prose-base prose-headings:font-outfit prose-headings:text-text prose-p:text-text-secondary prose-a:text-accent hover:prose-a:text-accent-dark text-left md:text-justify max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: htmlContent }} className="[&>p:first-child]:mt-0 [&>p:last-child]:mb-0" />
+        <div className="w-full min-w-0 md:w-2/3 space-y-8">
+          <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 sm:p-8 shadow-card border border-white/60 text-left">
+            {about.research_focus?.length > 0 && (
+              <div className="mb-6">
+                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">Research focus</p>
+                <div className="flex flex-wrap gap-1.5 sm:flex-nowrap" aria-label="Research areas">
+                  {about.research_focus.map((area) => (
+                    <span key={area} className="shrink-0 rounded-full border border-accent/15 bg-accent/[0.06] px-2.5 py-1.5 text-xs font-semibold text-text-secondary">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="prose prose-base prose-headings:font-outfit prose-headings:text-text prose-p:text-text-secondary prose-a:text-accent hover:prose-a:text-accent-dark max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: htmlContent }} className="[&>p:first-child]:mt-0 [&>p:last-child]:mb-0" />
+            </div>
+
+            {about.highlights?.length > 0 && (
+              <div className="mt-6 grid gap-3 border-t border-border/80 pt-5 sm:grid-cols-3">
+                {about.highlights.map((item) => {
+                  const mobileFactSize = item.text.length > 40
+                    ? 'max-sm:text-[clamp(9px,3vw,14px)] max-sm:tracking-tight'
+                    : item.text.length > 28
+                      ? 'max-sm:text-[clamp(11px,3.2vw,14px)]'
+                      : '';
+                  const content = (
+                    <>
+                      <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-text-muted">{item.label}</span>
+                      <span className={`mt-1 block text-sm font-semibold leading-snug text-text max-sm:whitespace-nowrap ${mobileFactSize}`}>{item.text}</span>
+                    </>
+                  );
+                  return item.href ? (
+                    <a key={item.label} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined} className="group rounded-xl border border-border/80 bg-bg-subtle/60 p-3 transition-all hover:-translate-y-0.5 hover:border-accent/30 hover:bg-white hover:shadow-sm">
+                      {content}
+                    </a>
+                  ) : (
+                    <div key={item.label} className="rounded-xl border border-border/80 bg-bg-subtle/60 p-3">{content}</div>
+                  );
+                })}
+              </div>
+            )}
           </div>
+
+          {news.length > 0 && (
+            <section aria-labelledby="news-heading">
+              <h2 id="news-heading" className="text-2xl font-outfit font-bold mb-4 text-text relative inline-block">
+                News
+                <span className="absolute -bottom-1 left-0 w-1/2 h-1 bg-accent/40 rounded-full" aria-hidden="true"></span>
+              </h2>
+              <div className="divide-y divide-border border-y border-border/80">
+                {news.map((item) => {
+                  const external = item.url?.startsWith('http');
+                  return (
+                    <article key={`${item.date}-${item.title}`} className="py-4 flex flex-col sm:grid sm:grid-cols-[7rem_1fr_auto] gap-1 sm:gap-4 sm:items-start">
+                      <time className="text-xs font-bold uppercase tracking-wider text-accent pt-1">{item.date}</time>
+                      <div>
+                        <h3 className="font-semibold text-text leading-snug">{item.title}</h3>
+                        {item.description && <p className="text-sm text-text-secondary mt-1">{item.description}</p>}
+                      </div>
+                      {item.url && (
+                        <a href={item.url} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className="text-sm font-medium text-accent hover:text-accent-dark transition-colors sm:pt-0.5 whitespace-nowrap">
+                          {item.link_label || 'Read more'} <span aria-hidden="true">→</span>
+                        </a>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           {selectedPapers.length > 0 && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">

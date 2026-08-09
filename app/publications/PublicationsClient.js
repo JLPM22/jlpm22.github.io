@@ -1,7 +1,11 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import BibTeXModal from '@/components/BibTeXModal';
+import PageHeader from '@/components/PageHeader';
+import PublicationTopicMap from '@/components/PublicationTopicMap';
+import PublicationVenueLine from '@/components/PublicationVenueLine';
+import NewPublicationBadge from '@/components/NewPublicationBadge';
 
 const DEFAULT_VENUE_COLOR = '#94a3b8';
 
@@ -11,10 +15,11 @@ function renderAuthors(authorStr, coauthors) {
     const parts = authorStr.split(',').map(a => a.trim());
 
     return parts.map((author, i) => {
-        const sep = i < parts.length - 1 ? ', ' : '';
+        const prefix = i > 0 ? ' ' : '';
+        const sep = i < parts.length - 1 ? ',' : '';
 
         if (author.toLowerCase().includes('jose luis ponton')) {
-            return <span key={i}><strong className="text-text">{author}</strong>{sep}</span>;
+            return <span key={i}>{prefix}<strong className="text-text">{author}</strong>{sep}</span>;
         }
 
         const nameParts = author.split(' ');
@@ -28,14 +33,14 @@ function renderAuthors(authorStr, coauthors) {
             );
             if (matches && coauthor.url) {
                 return (
-                    <span key={i}>
+                    <span key={i}>{prefix}
                         <a href={coauthor.url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline" onClick={(e) => e.stopPropagation()}>{author}</a>{sep}
                     </span>
                 );
             }
         }
 
-        return <span key={i}>{author}{sep}</span>;
+        return <span key={i}>{prefix}{author}{sep}</span>;
     });
 }
 
@@ -44,11 +49,12 @@ function VenueTagPill({ tag, color, venue, year, onClick }) {
     const tooltipText = venue || tag;
     return (
         <span
-            className="relative inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white cursor-pointer group/pill hover:scale-110 transition-all z-40"
-            style={{ backgroundColor: bgColor }}
+            className="relative inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide text-text-secondary bg-white border border-border border-l-[3px] cursor-pointer group/pill hover:text-text transition-colors z-40"
+            style={{ borderLeftColor: bgColor }}
             title={tooltipText}
             onClick={onClick}
         >
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: bgColor }} aria-hidden="true"></span>
             {tag}
             {year != null && <span className="ml-1 opacity-80">'{String(year).slice(-2)}</span>}
             <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gray-900/95 backdrop-blur-sm whitespace-nowrap opacity-0 group-hover/pill:opacity-100 transition-opacity duration-200 shadow-lg z-[100]">
@@ -61,7 +67,7 @@ function VenueTagPill({ tag, color, venue, year, onClick }) {
 
 
 
-export default function PublicationsClient({ initialPapers, venueColors = {}, allVenueTags = [], allJournalNames = [], allTopicTags = [], coauthors = {} }) {
+export default function PublicationsClient({ initialPapers, venueColors = {}, allVenueTags = [], allJournalNames = [], allTopicTags = [], coauthors = {}, selectedPaperTitles = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterType, setFilterType] = useState('All');
     const [selectedVenues, setSelectedVenues] = useState([]);
@@ -70,6 +76,18 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
     const [showTopicFilter, setShowTopicFilter] = useState(false);
     const [showMetrics, setShowMetrics] = useState(false);
     const [bibtexModal, setBibtexModal] = useState(null);
+    const [viewMode, setViewMode] = useState('all');
+
+    useEffect(() => {
+        if (window.location.hash === '#topic-map') setViewMode('topics');
+        if (window.location.hash === '#selected') setViewMode('selected');
+    }, []);
+
+    const selectView = (view) => {
+        setViewMode(view);
+        const hash = view === 'topics' ? '#topic-map' : view === 'selected' ? '#selected' : window.location.pathname;
+        window.history.replaceState(null, '', hash);
+    };
 
     const allVenueOptions = [...new Set([...allVenueTags, ...allJournalNames])].sort();
 
@@ -98,7 +116,9 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
     const isSearchMatch = (paper, search) => paper.title.toLowerCase().includes(search.toLowerCase()) || paper.authors.toLowerCase().includes(search.toLowerCase());
     const isTypeMatch = (paper, type) => type === 'All' || paper.type === type;
 
+    const selectedPaperSet = new Set(selectedPaperTitles);
     const filteredPapers = initialPapers.filter(paper => {
+        if (viewMode === 'selected' && !selectedPaperSet.has(paper.title)) return false;
         return isSearchMatch(paper, searchTerm) &&
             isTypeMatch(paper, filterType) &&
             isVenueMatch(paper, selectedVenues) &&
@@ -135,19 +155,28 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
     const hasActiveFilters = selectedVenues.length > 0 || selectedTopics.length > 0;
 
-    const btnBase = "inline-flex items-center justify-center px-3 py-1 text-xs font-bold rounded-md transition-colors border";
-    const btnNormal = `${btnBase} bg-bg-subtle text-text border-border hover:bg-accent hover:text-white hover:border-accent`;
+    const btnBase = "inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-full transition-colors border";
+    const btnNormal = `${btnBase} bg-white text-text-secondary border-border hover:bg-accent hover:text-white hover:border-accent`;
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Header + Search row */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-                <h1 className="text-4xl font-outfit font-bold text-text relative inline-block self-start">
-                    Publications
-                    <div className="absolute -bottom-2 left-0 w-1/3 h-1 bg-accent rounded-full"></div>
-                </h1>
+            <PageHeader title="Publications" description="Peer-reviewed research papers and accompanying resources." className="mb-6" />
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5 rounded-2xl border border-border bg-white/70 p-2.5 shadow-sm">
+                <div className="inline-flex self-start rounded-xl bg-bg-subtle p-1" role="tablist" aria-label="Publication views">
+                    {[
+                        { id: 'all', label: 'All' },
+                        { id: 'selected', label: 'Selected' },
+                        { id: 'topics', label: 'Topic Map' },
+                    ].map(view => (
+                        <button key={view.id} role="tab" aria-selected={viewMode === view.id} onClick={() => selectView(view.id)} className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${viewMode === view.id ? 'bg-white text-accent shadow-sm' : 'text-text-secondary hover:text-text'}`}>
+                            {view.id === 'topics' && <svg className="inline-block w-4 h-4 mr-1.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M7 11l9-4M7 13l9 4"/></svg>}
+                            {view.label}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto">
                     <input
                         type="text"
                         placeholder="Search papers..."
@@ -165,7 +194,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                         <option value="Journal">Journal</option>
                     </select>
 
-                    <button
+                    {viewMode !== 'topics' && <button
                         onClick={() => setShowMetrics(!showMetrics)}
                         className={`text-sm font-medium transition-colors shrink-0 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border ${showMetrics ? 'bg-accent text-white border-accent shadow-sm' : 'bg-white text-text-secondary border-border hover:border-accent/50 hover:text-text'}`}
                         title="Toggle Academic Metrics"
@@ -181,7 +210,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                             </svg>
                         )}
                         Metrics
-                    </button>
+                    </button>}
                 </div>
             </div>
 
@@ -296,8 +325,9 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                 </div>
             )}
 
-            {/* Papers */}
-            <div className="space-y-12 mt-8">
+            {viewMode === 'topics' ? (
+                <PublicationTopicMap papers={initialPapers} activePapers={filteredPapers} venueColors={venueColors} />
+            ) : <div className="space-y-12 mt-8">
                 {sortedYears.length === 0 ? (
                     <div className="text-center py-12 text-text-muted bg-white rounded-2xl border border-border border-dashed">
                         No publications matched your search criteria.
@@ -315,17 +345,22 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
                                     // Use a unique key based on the title and year to ensure proper React reconciliation when filtering
                                     const uniqueKey = `${paper.title}-${year}`;
+                                    const titleSize = paper.title.length > 95 ? 'text-[15px]' : paper.title.length > 64 ? 'text-base' : 'text-lg';
+                                    const topicLength = paper.topicTags.join(' · ').length;
+                                    const topicSize = topicLength > 52 ? 'text-[9px]' : topicLength > 36 ? 'text-[10px]' : 'text-[11px]';
+                                    const authorSize = paper.authors.length > 145 ? 'text-[10px]' : paper.authors.length > 105 ? 'text-xs' : 'text-sm';
 
                                     return (
-                                        <div key={uniqueKey} className="bg-white rounded-xl shadow-sm border border-border hover:shadow-lg hover:border-accent/40 transition-all duration-300 relative">
+                                        <article key={uniqueKey} className="bg-white rounded-2xl shadow-sm border border-border hover:shadow-card hover:border-accent/40 transition-all duration-300 relative overflow-visible">
+                                            <NewPublicationBadge year={paper.year} month={paper.month} className="absolute right-3 top-3 z-40" />
                                             {/* Main card */}
-                                            <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-5 p-4 relative cursor-pointer">
-                                                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-xl"></div>
+                                            <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-4 p-4 relative cursor-pointer rounded-t-2xl">
+                                                <div className="absolute inset-0 bg-gradient-to-r from-accent/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-2xl"></div>
 
-                                                <div className="w-full md:w-48 shrink-0 bg-transparent rounded-xl flex items-center justify-center relative overflow-visible shadow-md md:hover:!shadow-2xl md:hover:scale-[1.5] md:hover:!z-50 transition-all duration-300 z-20 self-center cursor-zoom-in" onClick={(e) => e.stopPropagation()}>
+                                                <div className="w-full md:w-44 shrink-0 bg-bg-subtle rounded-xl flex items-center justify-center relative overflow-hidden shadow-sm ring-1 ring-black/5 md:hover:shadow-lg md:hover:scale-[1.04] transition-all duration-500 ease-out z-20 self-center" onClick={(e) => e.stopPropagation()}>
                                                     {paper.video_url ? (
                                                         paper.video_url.endsWith('.mp4') || paper.video_url.endsWith('.webm') ? (
-                                                            <video autoPlay loop muted playsInline preload="none" className="w-full h-auto object-contain rounded-xl">
+                                                            <video autoPlay loop muted playsInline preload="metadata" className="w-full h-auto object-contain rounded-xl">
                                                                 <source src={paper.video_url} type={`video/${paper.video_url.split('.').pop()}`} />
                                                             </video>
                                                         ) : (
@@ -336,62 +371,27 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                     )}
                                                 </div>
 
-                                                <div className="flex-1 min-w-0 z-30 flex flex-col justify-center">
-                                                    <h3 className="text-lg font-bold text-text group-hover:text-accent transition-colors leading-snug">
-                                                        {paper.title}
-                                                    </h3>
-                                                    <p className="text-text-secondary text-sm font-medium mt-1" onClick={(e) => e.stopPropagation()}>
+                                                <div className="flex-1 min-w-0 z-30 flex flex-col justify-center md:pr-14">
+                                                    <PublicationVenueLine paper={paper} venueColors={venueColors} onVenueClick={toggleVenue} className="mb-1.5" />
+                                                    <div className="flex items-start gap-3">
+                                                        <h3 className={`${titleSize} font-outfit font-bold text-text group-hover:text-accent transition-colors leading-snug flex-1`}>
+                                                            {paper.title}
+                                                        </h3>
+                                                    </div>
+                                                    <p className={`text-text-secondary ${authorSize} mt-1.5 leading-snug [text-wrap:pretty]`} onClick={(e) => e.stopPropagation()}>
                                                         {renderAuthors(paper.authors, coauthors)}
                                                     </p>
 
-                                                    {/* Venue/Journal tags — clickable */}
-                                                    <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                                                        {hasVenueTag ? (
-                                                            <VenueTagPill
-                                                                tag={paper.venueTag}
-                                                                color={venueColors[paper.venueTag]}
-                                                                venue={paper.journalConference || paper.venue}
-                                                                year={paper.conferenceYear || paper.year}
-                                                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleVenue(paper.venueTag); }}
-                                                            />
-                                                        ) : isJournalNoConf ? (
-                                                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold text-white" style={{ backgroundColor: DEFAULT_VENUE_COLOR }}>
-                                                                {paper.conferenceYear || paper.year}
-                                                            </span>
-                                                        ) : (
-                                                            <VenueTagPill
-                                                                tag={paper.type}
-                                                                color={DEFAULT_VENUE_COLOR}
-                                                                venue={paper.venue}
-                                                                year={paper.conferenceYear || paper.year}
-                                                            />
-                                                        )}
-                                                        {/* Journal name — clickable */}
-                                                        {paper.type === 'Journal' && paper.venue && (
-                                                            <span
-                                                                className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold text-white cursor-pointer hover:scale-110 transition-all z-40"
-                                                                style={{ backgroundColor: venueColors[paper.venue] || '#6b7280' }}
-                                                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleVenue(paper.venue); }}
-                                                            >
-                                                                {paper.publisher ? `${paper.publisher} · ${paper.venue}` : paper.venue}
-                                                            </span>
-                                                        )}
-                                                        {/* Topic tags — clickable */}
-                                                        {paper.topicTags.length > 0 && (
-                                                            <>
-                                                                <span className="text-text-muted text-[9px] mx-0.5">·</span>
-                                                                {paper.topicTags.map((topic, tIdx) => (
-                                                                    <span
-                                                                        key={tIdx}
-                                                                        className="inline-flex items-center px-1 py-px rounded text-[9px] font-medium bg-gray-100 text-text-muted border border-gray-200 whitespace-nowrap cursor-pointer hover:bg-accent hover:text-white hover:border-accent transition-colors"
-                                                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleTopic(topic); }}
-                                                                    >
-                                                                        {topic}
-                                                                    </span>
-                                                                ))}
-                                                            </>
-                                                        )}
-                                                    </div>
+                                                    {paper.awards?.length > 0 && (
+                                                        <div className="flex flex-wrap gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
+                                                            {paper.awards.map(award => (
+                                                                <a key={award.name} href={award.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 hover:text-amber-800 transition-colors" title={award.name}>
+                                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 21h8m-4-4v4M7 4h10v4a5 5 0 01-10 0V4zm0 2H4v1a4 4 0 004 4m9-5h3v1a4 4 0 01-4 4" /></svg>
+                                                                    {award.name}{award.entity ? ` · ${award.entity}` : ''}<span aria-hidden="true">↗</span>
+                                                                </a>
+                                                            ))}
+                                                        </div>
+                                                    )}
 
                                                     {/* Conditional Metrics Display */}
                                                     {showMetrics && paper.metrics && (paper.metrics.jcrQuartile || paper.metrics.sjrQuartile || paper.metrics.ggsRating || paper.metrics.coreRating) && (
@@ -425,7 +425,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                             </div>
 
                                             {/* Action buttons — below the card */}
-                                            <div className="flex flex-wrap gap-1.5 px-4 py-2.5 border-t border-border/50 bg-gray-50/50 rounded-b-xl">
+                                            <div className="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-border/60 bg-bg-subtle/50 rounded-b-2xl">
                                                 {paper.pdf_url && (
                                                     <a href={paper.pdf_url} target="_blank" rel="noopener noreferrer" className={btnNormal}>PDF</a>
                                                 )}
@@ -447,15 +447,25 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                         onClick={() => setBibtexModal(paper.bibtex)}
                                                     >BibTeX</button>
                                                 )}
+                                                {paper.topicTags.length > 0 && (
+                                                    <div className={`no-scrollbar mt-1 flex min-w-0 w-full items-center gap-1.5 overflow-x-auto whitespace-nowrap text-left font-semibold uppercase tracking-wide text-text-muted sm:ml-auto sm:mt-0 sm:w-auto sm:max-w-[60%] sm:justify-end sm:text-right ${topicSize}`} onClick={(e) => e.stopPropagation()}>
+                                                        {paper.topicTags.map((topic, index) => (
+                                                            <span key={topic} className="inline-flex items-center">
+                                                                <button type="button" className="hover:text-accent transition-colors" onClick={() => toggleTopic(topic)}>{topic}</button>
+                                                                {index < paper.topicTags.length - 1 && <span className="ml-1.5 text-border">·</span>}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
+                                        </article>
                                     )
                                 })}
                             </div>
                         </div>
                     ))
                 )}
-            </div>
+            </div>}
 
             {bibtexModal && (
                 <BibTeXModal bibtex={bibtexModal} onClose={() => setBibtexModal(null)} />

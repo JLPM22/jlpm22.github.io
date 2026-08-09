@@ -1,4 +1,4 @@
-import { getPapers, getVenueColors, getCoauthors } from '@/lib/content';
+import { getPapers, getVenueColors, getCoauthors, getSelectedPapers } from '@/lib/content';
 import PublicationsClient from './PublicationsClient';
 
 export const metadata = {
@@ -10,6 +10,7 @@ export default function PublicationsPage() {
     const papers = getPapers();
     const venueColors = getVenueColors();
     const coauthors = getCoauthors();
+    const selectedPaperTitles = getSelectedPapers().map(paper => paper.title);
 
     // Collect all unique venue tags, journal names, and topic tags
     const allVenueTags = [...new Set(papers.map(p => p.venueTag).filter(Boolean))].sort();
@@ -23,5 +24,6 @@ export default function PublicationsPage() {
         allJournalNames={allJournalNames}
         allTopicTags={allTopicTags}
         coauthors={coauthors}
+        selectedPaperTitles={selectedPaperTitles}
     />;
 }

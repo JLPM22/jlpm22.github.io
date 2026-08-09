@@ -1,4 +1,5 @@
 import { getService } from '@/lib/content';
+import PageHeader from '@/components/PageHeader';
 
 export const metadata = {
     title: 'Service - Jose Luis Ponton',
@@ -31,10 +32,7 @@ export default function ServicePage() {
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
-            <h1 className="text-4xl font-outfit font-bold mb-10 text-text relative inline-block">
-                Academic Service
-                <div className="absolute -bottom-2 left-0 w-1/3 h-1 bg-accent rounded-full"></div>
-            </h1>
+            <PageHeader title="Academic Service" description="Editorial, reviewing, and community roles." />
 
             <div className="space-y-10">
                 {sortedYears.map(year => (
