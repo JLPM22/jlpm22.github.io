@@ -172,6 +172,8 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
   const venues = [...new Set(papers.map(paper => paper.venueTag || paper.displayVenue || paper.venue || 'Other'))];
   const activeNode = activeIndex == null ? null : layout.nodes[activeIndex];
   const displayedNode = activeNode ? { x: viewport.x + activeNode.x * viewport.scale, y: viewport.y + activeNode.y * viewport.scale } : null;
+  // Elements grow with zoom, but more slowly than the distances between them.
+  const detailScale = Math.pow(viewport.scale, -0.65);
   const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); closeTimer.current = null; };
   const closePreview = () => { cancelClose(); setActiveIndex(null); };
   const scheduleClose = () => { cancelClose(); closeTimer.current = setTimeout(() => setActiveIndex(null), 140); };
@@ -241,7 +243,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
   if (!papers.length) return <div className="rounded-2xl border border-dashed border-border bg-white py-16 text-center text-text-muted">No publications match the current search.</div>;
 
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-border bg-white shadow-sm" onPointerLeave={() => { setActiveIndex(null); setActiveTopic(null); }}>
+    <section className="relative overflow-hidden rounded-2xl border border-border bg-white shadow-sm" onPointerLeave={(event) => { if (event.pointerType === 'mouse') { setActiveIndex(null); setActiveTopic(null); } }}>
       <div className="border-b border-border/70 px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <p className="text-sm text-text-secondary"><strong className="text-text">{activePapers.length} of {papers.length} papers</strong> shown in a stable topic-similarity layout.</p>
         <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-text-muted">
@@ -257,12 +259,21 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
         </div>
         <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan} onWheel={(event) => { event.preventDefault(); zoomTo(viewport.scale * (event.deltaY < 0 ? 1.12 : 0.89)); }}>
           <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.scale})`}>
-            {layout.anchors.map(anchor => <text data-topic-label key={anchor.topic} x={anchor.labelX} y={anchor.labelY} textAnchor="middle" role="button" tabIndex="0" onPointerEnter={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onFocus={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onPointerLeave={() => setActiveTopic(null)} className={`text-[14px] font-semibold cursor-pointer transition-all ${activeTopic === anchor.topic ? 'fill-emerald-600 opacity-100' : activeTopic ? 'fill-slate-300 opacity-50' : 'fill-slate-500 opacity-80'}`}>{anchor.topic}</text>)}
             {layout.edges.map((edge, index) => {
               const filterMatch = activeTitles.has(papers[edge.source].title) && activeTitles.has(papers[edge.target].title);
               const opacity = !filterMatch ? 0.008 : activeTopic ? (edge.topics.includes(activeTopic) ? 0.3 : 0.015) : (edge.strength > 1 ? 0.16 : 0.055);
               return <line key={index} x1={layout.nodes[edge.source].x} y1={layout.nodes[edge.source].y} x2={layout.nodes[edge.target].x} y2={layout.nodes[edge.target].y} stroke="#64748b" strokeWidth={Math.min(edge.strength, 2.5)} opacity={opacity} />;
             })}
+          {layout.anchors.map(anchor => {
+            const labelWidth = Math.max(54, anchor.topic.length * 7.2 + 18);
+            const selected = activeTopic === anchor.topic;
+            return (
+              <g data-topic-label key={anchor.topic} transform={`translate(${anchor.labelX} ${anchor.labelY}) scale(${detailScale})`} role="button" tabIndex="0" aria-label={`Highlight ${anchor.topic} papers`} onPointerEnter={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onFocus={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onPointerLeave={() => setActiveTopic(null)} className="cursor-pointer outline-none">
+                <rect x={-labelWidth / 2} y="-15" width={labelWidth} height="22" rx="11" fill="white" fillOpacity={selected ? 0.98 : 0.86} stroke={selected ? '#10b981' : '#e2e8f0'} strokeOpacity={selected ? 0.75 : 0.7} strokeWidth="1" className="transition-all" />
+                <text x="0" y="0" textAnchor="middle" className={`pointer-events-none text-[14px] font-semibold transition-all ${selected ? 'fill-emerald-600 opacity-100' : activeTopic ? 'fill-slate-400 opacity-70' : 'fill-slate-600 opacity-95'}`}>{anchor.topic}</text>
+              </g>
+            );
+          })}
           {papers.map((paper, index) => {
             const node = layout.nodes[index];
             const venue = paper.venueTag || paper.displayVenue || paper.venue || paper.type;
@@ -272,8 +283,9 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             const opacity = !filterMatch ? 0.12 : topicMatch ? 1 : 0.16;
             return (
               <g data-paper-node key={paper.title} transform={`translate(${node.x} ${node.y})`} opacity={opacity} tabIndex={filterMatch ? 0 : -1} role="button" aria-disabled={!filterMatch} aria-label={`${paper.title}. Topics: ${paper.topicTags.join(', ')}`} onPointerEnter={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') scheduleClose(); }} onFocus={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onBlur={scheduleClose} onClick={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} className={`${filterMatch ? 'cursor-pointer' : 'cursor-not-allowed'} outline-none transition-opacity`}>
-                <circle r={active ? 16 : 12} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} opacity="0.18" className="transition-all duration-200" />
-                <circle r={active ? 10 : 7.5} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} stroke="white" strokeWidth="2" className="transition-all duration-200 drop-shadow-sm" />
+                <circle r={25 * detailScale} fill="transparent" className="sm:hidden" aria-hidden="true" />
+                <circle r={(active ? 16 : 12) * detailScale} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} opacity="0.18" className="transition-all duration-200" />
+                <circle r={(active ? 10 : 7.5) * detailScale} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} stroke="white" strokeWidth={2 * detailScale} className="transition-all duration-200 drop-shadow-sm" />
               </g>
             );
           })}
@@ -286,9 +298,10 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             className={`absolute bottom-4 left-4 right-4 sm:bottom-auto sm:right-auto sm:left-[var(--node-x)] sm:top-[var(--node-y)] sm:w-[430px] sm:-translate-y-1/2 ${displayedNode.x > WIDTH / 2 ? 'sm:-translate-x-[calc(100%+18px)]' : 'sm:translate-x-[18px]'} rounded-xl border border-border bg-white/95 backdrop-blur-md p-4 shadow-xl pointer-events-auto z-20`}
             style={{ '--node-x': `${Math.max(5, Math.min(95, (displayedNode.x / WIDTH) * 100))}%`, '--node-y': `${Math.max(18, Math.min(82, (displayedNode.y / HEIGHT) * 100))}%` }}
             onPointerEnter={cancelClose}
-            onPointerLeave={closePreview}
+            onPointerLeave={(event) => { if (event.pointerType === 'mouse') closePreview(); }}
           >
             <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="absolute right-3 top-3" />
+            <button type="button" onClick={closePreview} className="absolute right-3 top-10 flex h-7 w-7 items-center justify-center rounded-full border border-border bg-white text-sm text-text-muted shadow-sm hover:text-accent sm:hidden" aria-label="Close paper preview">×</button>
             <div className="flex gap-3">
               <div className="hidden sm:flex w-32 shrink-0 self-stretch flex-col gap-2">
                 {activePaper.video_url && <div className="overflow-hidden rounded-lg bg-bg-subtle">{activePaper.video_url.endsWith('.mp4') || activePaper.video_url.endsWith('.webm') ? <video key={activePaper.video_url} autoPlay loop muted playsInline preload="metadata" className="w-full h-auto"><source src={activePaper.video_url} type={`video/${activePaper.video_url.split('.').pop()}`} /></video> : <img key={activePaper.video_url} src={activePaper.video_url} alt="" className="w-full h-auto" />}</div>}
