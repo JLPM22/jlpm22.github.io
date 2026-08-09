@@ -1,0 +1,24 @@
+# Button labels for content/Academic - Awards.csv.
+# Award names must match the CSV `Name` field. Add as many Related Links columns
+# as needed; any link omitted here receives an automatic label from its domain.
+
+Top Viewed Paper:
+  certificate: Certificate
+  links:
+    Related Links 1: Publication
+
+Best PhD Thesis:
+  certificate: Certificate
+  links:
+    Related Links 1: MPI-INF
+
+Young Researchers in Computer Science Award:
+  certificate: Certificate
+  links:
+    Related Links 1: UPC–FIB
+    Related Links 2: UPC Alumni
+    Related Links 3: BBVA Foundation
+
+YouTube Silver Creator Award:
+  links:
+    Related Links 1: YouTube Channel

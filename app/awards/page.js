@@ -52,7 +52,7 @@ export default function AwardsPage() {
                 </div>
                 {award.certificateUrl && (
                   <a href={award.certificateUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 self-start whitespace-nowrap rounded-full border border-border bg-white px-3 py-1.5 text-sm font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-colors" aria-label={`View certificate for ${award.name}`}>
-                    Certificate
+                    {award.certificateLabel}
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 3h7m0 0v7m0-7L10 14M5 5h5M5 5a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5" /></svg>
                   </a>
                 )}
