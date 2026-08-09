@@ -9,6 +9,7 @@ research_focus:
 highlights:
   - label: Education
     text: "Ph.D. @ UPC"
+    detail: "M.Sc. + B.Sc. in Computer Science"
     href: "https://www.upc.edu/en"
   - label: Experience
     text: "Meta · Hyper Online (YC startup)"

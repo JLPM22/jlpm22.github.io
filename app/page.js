@@ -142,6 +142,7 @@ export default function HomePage() {
                     <>
                       <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-text-muted">{item.label}</span>
                       <span className={`mt-1 block text-sm font-semibold leading-snug text-text max-sm:whitespace-nowrap ${mobileFactSize}`}>{item.text}</span>
+                      {item.detail && <span className="mt-1 block text-xs leading-snug text-text-secondary">{item.detail}</span>}
                     </>
                   );
                   return item.href ? (
