@@ -185,24 +185,59 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
 
   useEffect(() => () => cancelClose(), []);
 
-  const zoomTo = (nextScale) => {
+  const clientToSvg = (clientX, clientY) => {
+    if (!svgRef.current) return { x: WIDTH / 2, y: HEIGHT / 2 };
+    const point = svgRef.current.createSVGPoint();
+    point.x = clientX;
+    point.y = clientY;
+    const local = point.matrixTransform(svgRef.current.getScreenCTM().inverse());
+    return { x: local.x, y: local.y };
+  };
+  const zoomTo = (nextScale, anchor = { x: WIDTH / 2, y: HEIGHT / 2 }) => {
     setViewport(current => {
       const scale = Math.max(0.75, Math.min(3.2, nextScale));
+      const worldX = (anchor.x - current.x) / current.scale;
+      const worldY = (anchor.y - current.y) / current.scale;
       return {
         scale,
-        x: current.x + (current.scale - scale) * WIDTH / 2,
-        y: current.y + (current.scale - scale) * HEIGHT / 2,
+        x: anchor.x - worldX * scale,
+        y: anchor.y - worldY * scale,
       };
     });
   };
   const resetViewport = () => setViewport({ scale: 1, x: 0, y: 0 });
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return undefined;
+    const handleWheel = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const anchor = clientToSvg(event.clientX, event.clientY);
+      setViewport(current => {
+        const scale = Math.max(0.75, Math.min(3.2, current.scale * (event.deltaY < 0 ? 1.12 : 0.89)));
+        const worldX = (anchor.x - current.x) / current.scale;
+        const worldY = (anchor.y - current.y) / current.scale;
+        return { scale, x: anchor.x - worldX * scale, y: anchor.y - worldY * scale };
+      });
+    };
+    svg.addEventListener('wheel', handleWheel, { passive: false });
+    return () => svg.removeEventListener('wheel', handleWheel);
+  }, []);
+
   const startPan = (event) => {
     if (event.button !== 0 || event.target.closest('[data-paper-node], [data-topic-label]')) return;
     pointerPoints.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     dragRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
     if (pointerPoints.current.size === 2) {
       const [a, b] = [...pointerPoints.current.values()];
-      pinchRef.current = { distance: Math.max(Math.hypot(b.x - a.x, b.y - a.y), 1), viewport };
+      const anchor = clientToSvg((a.x + b.x) / 2, (a.y + b.y) / 2);
+      pinchRef.current = {
+        distance: Math.max(Math.hypot(b.x - a.x, b.y - a.y), 1),
+        viewport,
+        worldX: (anchor.x - viewport.x) / viewport.scale,
+        worldY: (anchor.y - viewport.y) / viewport.scale,
+      };
       dragRef.current = null;
     }
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -214,10 +249,11 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
       const distance = Math.max(Math.hypot(b.x - a.x, b.y - a.y), 1);
       const start = pinchRef.current.viewport;
       const scale = Math.max(0.75, Math.min(3.2, start.scale * distance / pinchRef.current.distance));
+      const anchor = clientToSvg((a.x + b.x) / 2, (a.y + b.y) / 2);
       setViewport({
         scale,
-        x: start.x + (start.scale - scale) * WIDTH / 2,
-        y: start.y + (start.scale - scale) * HEIGHT / 2,
+        x: anchor.x - pinchRef.current.worldX * scale,
+        y: anchor.y - pinchRef.current.worldY * scale,
       });
       return;
     }
@@ -257,7 +293,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
           <button type="button" onClick={resetViewport} className="px-1 text-[10px] font-bold uppercase tracking-wide text-text-muted hover:text-accent" aria-label="Reset map view">Reset</button>
           <button type="button" onClick={() => zoomTo(viewport.scale / 1.25)} className="flex h-7 w-7 items-center justify-center rounded-full text-lg leading-none text-text-secondary hover:bg-bg-subtle hover:text-accent" aria-label="Zoom out">−</button>
         </div>
-        <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan} onWheel={(event) => { event.preventDefault(); zoomTo(viewport.scale * (event.deltaY < 0 ? 1.12 : 0.89)); }}>
+        <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan}>
           <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.scale})`}>
             {layout.edges.map((edge, index) => {
               const filterMatch = activeTitles.has(papers[edge.source].title) && activeTitles.has(papers[edge.target].title);
