@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { getAboutContent, getSelectedPapers, getVenueColors, getCoauthors, getProfile, getNews } from '@/lib/content';
 import SelectedPaperCard from '@/components/SelectedPaperCard';
 
@@ -56,12 +55,15 @@ export default function HomePage() {
         <div className="w-full min-w-0 md:w-1/3 flex flex-col items-center md:items-start space-y-6 md:sticky md:top-24 text-center md:text-left">
           <div className="relative w-48 h-48 sm:w-56 sm:h-56">
             <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-15"></div>
-            <Image
-              src="/prof_pic.jpg"
+            <img
+              src="/prof_pic_500.jpg"
+              srcSet="/prof_pic_250.jpg 259w, /prof_pic_500.jpg 519w, /prof_pic_1200.jpg 1384w"
+              sizes="(max-width: 639px) 192px, 224px"
               alt={profile.name || 'Profile'}
-              fill
-              className="rounded-full border-4 border-white/50 shadow-2xl object-cover relative z-10"
-              priority
+              width="519"
+              height="524"
+              fetchPriority="high"
+              className="absolute inset-0 w-full h-full rounded-full border-4 border-white/50 shadow-2xl object-cover z-10"
             />
           </div>
           <div className="w-full min-w-0">
