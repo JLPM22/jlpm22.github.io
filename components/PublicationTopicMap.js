@@ -305,7 +305,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
           <button type="button" onClick={resetViewport} className="px-1 text-[10px] font-bold uppercase tracking-wide text-text-muted hover:text-accent" aria-label="Reset map view">Reset</button>
           <button type="button" onClick={() => zoomTo(viewport.scale / 1.25)} className="flex h-7 w-7 items-center justify-center rounded-full text-lg leading-none text-text-secondary hover:bg-bg-subtle hover:text-accent" aria-label="Zoom out">−</button>
         </div>
-        <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan}>
+        <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan} onClick={(event) => { if (!event.target.closest('[data-paper-node], [data-topic-label]') && !selectionWasDragged()) { setActiveTopic(null); setActiveIndex(null); } }}>
           <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.scale})`}>
             {layout.edges.map((edge, index) => {
               const filterMatch = activeTitles.has(papers[edge.source].title) && activeTitles.has(papers[edge.target].title);
