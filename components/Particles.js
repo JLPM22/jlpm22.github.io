@@ -42,6 +42,11 @@ export default function Particles({ className }) {
         };
 
         const handleMouseMove = (e) => {
+            if (e.target.closest?.('[data-particle-exclusion]')) {
+                mouse.x = null;
+                mouse.y = null;
+                return;
+            }
             mouse.x = e.clientX;
             mouse.y = e.clientY;
         };

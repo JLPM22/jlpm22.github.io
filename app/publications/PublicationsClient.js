@@ -69,12 +69,12 @@ function VenueTagPill({ tag, color, venue, year, onClick }) {
 
 export default function PublicationsClient({ initialPapers, venueColors = {}, allVenueTags = [], allJournalNames = [], allTopicTags = [], coauthors = {}, selectedPaperTitles = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterType, setFilterType] = useState('All');
     const [selectedVenues, setSelectedVenues] = useState([]);
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [showVenueFilter, setShowVenueFilter] = useState(false);
     const [showTopicFilter, setShowTopicFilter] = useState(false);
     const [showMetrics, setShowMetrics] = useState(false);
+    const [metricsNotice, setMetricsNotice] = useState(null);
     const [bibtexModal, setBibtexModal] = useState(null);
     const [viewMode, setViewMode] = useState('all');
 
@@ -82,6 +82,12 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
         if (window.location.hash === '#topic-map') setViewMode('topics');
         if (window.location.hash === '#selected') setViewMode('selected');
     }, []);
+
+    useEffect(() => {
+        if (!metricsNotice) return;
+        const timeout = window.setTimeout(() => setMetricsNotice(null), 1300);
+        return () => window.clearTimeout(timeout);
+    }, [metricsNotice]);
 
     const selectView = (view) => {
         setViewMode(view);
@@ -103,6 +109,12 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
         );
     };
 
+    const toggleMetrics = () => {
+        const nextValue = !showMetrics;
+        setShowMetrics(nextValue);
+        setMetricsNotice({ id: Date.now(), enabled: nextValue, label: `Metrics ${nextValue ? 'on' : 'off'}` });
+    };
+
     const venueMap = {};
     initialPapers.forEach(paper => {
         if (paper.venueTag) venueMap[paper.venueTag] = paper.venueTag;
@@ -114,20 +126,18 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
     const isTopicMatch = (paper, topics) => topics.length === 0 || topics.some(t => paper.topicTags.includes(t));
     const isVenueMatch = (paper, venues) => venues.length === 0 || venues.some(v => paper.venueTag === v || paper.venue === v);
     const isSearchMatch = (paper, search) => paper.title.toLowerCase().includes(search.toLowerCase()) || paper.authors.toLowerCase().includes(search.toLowerCase());
-    const isTypeMatch = (paper, type) => type === 'All' || paper.type === type;
 
     const selectedPaperSet = new Set(selectedPaperTitles);
     const filteredPapers = initialPapers.filter(paper => {
         if (viewMode === 'selected' && !selectedPaperSet.has(paper.title)) return false;
         return isSearchMatch(paper, searchTerm) &&
-            isTypeMatch(paper, filterType) &&
             isVenueMatch(paper, selectedVenues) &&
             isTopicMatch(paper, selectedTopics);
     });
 
     const venueCounts = {};
     allVenueOptions.forEach(v => venueCounts[v] = 0);
-    initialPapers.filter(paper => isSearchMatch(paper, searchTerm) && isTypeMatch(paper, filterType) && isTopicMatch(paper, selectedTopics))
+    initialPapers.filter(paper => isSearchMatch(paper, searchTerm) && isTopicMatch(paper, selectedTopics))
         .forEach(paper => {
             if (paper.venueTag && venueCounts[paper.venueTag] !== undefined) venueCounts[paper.venueTag]++;
             if (paper.type === 'Journal' && paper.venue && venueCounts[paper.venue] !== undefined) venueCounts[paper.venue]++;
@@ -135,7 +145,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
     const topicCounts = {};
     allTopicTags.forEach(t => topicCounts[t] = 0);
-    initialPapers.filter(paper => isSearchMatch(paper, searchTerm) && isTypeMatch(paper, filterType) && isVenueMatch(paper, selectedVenues))
+    initialPapers.filter(paper => isSearchMatch(paper, searchTerm) && isVenueMatch(paper, selectedVenues))
         .forEach(paper => {
             paper.topicTags.forEach(t => { if (topicCounts[t] !== undefined) topicCounts[t]++ });
         });
@@ -160,87 +170,103 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <PageHeader title="Publications" description="Peer-reviewed research papers and accompanying resources." className="mb-6" />
+            <PageHeader title="Publications" description="Peer-reviewed research papers and accompanying resources." className="!mb-3 sm:!mb-10 lg:!mb-4" childrenClassName="hidden lg:block">
+                <div data-particle-exclusion className="relative">
+                    <svg className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" strokeWidth="1.8" />
+                        <path strokeLinecap="round" strokeWidth="1.8" d="M16.5 16.5L21 21" />
+                    </svg>
+                    <input
+                        type="text"
+                        placeholder="Search papers..."
+                        aria-label="Search publications"
+                        className="w-64 rounded-full border border-border bg-white py-2.5 pl-10 pr-4 text-sm shadow-sm transition-colors focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/30"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+            </PageHeader>
 
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5 rounded-2xl border border-border bg-white/70 p-2.5 shadow-sm">
-                <div className="inline-flex self-start rounded-xl bg-bg-subtle p-1" role="tablist" aria-label="Publication views">
+            <div data-particle-exclusion className="mb-3 rounded-2xl border border-border bg-white/70 shadow-sm sm:mb-4 lg:flex lg:items-center lg:gap-3 lg:p-2.5">
+                <div className="flex flex-col gap-2 p-2 sm:gap-3 sm:p-2.5 lg:contents">
+                    <div className="grid grid-cols-3 self-stretch rounded-xl bg-bg-subtle p-1 sm:inline-flex sm:self-start lg:justify-self-start" role="tablist" aria-label="Publication views">
                     {[
                         { id: 'all', label: 'All' },
                         { id: 'selected', label: 'Selected' },
                         { id: 'topics', label: 'Topic Map' },
                     ].map(view => (
-                        <button key={view.id} role="tab" aria-selected={viewMode === view.id} onClick={() => selectView(view.id)} className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all ${viewMode === view.id ? 'bg-white text-accent shadow-sm' : 'text-text-secondary hover:text-text'}`}>
-                            {view.id === 'topics' && <svg className="inline-block w-4 h-4 mr-1.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M7 11l9-4M7 13l9 4"/></svg>}
+                        <button key={view.id} role="tab" aria-selected={viewMode === view.id} onClick={() => selectView(view.id)} className={`rounded-lg px-2 py-1.5 text-xs font-semibold transition-all sm:px-3.5 sm:py-2 sm:text-sm ${viewMode === view.id ? 'bg-white text-accent shadow-sm' : 'text-text-secondary hover:text-text'}`}>
+                            {view.id === 'topics' && <svg className="mr-1 inline-block h-3.5 w-3.5 -mt-0.5 sm:mr-1.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/><path d="M7 11l9-4M7 13l9 4"/></svg>}
                             {view.label}
                         </button>
                     ))}
+                    </div>
+
+                    <div className="w-full lg:hidden">
+                        <input
+                            type="text"
+                            placeholder="Search papers..."
+                            className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 sm:rounded-xl sm:px-4 sm:py-2.5 lg:w-56"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto">
-                    <input
-                        type="text"
-                        placeholder="Search papers..."
-                        className="px-4 py-2.5 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 w-full sm:w-56 text-sm"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <select
-                        className="px-3 py-2.5 pr-8 rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-accent/50 cursor-pointer text-sm text-text-secondary font-medium appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat w-full sm:w-auto shrink-0"
-                        value={filterType}
-                        onChange={(e) => setFilterType(e.target.value)}
-                    >
-                        <option value="All">All Types</option>
-                        <option value="Conference">Conference</option>
-                        <option value="Journal">Journal</option>
-                    </select>
-
-                    {viewMode !== 'topics' && <button
-                        onClick={() => setShowMetrics(!showMetrics)}
-                        className={`text-sm font-medium transition-colors shrink-0 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border ${showMetrics ? 'bg-accent text-white border-accent shadow-sm' : 'bg-white text-text-secondary border-border hover:border-accent/50 hover:text-text'}`}
-                        title="Toggle Academic Metrics"
-                    >
-                        {showMetrics ? (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                            </svg>
-                        ) : (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                        )}
-                        Metrics
-                    </button>}
-                </div>
-            </div>
-
-            <div className="flex items-center gap-4 mb-4 flex-wrap bg-white/50 p-2 rounded-xl border border-border/50">
+                <div className="flex items-center gap-0.5 border-t border-border/50 p-0.5 sm:gap-4 sm:p-2 lg:ml-auto lg:gap-1 lg:border-0 lg:p-0">
                 <button
                     onClick={() => setShowVenueFilter(!showVenueFilter)}
-                    className={`text-sm font-medium transition-colors flex items-center gap-1.5 px-3 py-2 rounded-lg ${showVenueFilter ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:text-accent hover:bg-black/5'}`}
+                    className={`flex flex-1 items-center justify-center gap-1 rounded-lg px-1.5 py-1 text-[11px] font-medium transition-colors sm:flex-none sm:justify-start sm:gap-1.5 sm:px-3 sm:py-2 sm:text-sm ${showVenueFilter ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:text-accent hover:bg-black/5'}`}
                 >
-                    <svg className={`w-4 h-4 transition-transform ${showVenueFilter ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`h-3.5 w-3.5 transition-transform sm:h-4 sm:w-4 ${showVenueFilter ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                    Filter by Venue
+                    <span className="sm:hidden">Venue</span><span className="hidden sm:inline">Filter by Venue</span>
                 </button>
 
                 <button
                     onClick={() => setShowTopicFilter(!showTopicFilter)}
-                    className={`text-sm font-medium transition-colors flex items-center gap-1.5 px-3 py-2 rounded-lg ${showTopicFilter ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:text-accent hover:bg-black/5'}`}
+                    className={`flex flex-1 items-center justify-center gap-1 rounded-lg px-1.5 py-1 text-[11px] font-medium transition-colors sm:flex-none sm:justify-start sm:gap-1.5 sm:px-3 sm:py-2 sm:text-sm ${showTopicFilter ? 'bg-accent/10 text-accent' : 'text-text-secondary hover:text-accent hover:bg-black/5'}`}
                 >
-                    <svg className={`w-4 h-4 transition-transform ${showTopicFilter ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`h-3.5 w-3.5 transition-transform sm:h-4 sm:w-4 ${showTopicFilter ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                    Filter by Topic
+                    <span className="sm:hidden">Topics</span><span className="hidden sm:inline">Filter by Topic</span>
                 </button>
+                {viewMode !== 'topics' && (
+                    <button
+                        type="button"
+                        aria-label={showMetrics ? 'Hide academic metrics' : 'Show academic metrics'}
+                        aria-pressed={showMetrics}
+                        title={showMetrics ? 'Hide academic metrics' : 'Show academic metrics'}
+                        onClick={toggleMetrics}
+                        className={`relative ml-auto flex h-7 w-7 shrink-0 items-center justify-center overflow-visible rounded-lg transition-colors sm:h-8 sm:w-8 ${showMetrics ? 'bg-accent/10 text-accent' : 'text-text-muted/60 hover:bg-black/5 hover:text-text-secondary'}`}
+                    >
+                        {metricsNotice && (
+                            <span key={metricsNotice.id} className={`metrics-particle pointer-events-none absolute bottom-full right-0 z-20 mb-0.5 whitespace-nowrap text-[9px] font-semibold tracking-wide ${metricsNotice.enabled ? 'text-accent' : 'text-text-muted'}`} aria-hidden="true">
+                                {metricsNotice.label}
+                            </span>
+                        )}
+                        {showMetrics ? (
+                            <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        ) : (
+                            <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        )}
+                    </button>
+                )}
+                </div>
             </div>
 
 
 
             {/* Venue Filter chips */}
             {showVenueFilter && (
-                <div className="flex flex-wrap gap-2 mb-4 p-4 bg-white rounded-xl border border-border shadow-sm">
+                <div data-particle-exclusion className="mb-3 flex max-h-44 flex-wrap gap-1.5 overflow-y-auto rounded-xl border border-border bg-white p-2.5 shadow-sm sm:mb-4 sm:max-h-none sm:gap-2 sm:overflow-visible sm:p-4">
                     {allVenueOptions.map(venue => {
                         const isActive = selectedVenues.includes(venue);
                         const count = venueCounts[venue] || 0;
@@ -258,8 +284,13 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                         ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-50'
                                         : 'bg-bg-subtle text-text-secondary border-border hover:border-accent/40 hover:text-accent'
                                     }`}
-                                style={isActive && color ? { backgroundColor: color } : isActive ? { backgroundColor: '#10b981' } : {}}
+                                style={isActive ? { backgroundColor: color || DEFAULT_VENUE_COLOR } : {}}
                             >
+                                <span
+                                    className={`mr-0.5 h-1.5 w-1.5 shrink-0 rounded-full ring-1 ${isActive ? 'ring-white/80' : 'ring-black/10'}`}
+                                    style={{ backgroundColor: color || DEFAULT_VENUE_COLOR }}
+                                    aria-hidden="true"
+                                />
                                 {displayName} <span className={`text-[10px] ${isActive ? 'text-white/80' : isDisabled ? 'text-gray-400' : 'text-text-muted/60'}`}>({count})</span>
                             </button>
                         );
@@ -269,7 +300,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
             {/* Topic Filter chips */}
             {showTopicFilter && (
-                <div className="flex flex-wrap gap-2 mb-4 p-4 bg-white rounded-xl border border-border shadow-sm">
+                <div data-particle-exclusion className="mb-3 flex max-h-44 flex-wrap gap-1.5 overflow-y-auto rounded-xl border border-border bg-white p-2.5 shadow-sm sm:mb-4 sm:max-h-none sm:gap-2 sm:overflow-visible sm:p-4">
                     {allTopicTags.map(topic => {
                         const isActive = selectedTopics.includes(topic);
                         const count = topicCounts[topic] || 0;
@@ -295,11 +326,11 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
             {/* Active Filters Display */}
             {hasActiveFilters && (
-                <div className="flex flex-wrap items-center gap-2 mb-4 bg-accent/5 p-3 rounded-xl border border-accent/20 shadow-inner">
-                    <span className="text-xs font-bold text-accent uppercase tracking-wider mr-1 sm:mr-3">Active Filters:</span>
+                <div data-particle-exclusion className="mb-3 flex flex-wrap items-center gap-1.5 rounded-xl border border-accent/20 bg-accent/5 p-2 shadow-inner sm:mb-4 sm:gap-2 sm:p-3">
+                    <span className="mr-1 text-xs font-bold uppercase tracking-wider text-accent sm:mr-3"><span className="sm:hidden">Active:</span><span className="hidden sm:inline">Active Filters:</span></span>
 
                     {selectedVenues.map(v => (
-                        <span key={v} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium text-white shadow-sm" style={{ backgroundColor: venueColors[v] || '#10b981' }}>
+                        <span key={v} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg text-xs font-medium text-white shadow-sm" style={{ backgroundColor: venueColors[v] || DEFAULT_VENUE_COLOR }}>
                             {venueMap[v] || v}
                             <button onClick={() => toggleVenue(v)} className="p-0.5 hover:bg-black/20 rounded-md transition-colors ml-1">
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -335,7 +366,17 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                 ) : (
                     sortedYears.map(year => (
                         <div key={year} className="space-y-6">
-                            <h2 className="text-2xl font-bold text-text border-b border-border pb-2">{year}</h2>
+                            <h2 className="flex items-center border-b border-border pb-2 text-2xl font-bold leading-none text-text">
+                                <span className="leading-none">{year}</span>
+                                {viewMode === 'selected' && (
+                                    <span className="ml-auto inline-flex items-center gap-1 text-[8px] font-bold uppercase leading-none tracking-[0.16em] text-text-muted sm:text-[9px]">
+                                        <svg className="h-3 w-3 text-text-muted/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" d="M6.75 4.75A1.75 1.75 0 018.5 3h7a1.75 1.75 0 011.75 1.75V21L12 17.75 6.75 21V4.75z" />
+                                        </svg>
+                                        Selected
+                                    </span>
+                                )}
+                            </h2>
                             <div className="space-y-5">
                                 {groupedPapers[year].map((paper) => {
                                     const doiUrl = paper.doi ? `https://${paper.doi}` : '';
