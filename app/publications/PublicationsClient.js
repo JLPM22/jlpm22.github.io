@@ -425,7 +425,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                             </div>
 
                                             {/* Action buttons — below the card */}
-                                            <div className="flex flex-wrap items-center gap-2 px-5 py-3 border-t border-border/60 bg-bg-subtle/50 rounded-b-2xl">
+                                            <div className="flex flex-wrap items-center justify-center gap-2 px-5 py-3 border-t border-border/60 bg-bg-subtle/50 rounded-b-2xl sm:justify-start">
                                                 {paper.pdf_url && (
                                                     <a href={paper.pdf_url} target="_blank" rel="noopener noreferrer" className={btnNormal}>PDF</a>
                                                 )}
@@ -448,10 +448,13 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                     >BibTeX</button>
                                                 )}
                                                 {paper.topicTags.length > 0 && (
-                                                    <div className={`no-scrollbar mt-1 flex min-w-0 w-full items-center gap-1.5 overflow-x-auto whitespace-nowrap text-left font-semibold uppercase tracking-wide text-text-muted sm:ml-auto sm:mt-0 sm:w-auto sm:max-w-[60%] sm:justify-end sm:text-right ${topicSize}`} onClick={(e) => e.stopPropagation()}>
+                                                    <div className={`no-scrollbar mt-1 flex min-w-0 w-full basis-full flex-wrap items-center justify-center gap-1.5 border-t border-border/60 pt-2.5 whitespace-normal text-center font-medium normal-case tracking-normal text-text-muted sm:ml-auto sm:mt-0 sm:w-auto sm:max-w-[60%] sm:basis-auto sm:flex-nowrap sm:justify-end sm:overflow-x-auto sm:border-0 sm:pt-0 sm:whitespace-nowrap sm:text-right sm:font-semibold sm:uppercase sm:tracking-wide ${topicSize}`} onClick={(e) => e.stopPropagation()}>
+                                                        <svg className="h-3 w-3 shrink-0 text-accent/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" d="M20 13l-7 7-9-9V4h7l9 9zM8 8h.01" />
+                                                        </svg>
                                                         {paper.topicTags.map((topic, index) => (
                                                             <span key={topic} className="inline-flex items-center">
-                                                                <button type="button" className="hover:text-accent transition-colors" onClick={() => toggleTopic(topic)}>{topic}</button>
+                                                                <button type="button" className="transition-colors hover:text-accent" onClick={() => toggleTopic(topic)}>{topic}</button>
                                                                 {index < paper.topicTags.length - 1 && <span className="ml-1.5 text-border">·</span>}
                                                             </span>
                                                         ))}
