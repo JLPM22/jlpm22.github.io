@@ -75,6 +75,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
     const [showTopicFilter, setShowTopicFilter] = useState(false);
     const [showMetrics, setShowMetrics] = useState(false);
     const [metricsNotice, setMetricsNotice] = useState(null);
+    const [expandedSummaries, setExpandedSummaries] = useState([]);
     const [bibtexModal, setBibtexModal] = useState(null);
     const [viewMode, setViewMode] = useState('all');
 
@@ -113,6 +114,10 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
         const nextValue = !showMetrics;
         setShowMetrics(nextValue);
         setMetricsNotice({ id: Date.now(), enabled: nextValue, label: `Metrics ${nextValue ? 'on' : 'off'}` });
+    };
+
+    const toggleSummary = (title) => {
+        setExpandedSummaries(prev => prev.includes(title) ? prev.filter(item => item !== title) : [...prev, title]);
     };
 
     const venueMap = {};
@@ -167,6 +172,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
     const btnBase = "inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-full transition-colors border";
     const btnNormal = `${btnBase} bg-white text-text-secondary border-border hover:bg-accent hover:text-white hover:border-accent`;
+    const btnSummary = `${btnBase} border-accent/30 bg-accent/[0.07] text-accent shadow-sm hover:border-accent hover:bg-accent hover:text-white sm:hidden`;
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -393,7 +399,7 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
 
                                     return (
                                         <article key={uniqueKey} className="bg-white rounded-2xl shadow-sm border border-border hover:shadow-card hover:border-accent/40 transition-all duration-300 relative overflow-visible">
-                                            <NewPublicationBadge year={paper.year} month={paper.month} className="absolute right-3 top-3 z-40" />
+                                            <NewPublicationBadge year={paper.year} month={paper.month} className="absolute right-3 top-3 z-40 md:hidden" />
                                             {/* Main card */}
                                             <div onClick={() => window.open(paperLink, '_blank')} className="group flex flex-col md:flex-row gap-4 p-4 relative cursor-pointer rounded-t-2xl">
                                                 <div className="absolute inset-0 bg-gradient-to-r from-accent/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-t-2xl"></div>
@@ -412,8 +418,11 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                     )}
                                                 </div>
 
-                                                <div className="flex-1 min-w-0 z-30 flex flex-col justify-center md:pr-14">
-                                                    <PublicationVenueLine paper={paper} venueColors={venueColors} onVenueClick={toggleVenue} className="mb-1.5" />
+                                                <div className="flex-1 min-w-0 z-30 flex flex-col justify-center">
+                                                    <div className="mb-1.5 flex min-w-0 items-start justify-between gap-3">
+                                                        <PublicationVenueLine paper={paper} venueColors={venueColors} onVenueClick={toggleVenue} />
+                                                        <NewPublicationBadge year={paper.year} month={paper.month} className="hidden md:inline-flex" />
+                                                    </div>
                                                     <div className="flex items-start gap-3">
                                                         <h3 className={`${titleSize} font-outfit font-bold text-text group-hover:text-accent transition-colors leading-snug flex-1`}>
                                                             {paper.title}
@@ -422,6 +431,29 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                     <p className={`text-text-secondary ${authorSize} mt-1.5 leading-snug [text-wrap:pretty]`} onClick={(e) => e.stopPropagation()}>
                                                         {renderAuthors(paper.authors, coauthors)}
                                                     </p>
+                                                    {paper.summary && (
+                                                        <>
+                                                            {expandedSummaries.includes(paper.title) && (
+                                                                <div className="mt-2 rounded-r-lg border-l-2 border-accent/30 bg-accent/[0.035] px-3 py-2 sm:hidden" onClick={(e) => e.stopPropagation()}>
+                                                                    <p className="text-[11px] leading-relaxed text-text-secondary/75">
+                                                                        {paper.summary}
+                                                                    </p>
+                                                                </div>
+                                                            )}
+
+                                                            <div className="mt-1.5 hidden min-w-0 items-start gap-1.5 opacity-75 transition-opacity group-hover:opacity-100 sm:flex">
+                                                                <span className="mt-0.5 shrink-0 text-accent/60" title="TL;DR">
+                                                                    <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                                        <path strokeLinecap="round" strokeWidth="1.7" d="M5 6h14M5 10h10M5 14h13M5 18h8" />
+                                                                    </svg>
+                                                                    <span className="sr-only">TL;DR</span>
+                                                                </span>
+                                                                <p className="min-w-0 text-[11px] leading-relaxed text-text-muted/70">
+                                                                    {paper.summary}
+                                                                </p>
+                                                            </div>
+                                                        </>
+                                                    )}
 
                                                     {paper.awards?.length > 0 && (
                                                         <div className="flex flex-wrap gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
@@ -487,6 +519,14 @@ export default function PublicationsClient({ initialPapers, venueColors = {}, al
                                                         className={btnNormal}
                                                         onClick={() => setBibtexModal(paper.bibtex)}
                                                     >BibTeX</button>
+                                                )}
+                                                {paper.summary && (
+                                                    <button
+                                                        type="button"
+                                                        className={btnSummary}
+                                                        aria-expanded={expandedSummaries.includes(paper.title)}
+                                                        onClick={() => toggleSummary(paper.title)}
+                                                    >TL;DR</button>
                                                 )}
                                                 {paper.topicTags.length > 0 && (
                                                     <div className={`no-scrollbar mt-1 flex min-w-0 w-full basis-full flex-wrap items-center justify-center gap-1.5 border-t border-border/60 pt-2.5 whitespace-normal text-center font-medium normal-case tracking-normal text-text-muted sm:ml-auto sm:mt-0 sm:w-auto sm:max-w-[60%] sm:basis-auto sm:flex-nowrap sm:justify-end sm:overflow-x-auto sm:border-0 sm:pt-0 sm:whitespace-nowrap sm:text-right sm:font-semibold sm:uppercase sm:tracking-wide ${topicSize}`} onClick={(e) => e.stopPropagation()}>

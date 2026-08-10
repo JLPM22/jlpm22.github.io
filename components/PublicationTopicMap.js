@@ -336,27 +336,53 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             onPointerEnter={cancelClose}
             onPointerLeave={(event) => { if (event.pointerType === 'mouse') closePreview(); }}
           >
-            <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="absolute right-3 top-3" />
+            <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="absolute right-3 top-3 sm:hidden" />
             <button type="button" onClick={closePreview} className="absolute right-3 top-10 flex h-7 w-7 items-center justify-center rounded-full border border-border bg-white text-sm text-text-muted shadow-sm hover:text-accent sm:hidden" aria-label="Close paper preview">×</button>
-            <div className="flex gap-3">
-              <div className="hidden sm:flex w-32 shrink-0 self-stretch flex-col gap-2">
-                {activePaper.video_url && <div className="flex flex-1 items-center"><div className="w-full overflow-hidden rounded-lg bg-bg-subtle">{activePaper.video_url.endsWith('.mp4') || activePaper.video_url.endsWith('.webm') ? <video key={activePaper.video_url} autoPlay loop muted playsInline preload="metadata" className="w-full h-auto"><source src={activePaper.video_url} type={`video/${activePaper.video_url.split('.').pop()}`} /></video> : <img key={activePaper.video_url} src={activePaper.video_url} alt="" className="w-full h-auto" />}</div></div>}
-                <div className="flex flex-wrap gap-1 mt-auto">
-                  {activePaper.pdf_url && <a href={activePaper.pdf_url} target="_blank" rel="noopener noreferrer" className="map-action">PDF</a>}
-                  {activePaper.doi && <a href={`https://${activePaper.doi}`} target="_blank" rel="noopener noreferrer" className="map-action">DOI</a>}
-                  {activePaper.video_ext_url && <a href={activePaper.video_ext_url} target="_blank" rel="noopener noreferrer" className="map-action">Video</a>}
-                  {activePaper.code_url && <a href={activePaper.code_url} target="_blank" rel="noopener noreferrer" className="map-action">Code</a>}
-                  {activePaper.website_url && <a href={activePaper.website_url} target="_blank" rel="noopener noreferrer" className="map-action">Web</a>}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              {activePaper.video_url && (
+                <div className="w-full shrink-0 overflow-hidden rounded-lg bg-bg-subtle sm:w-32">
+                  {activePaper.video_url.endsWith('.mp4') || activePaper.video_url.endsWith('.webm') ? <video key={activePaper.video_url} autoPlay loop muted playsInline preload="metadata" className="max-h-32 w-full object-contain sm:max-h-none"><source src={activePaper.video_url} type={`video/${activePaper.video_url.split('.').pop()}`} /></video> : <img key={activePaper.video_url} src={activePaper.video_url} alt="" className="max-h-32 w-full object-contain sm:max-h-none" />}
                 </div>
-              </div>
-              <div className="min-w-0 pr-14">
-                <div className="mb-1 flex items-center gap-2">
+              )}
+              <div className="min-w-0 flex-1 pr-14 sm:pr-0">
+                <div className="mb-1 flex items-start justify-between gap-2">
                   <p className="min-w-0 truncate text-xs font-bold uppercase tracking-wider" style={{ color: venueColors[activePaper.venueTag] || DEFAULT_VENUE_COLOR }}>{activePaper.displayVenue || activePaper.venue || activePaper.type} · {activePaper.year}</p>
+                  <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="hidden sm:inline-flex" />
                 </div>
                 <h2 className="font-outfit font-bold text-text leading-snug">{activePaper.title}</h2>
                 <p className="text-xs text-text-secondary mt-1">{shortAuthors(activePaper.authors)}</p>
-                <div className="flex flex-wrap gap-1 mt-2">{activePaper.topicTags.map(topic => <span key={topic} className="rounded-full bg-bg-subtle border border-border px-2 py-0.5 text-[10px] text-text-secondary">{topic}</span>)}</div>
               </div>
+            </div>
+            {activePaper.summary && (
+              <div className="mt-2 flex min-w-0 items-start gap-1.5 opacity-80">
+                <span className="mt-0.5 shrink-0 text-accent/60" title="TL;DR">
+                  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeWidth="1.7" d="M5 6h14M5 10h10M5 14h13M5 18h8" />
+                  </svg>
+                  <span className="sr-only">TL;DR</span>
+                </span>
+                <p className="min-w-0 text-[10px] leading-relaxed text-text-muted/70">{activePaper.summary}</p>
+              </div>
+            )}
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-1 border-t border-border/60 pt-2">
+              {activePaper.pdf_url && <a href={activePaper.pdf_url} target="_blank" rel="noopener noreferrer" className="map-action">PDF</a>}
+              {activePaper.doi && <a href={`https://${activePaper.doi}`} target="_blank" rel="noopener noreferrer" className="map-action">DOI</a>}
+              {activePaper.video_ext_url && <a href={activePaper.video_ext_url} target="_blank" rel="noopener noreferrer" className="map-action">Video</a>}
+              {activePaper.code_url && <a href={activePaper.code_url} target="_blank" rel="noopener noreferrer" className="map-action">Code</a>}
+              {activePaper.website_url && <a href={activePaper.website_url} target="_blank" rel="noopener noreferrer" className="map-action">Web</a>}
+              {activePaper.topicTags.length > 0 && (
+                <div className="mt-1 flex min-w-0 w-full basis-full flex-wrap items-center justify-center gap-1 border-t border-border/60 pt-2 text-center text-[9px] font-medium normal-case tracking-normal text-text-muted">
+                  <svg className="h-3 w-3 shrink-0 text-accent/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" d="M20 13l-7 7-9-9V4h7l9 9zM8 8h.01" />
+                  </svg>
+                  {activePaper.topicTags.map((topic, index) => (
+                    <span key={topic} className="inline-flex items-center">
+                      <button type="button" className="transition-colors hover:text-accent" onClick={() => { setActiveTopic(topic); setActiveIndex(null); }}>{topic}</button>
+                      {index < activePaper.topicTags.length - 1 && <span className="ml-1 text-border">·</span>}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </article>
         )}
