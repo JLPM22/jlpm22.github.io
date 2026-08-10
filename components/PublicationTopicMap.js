@@ -166,6 +166,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
   const dragRef = useRef(null);
   const pointerPoints = useRef(new Map());
   const pinchRef = useRef(null);
+  const suppressClickRef = useRef(false);
   const layout = useMemo(() => buildLayout(papers), [papers]);
   const activePaper = activeIndex == null ? null : papers[activeIndex];
   const activeTitles = useMemo(() => new Set(activePapers.map(paper => paper.title)), [activePapers]);
@@ -206,6 +207,11 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
     });
   };
   const resetViewport = () => setViewport({ scale: 1, x: 0, y: 0 });
+  const selectionWasDragged = () => {
+    if (!suppressClickRef.current) return false;
+    suppressClickRef.current = false;
+    return true;
+  };
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -226,9 +232,10 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
   }, []);
 
   const startPan = (event) => {
-    if (event.button !== 0 || event.target.closest('[data-paper-node], [data-topic-label]')) return;
+    if (event.button !== 0) return;
+    if (pointerPoints.current.size === 0) suppressClickRef.current = false;
     pointerPoints.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    dragRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+    dragRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY, moved: false };
     if (pointerPoints.current.size === 2) {
       const [a, b] = [...pointerPoints.current.values()];
       const anchor = clientToSvg((a.x + b.x) / 2, (a.y + b.y) / 2);
@@ -239,12 +246,14 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
         worldY: (anchor.y - viewport.y) / viewport.scale,
       };
       dragRef.current = null;
+      suppressClickRef.current = true;
     }
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const pan = (event) => {
     if (pointerPoints.current.has(event.pointerId)) pointerPoints.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointerPoints.current.size >= 2 && pinchRef.current) {
+      suppressClickRef.current = true;
       const [a, b] = [...pointerPoints.current.values()];
       const distance = Math.max(Math.hypot(b.x - a.x, b.y - a.y), 1);
       const start = pinchRef.current.viewport;
@@ -259,10 +268,13 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
     }
     const drag = dragRef.current;
     if (!drag || drag.pointerId !== event.pointerId || !svgRef.current) return;
+    const moved = drag.moved || Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 6;
+    if (!moved) return;
+    suppressClickRef.current = true;
     const bounds = svgRef.current.getBoundingClientRect();
     const dx = (event.clientX - drag.x) * WIDTH / bounds.width;
     const dy = (event.clientY - drag.y) * HEIGHT / bounds.height;
-    dragRef.current = { ...drag, x: event.clientX, y: event.clientY };
+    dragRef.current = { ...drag, x: event.clientX, y: event.clientY, moved: true };
     setViewport(current => ({ ...current, x: current.x + dx, y: current.y + dy }));
   };
   const stopPan = (event) => {
@@ -270,7 +282,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
     pinchRef.current = null;
     if (pointerPoints.current.size === 1) {
       const [pointerId, point] = [...pointerPoints.current.entries()][0];
-      dragRef.current = { pointerId, ...point };
+      dragRef.current = { pointerId, ...point, startX: point.x, startY: point.y, moved: true };
     } else if (dragRef.current?.pointerId === event.pointerId || pointerPoints.current.size === 0) {
       dragRef.current = null;
     }
@@ -304,7 +316,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             const labelWidth = Math.max(54, anchor.topic.length * 7.2 + 18);
             const selected = activeTopic === anchor.topic;
             return (
-              <g data-topic-label key={anchor.topic} transform={`translate(${anchor.labelX} ${anchor.labelY}) scale(${detailScale})`} role="button" tabIndex="0" aria-label={`Highlight ${anchor.topic} papers`} onPointerEnter={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onFocus={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onPointerLeave={() => setActiveTopic(null)} className="cursor-pointer outline-none">
+              <g data-topic-label key={anchor.topic} transform={`translate(${anchor.labelX} ${anchor.labelY}) scale(${detailScale})`} role="button" tabIndex="0" aria-label={`Highlight ${anchor.topic} papers`} onPointerEnter={(event) => { if (event.pointerType === 'mouse') { setActiveTopic(anchor.topic); setActiveIndex(null); } }} onFocus={(event) => { if (event.currentTarget.matches(':focus-visible')) { setActiveTopic(anchor.topic); setActiveIndex(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') setActiveTopic(null); }} onClick={() => { if (!selectionWasDragged()) { setActiveTopic(anchor.topic); setActiveIndex(null); } }} className="cursor-pointer outline-none">
                 <rect x={-labelWidth / 2} y="-15" width={labelWidth} height="22" rx="11" fill="white" fillOpacity={selected ? 0.98 : 0.86} stroke={selected ? '#10b981' : '#e2e8f0'} strokeOpacity={selected ? 0.75 : 0.7} strokeWidth="1" className="transition-all" />
                 <text x="0" y="0" textAnchor="middle" className={`pointer-events-none text-[14px] font-semibold transition-all ${selected ? 'fill-emerald-600 opacity-100' : activeTopic ? 'fill-slate-400 opacity-70' : 'fill-slate-600 opacity-95'}`}>{anchor.topic}</text>
               </g>
@@ -318,7 +330,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             const filterMatch = activeTitles.has(paper.title);
             const opacity = !filterMatch ? 0.12 : topicMatch ? 1 : 0.16;
             return (
-              <g data-paper-node key={paper.title} transform={`translate(${node.x} ${node.y})`} opacity={opacity} tabIndex={filterMatch ? 0 : -1} role="button" aria-disabled={!filterMatch} aria-label={`${paper.title}. Topics: ${paper.topicTags.join(', ')}`} onPointerEnter={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') scheduleClose(); }} onFocus={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onBlur={scheduleClose} onClick={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} className={`${filterMatch ? 'cursor-pointer' : 'cursor-not-allowed'} outline-none transition-opacity`}>
+              <g data-paper-node key={paper.title} transform={`translate(${node.x} ${node.y})`} opacity={opacity} tabIndex={filterMatch ? 0 : -1} role="button" aria-disabled={!filterMatch} aria-label={`${paper.title}. Topics: ${paper.topicTags.join(', ')}`} onPointerEnter={(event) => { if (event.pointerType === 'mouse' && filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') scheduleClose(); }} onFocus={(event) => { if (event.currentTarget.matches(':focus-visible') && filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onBlur={scheduleClose} onClick={() => { if (filterMatch && !selectionWasDragged()) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} className={`${filterMatch ? 'cursor-pointer' : 'cursor-not-allowed'} outline-none transition-opacity`}>
                 <circle r={25 * detailScale} fill="transparent" className="sm:hidden" aria-hidden="true" />
                 <circle r={(active ? 16 : 12) * detailScale} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} opacity="0.18" className="transition-all duration-200" />
                 <circle r={(active ? 10 : 7.5) * detailScale} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} stroke="white" strokeWidth={2 * detailScale} className="transition-all duration-200 drop-shadow-sm" />
@@ -331,7 +343,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
         <div className="absolute left-4 bottom-4 text-[11px] text-text-muted bg-white/80 rounded-full px-2.5 py-1 border border-border/60 pointer-events-none">Drag to pan · pinch or use +/− to zoom</div>
         {activePaper && displayedNode && (
           <article
-            className={`absolute bottom-4 left-4 right-4 sm:bottom-auto sm:right-auto sm:left-[var(--node-x)] sm:top-[var(--node-y)] sm:w-[430px] sm:-translate-y-1/2 ${displayedNode.x > WIDTH / 2 ? 'sm:-translate-x-[calc(100%+18px)]' : 'sm:translate-x-[18px]'} rounded-xl border border-border bg-white/95 backdrop-blur-md p-4 shadow-xl pointer-events-auto z-20`}
+            className={`absolute bottom-4 left-4 right-4 sm:bottom-auto sm:right-auto sm:left-[var(--node-x)] sm:top-[var(--node-y)] sm:w-[430px] sm:-translate-y-1/2 ${displayedNode.x > WIDTH / 2 ? 'sm:-translate-x-[calc(100%+18px)]' : 'sm:translate-x-[18px]'} rounded-xl border border-border bg-white/[0.88] backdrop-blur-[1px] p-4 shadow-xl pointer-events-auto z-20`}
             style={{ '--node-x': `${Math.max(5, Math.min(95, (displayedNode.x / WIDTH) * 100))}%`, '--node-y': `${Math.max(18, Math.min(82, (displayedNode.y / HEIGHT) * 100))}%` }}
             onPointerEnter={cancelClose}
             onPointerLeave={(event) => { if (event.pointerType === 'mouse') closePreview(); }}
