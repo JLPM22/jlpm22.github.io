@@ -166,6 +166,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
   const dragRef = useRef(null);
   const pointerPoints = useRef(new Map());
   const pinchRef = useRef(null);
+  const suppressClickRef = useRef(false);
   const layout = useMemo(() => buildLayout(papers), [papers]);
   const activePaper = activeIndex == null ? null : papers[activeIndex];
   const activeTitles = useMemo(() => new Set(activePapers.map(paper => paper.title)), [activePapers]);
@@ -206,6 +207,11 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
     });
   };
   const resetViewport = () => setViewport({ scale: 1, x: 0, y: 0 });
+  const selectionWasDragged = () => {
+    if (!suppressClickRef.current) return false;
+    suppressClickRef.current = false;
+    return true;
+  };
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -226,9 +232,10 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
   }, []);
 
   const startPan = (event) => {
-    if (event.button !== 0 || event.target.closest('[data-paper-node], [data-topic-label]')) return;
+    if (event.button !== 0) return;
+    if (pointerPoints.current.size === 0) suppressClickRef.current = false;
     pointerPoints.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    dragRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+    dragRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY, moved: false };
     if (pointerPoints.current.size === 2) {
       const [a, b] = [...pointerPoints.current.values()];
       const anchor = clientToSvg((a.x + b.x) / 2, (a.y + b.y) / 2);
@@ -239,12 +246,14 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
         worldY: (anchor.y - viewport.y) / viewport.scale,
       };
       dragRef.current = null;
+      suppressClickRef.current = true;
     }
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const pan = (event) => {
     if (pointerPoints.current.has(event.pointerId)) pointerPoints.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointerPoints.current.size >= 2 && pinchRef.current) {
+      suppressClickRef.current = true;
       const [a, b] = [...pointerPoints.current.values()];
       const distance = Math.max(Math.hypot(b.x - a.x, b.y - a.y), 1);
       const start = pinchRef.current.viewport;
@@ -259,10 +268,13 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
     }
     const drag = dragRef.current;
     if (!drag || drag.pointerId !== event.pointerId || !svgRef.current) return;
+    const moved = drag.moved || Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 6;
+    if (!moved) return;
+    suppressClickRef.current = true;
     const bounds = svgRef.current.getBoundingClientRect();
     const dx = (event.clientX - drag.x) * WIDTH / bounds.width;
     const dy = (event.clientY - drag.y) * HEIGHT / bounds.height;
-    dragRef.current = { ...drag, x: event.clientX, y: event.clientY };
+    dragRef.current = { ...drag, x: event.clientX, y: event.clientY, moved: true };
     setViewport(current => ({ ...current, x: current.x + dx, y: current.y + dy }));
   };
   const stopPan = (event) => {
@@ -270,7 +282,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
     pinchRef.current = null;
     if (pointerPoints.current.size === 1) {
       const [pointerId, point] = [...pointerPoints.current.entries()][0];
-      dragRef.current = { pointerId, ...point };
+      dragRef.current = { pointerId, ...point, startX: point.x, startY: point.y, moved: true };
     } else if (dragRef.current?.pointerId === event.pointerId || pointerPoints.current.size === 0) {
       dragRef.current = null;
     }
@@ -293,7 +305,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
           <button type="button" onClick={resetViewport} className="px-1 text-[10px] font-bold uppercase tracking-wide text-text-muted hover:text-accent" aria-label="Reset map view">Reset</button>
           <button type="button" onClick={() => zoomTo(viewport.scale / 1.25)} className="flex h-7 w-7 items-center justify-center rounded-full text-lg leading-none text-text-secondary hover:bg-bg-subtle hover:text-accent" aria-label="Zoom out">−</button>
         </div>
-        <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan}>
+        <svg ref={svgRef} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="block w-full h-auto min-h-[400px] touch-none cursor-grab active:cursor-grabbing select-none" role="img" aria-label="Interactive map of publications arranged by shared topics" onPointerDown={startPan} onPointerMove={pan} onPointerUp={stopPan} onPointerCancel={stopPan} onClick={(event) => { if (!event.target.closest('[data-paper-node], [data-topic-label]') && !selectionWasDragged()) { setActiveTopic(null); setActiveIndex(null); } }}>
           <g transform={`translate(${viewport.x} ${viewport.y}) scale(${viewport.scale})`}>
             {layout.edges.map((edge, index) => {
               const filterMatch = activeTitles.has(papers[edge.source].title) && activeTitles.has(papers[edge.target].title);
@@ -304,7 +316,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             const labelWidth = Math.max(54, anchor.topic.length * 7.2 + 18);
             const selected = activeTopic === anchor.topic;
             return (
-              <g data-topic-label key={anchor.topic} transform={`translate(${anchor.labelX} ${anchor.labelY}) scale(${detailScale})`} role="button" tabIndex="0" aria-label={`Highlight ${anchor.topic} papers`} onPointerEnter={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onFocus={() => { setActiveTopic(anchor.topic); setActiveIndex(null); }} onPointerLeave={() => setActiveTopic(null)} className="cursor-pointer outline-none">
+              <g data-topic-label key={anchor.topic} transform={`translate(${anchor.labelX} ${anchor.labelY}) scale(${detailScale})`} role="button" tabIndex="0" aria-label={`Highlight ${anchor.topic} papers`} onPointerEnter={(event) => { if (event.pointerType === 'mouse') { setActiveTopic(anchor.topic); setActiveIndex(null); } }} onFocus={(event) => { if (event.currentTarget.matches(':focus-visible')) { setActiveTopic(anchor.topic); setActiveIndex(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') setActiveTopic(null); }} onClick={() => { if (!selectionWasDragged()) { setActiveTopic(anchor.topic); setActiveIndex(null); } }} className="cursor-pointer outline-none">
                 <rect x={-labelWidth / 2} y="-15" width={labelWidth} height="22" rx="11" fill="white" fillOpacity={selected ? 0.98 : 0.86} stroke={selected ? '#10b981' : '#e2e8f0'} strokeOpacity={selected ? 0.75 : 0.7} strokeWidth="1" className="transition-all" />
                 <text x="0" y="0" textAnchor="middle" className={`pointer-events-none text-[14px] font-semibold transition-all ${selected ? 'fill-emerald-600 opacity-100' : activeTopic ? 'fill-slate-400 opacity-70' : 'fill-slate-600 opacity-95'}`}>{anchor.topic}</text>
               </g>
@@ -318,7 +330,7 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
             const filterMatch = activeTitles.has(paper.title);
             const opacity = !filterMatch ? 0.12 : topicMatch ? 1 : 0.16;
             return (
-              <g data-paper-node key={paper.title} transform={`translate(${node.x} ${node.y})`} opacity={opacity} tabIndex={filterMatch ? 0 : -1} role="button" aria-disabled={!filterMatch} aria-label={`${paper.title}. Topics: ${paper.topicTags.join(', ')}`} onPointerEnter={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') scheduleClose(); }} onFocus={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onBlur={scheduleClose} onClick={() => { if (filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} className={`${filterMatch ? 'cursor-pointer' : 'cursor-not-allowed'} outline-none transition-opacity`}>
+              <g data-paper-node key={paper.title} transform={`translate(${node.x} ${node.y})`} opacity={opacity} tabIndex={filterMatch ? 0 : -1} role="button" aria-disabled={!filterMatch} aria-label={`${paper.title}. Topics: ${paper.topicTags.join(', ')}`} onPointerEnter={(event) => { if (event.pointerType === 'mouse' && filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') scheduleClose(); }} onFocus={(event) => { if (event.currentTarget.matches(':focus-visible') && filterMatch) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} onBlur={scheduleClose} onClick={() => { if (filterMatch && !selectionWasDragged()) { cancelClose(); setActiveIndex(index); setActiveTopic(null); } }} className={`${filterMatch ? 'cursor-pointer' : 'cursor-not-allowed'} outline-none transition-opacity`}>
                 <circle r={25 * detailScale} fill="transparent" className="sm:hidden" aria-hidden="true" />
                 <circle r={(active ? 16 : 12) * detailScale} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} opacity="0.18" className="transition-all duration-200" />
                 <circle r={(active ? 10 : 7.5) * detailScale} fill={venueColors[venue] || DEFAULT_VENUE_COLOR} stroke="white" strokeWidth={2 * detailScale} className="transition-all duration-200 drop-shadow-sm" />
@@ -331,32 +343,58 @@ export default function PublicationTopicMap({ papers, activePapers = papers, ven
         <div className="absolute left-4 bottom-4 text-[11px] text-text-muted bg-white/80 rounded-full px-2.5 py-1 border border-border/60 pointer-events-none">Drag to pan · pinch or use +/− to zoom</div>
         {activePaper && displayedNode && (
           <article
-            className={`absolute bottom-4 left-4 right-4 sm:bottom-auto sm:right-auto sm:left-[var(--node-x)] sm:top-[var(--node-y)] sm:w-[430px] sm:-translate-y-1/2 ${displayedNode.x > WIDTH / 2 ? 'sm:-translate-x-[calc(100%+18px)]' : 'sm:translate-x-[18px]'} rounded-xl border border-border bg-white/95 backdrop-blur-md p-4 shadow-xl pointer-events-auto z-20`}
+            className={`absolute bottom-4 left-4 right-4 sm:bottom-auto sm:right-auto sm:left-[var(--node-x)] sm:top-[var(--node-y)] sm:w-[430px] sm:-translate-y-1/2 ${displayedNode.x > WIDTH / 2 ? 'sm:-translate-x-[calc(100%+18px)]' : 'sm:translate-x-[18px]'} rounded-xl border border-border bg-white/[0.88] backdrop-blur-[1px] p-4 shadow-xl pointer-events-auto z-20`}
             style={{ '--node-x': `${Math.max(5, Math.min(95, (displayedNode.x / WIDTH) * 100))}%`, '--node-y': `${Math.max(18, Math.min(82, (displayedNode.y / HEIGHT) * 100))}%` }}
             onPointerEnter={cancelClose}
             onPointerLeave={(event) => { if (event.pointerType === 'mouse') closePreview(); }}
           >
-            <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="absolute right-3 top-3" />
+            <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="absolute right-3 top-3 sm:hidden" />
             <button type="button" onClick={closePreview} className="absolute right-3 top-10 flex h-7 w-7 items-center justify-center rounded-full border border-border bg-white text-sm text-text-muted shadow-sm hover:text-accent sm:hidden" aria-label="Close paper preview">×</button>
-            <div className="flex gap-3">
-              <div className="hidden sm:flex w-32 shrink-0 self-stretch flex-col gap-2">
-                {activePaper.video_url && <div className="flex flex-1 items-center"><div className="w-full overflow-hidden rounded-lg bg-bg-subtle">{activePaper.video_url.endsWith('.mp4') || activePaper.video_url.endsWith('.webm') ? <video key={activePaper.video_url} autoPlay loop muted playsInline preload="metadata" className="w-full h-auto"><source src={activePaper.video_url} type={`video/${activePaper.video_url.split('.').pop()}`} /></video> : <img key={activePaper.video_url} src={activePaper.video_url} alt="" className="w-full h-auto" />}</div></div>}
-                <div className="flex flex-wrap gap-1 mt-auto">
-                  {activePaper.pdf_url && <a href={activePaper.pdf_url} target="_blank" rel="noopener noreferrer" className="map-action">PDF</a>}
-                  {activePaper.doi && <a href={`https://${activePaper.doi}`} target="_blank" rel="noopener noreferrer" className="map-action">DOI</a>}
-                  {activePaper.video_ext_url && <a href={activePaper.video_ext_url} target="_blank" rel="noopener noreferrer" className="map-action">Video</a>}
-                  {activePaper.code_url && <a href={activePaper.code_url} target="_blank" rel="noopener noreferrer" className="map-action">Code</a>}
-                  {activePaper.website_url && <a href={activePaper.website_url} target="_blank" rel="noopener noreferrer" className="map-action">Web</a>}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              {activePaper.video_url && (
+                <div className="w-full shrink-0 overflow-hidden rounded-lg bg-bg-subtle sm:w-32">
+                  {activePaper.video_url.endsWith('.mp4') || activePaper.video_url.endsWith('.webm') ? <video key={activePaper.video_url} autoPlay loop muted playsInline preload="metadata" className="max-h-32 w-full object-contain sm:max-h-none"><source src={activePaper.video_url} type={`video/${activePaper.video_url.split('.').pop()}`} /></video> : <img key={activePaper.video_url} src={activePaper.video_url} alt="" className="max-h-32 w-full object-contain sm:max-h-none" />}
                 </div>
-              </div>
-              <div className="min-w-0 pr-14">
-                <div className="mb-1 flex items-center gap-2">
+              )}
+              <div className="min-w-0 flex-1 pr-14 sm:pr-0">
+                <div className="mb-1 flex items-start justify-between gap-2">
                   <p className="min-w-0 truncate text-xs font-bold uppercase tracking-wider" style={{ color: venueColors[activePaper.venueTag] || DEFAULT_VENUE_COLOR }}>{activePaper.displayVenue || activePaper.venue || activePaper.type} · {activePaper.year}</p>
+                  <NewPublicationBadge year={activePaper.year} month={activePaper.month} className="hidden sm:inline-flex" />
                 </div>
                 <h2 className="font-outfit font-bold text-text leading-snug">{activePaper.title}</h2>
                 <p className="text-xs text-text-secondary mt-1">{shortAuthors(activePaper.authors)}</p>
-                <div className="flex flex-wrap gap-1 mt-2">{activePaper.topicTags.map(topic => <span key={topic} className="rounded-full bg-bg-subtle border border-border px-2 py-0.5 text-[10px] text-text-secondary">{topic}</span>)}</div>
               </div>
+            </div>
+            {activePaper.summary && (
+              <div className="mt-2 flex min-w-0 items-start gap-1.5 opacity-80">
+                <span className="mt-0.5 shrink-0 text-accent/60" title="TL;DR">
+                  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeWidth="1.7" d="M5 6h14M5 10h10M5 14h13M5 18h8" />
+                  </svg>
+                  <span className="sr-only">TL;DR</span>
+                </span>
+                <p className="min-w-0 text-[10px] leading-relaxed text-text-muted/70">{activePaper.summary}</p>
+              </div>
+            )}
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-1 border-t border-border/60 pt-2">
+              {activePaper.pdf_url && <a href={activePaper.pdf_url} target="_blank" rel="noopener noreferrer" className="map-action">PDF</a>}
+              {activePaper.doi && <a href={`https://${activePaper.doi}`} target="_blank" rel="noopener noreferrer" className="map-action">DOI</a>}
+              {activePaper.video_ext_url && <a href={activePaper.video_ext_url} target="_blank" rel="noopener noreferrer" className="map-action">Video</a>}
+              {activePaper.code_url && <a href={activePaper.code_url} target="_blank" rel="noopener noreferrer" className="map-action">Code</a>}
+              {activePaper.website_url && <a href={activePaper.website_url} target="_blank" rel="noopener noreferrer" className="map-action">Web</a>}
+              {activePaper.topicTags.length > 0 && (
+                <div className="mt-1 flex min-w-0 w-full basis-full flex-wrap items-center justify-center gap-1 border-t border-border/60 pt-2 text-center text-[9px] font-medium normal-case tracking-normal text-text-muted">
+                  <svg className="h-3 w-3 shrink-0 text-accent/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" d="M20 13l-7 7-9-9V4h7l9 9zM8 8h.01" />
+                  </svg>
+                  {activePaper.topicTags.map((topic, index) => (
+                    <span key={topic} className="inline-flex items-center">
+                      <button type="button" className="transition-colors hover:text-accent" onClick={() => { setActiveTopic(topic); setActiveIndex(null); }}>{topic}</button>
+                      {index < activePaper.topicTags.length - 1 && <span className="ml-1 text-border">·</span>}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </article>
         )}

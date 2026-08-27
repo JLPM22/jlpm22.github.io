@@ -1,0 +1,42 @@
+# Add or edit one-line paper summaries here. Keys must match publication titles exactly.
+"STyMo: Fast and Controllable Few-Shot Motion Style Transfer": >-
+  Controllable motion styles from seconds of paired examples, training in minutes to stylize arbitrary motions.
+
+"Combining Motion Matching and Orientation Prediction to Animate Avatars for Consumer‑Grade VR": >-
+  First VR avatar locomotion combining predicted body orientation with motion matching from only headset and controller tracking.
+
+"Fitted avatars: automatic skeleton adjustment for self‑avatars in virtual reality": >-
+  Automatic body measurement from a short tracked exercise to resize self-avatar skeletons and reduce pose misalignment.
+
+"SparsePoser: Real‑time Full‑body Motion Reconstruction from Sparse Data": >-
+  Real-time full-body reconstruction from six trackers, combining a learned motion manifold with lightweight end-effector correction.
+
+"PADELVIC: Multicamera videos and motion capture data in padel matches": >-
+  A synchronized padel dataset combining multicamera video, player positions, motion capture, and ground-truth synthetic footage.
+
+"XR4ED: An Extended Reality Platform for Education": >-
+  An XR education platform combining content marketplaces, authoring tools, intelligent assistants, and self-avatars.
+
+"DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization": >-
+  Real-time motion reconstruction from changing sparse constraints through latent-space pose optimization.
+
+"Environment‑aware Motion Matching": >-
+  Full-body motion matching that jointly adapts character pose and trajectory around dynamic obstacles and nearby agents.
+
+"Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles": >-
+  Full-body locomotion reconstruction from pressure and inertial signals captured entirely through wearable insoles.
+
+"Monkey See, Monkey Break? Study of Rule-Breaking Imitation in Virtual Crowds": >-
+  A VR study showing that virtual crowds' rule-breaking can drive imitation, attention, and social compliance.
+
+"Animation Fidelity in Self-Avatars: Impact on User Performance and Sense of Agency": >-
+  A VR study revealing how avatar animation fidelity affects task performance, pose accuracy, and sense of agency.
+
+"AvatarGo: Plug and Play self-avatars for VR": >-
+  Fast per-user tracker calibration that reduces avatar pose mismatch and significantly improves embodiment in VR.
+
+"Exploring the Role of Expected Collision Feedback in Crowded Virtual Environments": >-
+  A VR study showing how expected physical, auditory, and vibrotactile collision feedback changes crowd navigation and presence.
+
+"Stretch your reach: Studying Self-Avatar and Controller Misalignment in Virtual Reality Interaction": >-
+  A VR study finding that stretched arms best resolve hand-controller misalignment across embodiment, proprioception, and performance.

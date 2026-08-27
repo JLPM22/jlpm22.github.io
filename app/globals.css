@@ -39,12 +39,34 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  .metrics-particle {
+    animation: metrics-particle-float 1.3s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+}
+
+@keyframes metrics-particle-float {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.94);
+  }
+  16%, 68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html,
   body {
     scroll-behavior: auto;
+  }
+
+  .metrics-particle {
+    animation-duration: 0.01ms;
   }
 
 }
