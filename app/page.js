@@ -173,7 +173,7 @@ export default function HomePage() {
                       <time className="text-xs font-bold uppercase tracking-wider text-accent pt-1">{item.date}</time>
                       <div>
                         <h3 className="font-semibold text-text leading-snug">{item.title}</h3>
-                        {item.description && <p className="text-sm text-text-secondary mt-1">{item.description}</p>}
+                        {item.description && <p className="mt-1 text-sm text-text-secondary">{item.description}</p>}
                       </div>
                       {item.url && (
                         <a href={item.url} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} className="text-sm font-medium text-accent hover:text-accent-dark transition-colors sm:pt-0.5 whitespace-nowrap">

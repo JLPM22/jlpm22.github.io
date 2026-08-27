@@ -2,6 +2,9 @@
 "STyMo: Fast and Controllable Few-Shot Motion Style Transfer": >-
   Controllable motion styles from seconds of paired examples, training in minutes to stylize arbitrary motions.
 
+"Understanding Collision Avoidance Cues in Virtual Humans": >-
+  A user study examining how visual collision-avoidance cues shape perceptions of virtual humans.
+
 "Combining Motion Matching and Orientation Prediction to Animate Avatars for Consumer‑Grade VR": >-
   First VR avatar locomotion combining predicted body orientation with motion matching from only headset and controller tracking.
 
