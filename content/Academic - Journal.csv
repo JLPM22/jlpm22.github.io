@@ -63,7 +63,7 @@ XR4ED: An Extended Reality Platform for Education,"Fotis Liarokapis, Václav Mil
   pages={79-88},
   doi={10.1109/MCG.2024.3406139},
 }"
-DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization,"Jose Luis Ponton, Eduard Pujol, Andreas Aristidou, Carlos Andujar, Nuria Pelechano",2025,April,doi.org/10.1111/cgf.70026,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics,2025,"London, UK",Eurographics,"Inverse Kinematics, Motion Reconstruction, VR, Motion Capture, Generative AI",https://youtu.be/vyboiIBe0kc,https://github.com/UPC-ViRVIG/DragPoser,https://upc-virvig.github.io/DragPoser/,"@article{2025:ponton:dragposer,
+DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization,"Jose Luis Ponton, Eduard Pujol, Andreas Aristidou, Carlos Andujar, Nuria Pelechano",2025,April,doi.org/10.1111/cgf.70026,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,Eurographics,2025,"London, UK",Eurographics,"Inverse Kinematics, Motion Reconstruction, VR, Motion Capture, Generative AI",https://youtu.be/vyboiIBe0kc,https://github.com/UPC-ViRVIG/DragPoser,https://upc-virvig.github.io/DragPoser/,"@article{2025:ponton:dragposer,
   author = {Ponton, Jose Luis and Pujol, Eduard and Aristidou, Andreas and Andujar, Carlos and Pelechano, Nuria},
   title = {DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Latent Space Optimization},
   journal = {Computer Graphics Forum},
@@ -74,7 +74,7 @@ DragPoser: Motion Reconstruction from Variable Sparse Tracking Signals via Laten
   year = {2025},
   doi = {10.1111/cgf.70026},
 }"
-Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos Andujar, Nuria Pelechano",2025,December,doi.org/10.1145/3763334,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,SIGGRAPH Asia,2025,"Hong Kong, China",SIGGRAPH Asia,"Motion Matching, Motion Controller",https://youtu.be/u8LISEkGsyk?si=TReQOlEM95Hfo-mi,https://github.com/UPC-ViRVIG/Environment-aware-Motion-Matching,https://upc-virvig.github.io/Environment-aware-Motion-Matching/,"@article{2025:ponton:emm,
+Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos Andujar, Nuria Pelechano",2025,December,doi.org/10.1145/3763334,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,SIGGRAPH Asia,2025,"Hong Kong, China",SIGGRAPH Asia,"Motion Matching, Motion Controller",https://youtu.be/u8LISEkGsyk?si=TReQOlEM95Hfo-mi,https://github.com/UPC-ViRVIG/Environment-aware-Motion-Matching,https://upc-virvig.github.io/Environment-aware-Motion-Matching/,"@article{2025:ponton:emm,
         author = {Ponton, Jose Luis and Andrews, Sheldon and Andujar, Carlos and Pelechano, Nuria},
         title = {Environment-aware Motion Matching},
         year = {2025},
@@ -91,7 +91,7 @@ Environment‑aware Motion Matching,"Jose Luis Ponton, Sheldon Andrews, Carlos A
         articleno = {232},
         numpages = {18}
 }"
-Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis Ponton, Eduardo Alvarado, Lin Geng Foo, Nuria Pelechano, Carlos Andujar, Marc Habermann",2026,May,doi.org/10.1111/cgf.70405,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,,Eurographics,2026,"Aachen, Germany",Eurographics,"Generative AI, Motion Reconstruction, Motion Capture",https://www.youtube.com/watch?v=IPpb-YNyiSw&feature=youtu.be,https://github.com/JLPM22/Step2Motion,https://vcai.mpi-inf.mpg.de/projects/Step2Motion/,"@article{2026:ponton:step2motion,
+Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis Ponton, Eduardo Alvarado, Lin Geng Foo, Nuria Pelechano, Carlos Andujar, Marc Habermann",2026,May,doi.org/10.1111/cgf.70405,Wiley,Computer Graphics Forum,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,Eurographics,2026,"Aachen, Germany",Eurographics,"Generative AI, Motion Reconstruction, Motion Capture",https://www.youtube.com/watch?v=IPpb-YNyiSw&feature=youtu.be,https://github.com/JLPM22/Step2Motion,https://vcai.mpi-inf.mpg.de/projects/Step2Motion/,"@article{2026:ponton:step2motion,
   author = {Ponton, Jose Luis and Alvarado, Eduardo and Foo, Lin Geng and Pelechano, Nuria and Andujar, Carlos and Habermann, Marc},
   title = {Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles},
   journal = {Computer Graphics Forum},
@@ -112,7 +112,7 @@ Step2Motion: Locomotion Reconstruction from Pressure Sensing Insoles,"Jose Luis 
   doi={10.1109/TVCG.2026.3679141}
 }
 "
-STyMo: Fast and Controllable Few-Shot Motion Style Transfer,"Jose Luis Ponton, Alexander Winkler, Ladislav Kavan, Yuting Ye, Petr Kadlecek",2026,July,doi.org/10.1145/3811356,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,SIGGRAPH,2026,"Los Angeles, USA",SIGGRAPH,Motion Style,https://youtu.be/krncQ599r8g?si=k8pjhXNqa9yEGg8J,https://github.com/facebookresearch/STyMo,https://joseluisponton.com/stymo-project-page/,"@article{2026:ponton:stymo,
+STyMo: Fast and Controllable Few-Shot Motion Style Transfer,"Jose Luis Ponton, Alexander Winkler, Ladislav Kavan, Yuting Ye, Petr Kadlecek",2026,July,doi.org/10.1145/3811356,ACM,Transactions on Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,SIGGRAPH,2026,"Los Angeles, USA",SIGGRAPH,"Motion Style, Motion Transfer",https://youtu.be/krncQ599r8g?si=k8pjhXNqa9yEGg8J,https://github.com/facebookresearch/STyMo,https://joseluisponton.com/stymo-project-page/,"@article{2026:ponton:stymo,
 author = {Ponton, Jose Luis and Winkler, Alexander and Kavan, Ladislav and Ye, Yuting and Kadlecek, Petr},
 title = {STyMo: Fast and Controllable Few-Shot Motion Style Transfer},
 year = {2026},
@@ -122,11 +122,20 @@ address = {New York, NY, USA},
 volume = {45},
 number = {4},
 issn = {0730-0301},
-url = {https://doi.org/10.1145/3811356},
 doi = {10.1145/3811356},
 journal = {ACM Trans. Graph.},
 booktitle = {SIGGRAPH 2026},
 month = {jul},
 articleno = {95},
 numpages = {13}
+}"
+Cross-Morphology Motion Transfer with Semantic Style Alignment,"Alexios Mylordos, Jose Luis Ponton, Nuria Pelechano, Andreas Aristidou",2026,September,doi.org/10.1109/TVCG.2026.3729292,IEEE,Transactions on Visualization and Computer Graphics,,,COMPUTER SCIENCE SOFTWARE ENGINEERING,,,,Computer Graphics and Computer-Aided Design,,,,,Motion Transfer,https://youtu.be/s9q8kgBbHXY?si=2z2tPzeLi7-W6CWG,,,"@article{2026:mylordos:crossmorphology,
+  author={Mylordos, Alexios and Ponton, Jose Luis and Pelechano, Nuria and Aristidou, Andreas},
+  journal={IEEE Transactions on Visualization and Computer Graphics}, 
+  title={Cross-Morphology Motion Transfer with Semantic Style Alignment}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={1-14},
+  doi={10.1109/TVCG.2026.3729292}
 }"

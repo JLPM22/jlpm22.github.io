@@ -1,4 +1,7 @@
 # Add or edit one-line paper summaries here. Keys must match publication titles exactly.
+"Cross-Morphology Motion Transfer with Semantic Style Alignment": >-
+  All-to-all motion transfer across diverse bipeds and quadrupeds that preserves source semantics and each target character's natural style.
+
 "STyMo: Fast and Controllable Few-Shot Motion Style Transfer": >-
   Controllable motion styles from seconds of paired examples, training in minutes to stylize arbitrary motions.
 
