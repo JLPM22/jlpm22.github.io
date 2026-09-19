@@ -1,5 +1,9 @@
 name: Jose Luis Ponton
-title: Postdoctoral Researcher @ MPI
+title: Postdoctoral Researcher
+institution:
+  name: Max Planck Institute for Informatics
+  short_name: MPI
+  url: https://www.mpi-inf.mpg.de/departments/visual-computing-and-artificial-intelligence
 email: jpontonm@mpi-inf.mpg.de
 
 social:

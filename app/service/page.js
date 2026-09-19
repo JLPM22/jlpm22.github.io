@@ -36,13 +36,13 @@ export default function ServicePage() {
 
             <div className="space-y-10">
                 {sortedYears.map(year => (
-                    <div key={year} className="relative pl-6 sm:pl-8 border-l-2 border-border/60 group">
+                    <div key={year} className="relative pl-6 sm:pl-8 border-l border-border group">
                         {/* Timeline marker */}
-                        <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-bg border-2 border-accent group-hover:bg-accent transition-colors shadow-sm"></div>
+                        <div className="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-bg border-2 border-accent group-hover:bg-accent transition-colors shadow-sm"></div>
 
-                        <h2 className="text-2xl font-bold text-text mb-4 leading-none">{year}</h2>
+                        <h2 className="text-xl font-medium text-text mb-6 leading-none">{year}</h2>
 
-                        <div className="bg-white rounded-xl shadow-sm border border-border p-5 space-y-6">
+                        <div className="space-y-6 pb-7 border-b border-border">
 
                             {/* Organizational Roles */}
                             {groupedItems[year].roles.length > 0 && (

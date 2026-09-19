@@ -20,14 +20,14 @@ export default function TeachingPage() {
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
             <PageHeader title="Teaching" description="Courses and educational activities." />
 
-            <div className="space-y-4">
+            <div className="teaching-list">
                 {Object.entries(grouped).map(([courseName, { info, dates }]) => (
-                    <div key={courseName} className="bg-white rounded-xl shadow-sm border border-border px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <div key={courseName} className="record-row flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                         <div className="flex-1 min-w-0">
                             <h2 className="text-base font-bold text-text">
                                 {info.link ? <a href={info.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">{courseName} <span className="text-xs text-accent" aria-hidden="true">↗</span></a> : courseName}
                             </h2>
-                            <p className="text-xs text-text-muted">{info.type} · {info.where}</p>
+                            <p className="text-sm text-text-muted mt-2">{info.type} · {info.where}</p>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                             {dates.map((date, idx) => (

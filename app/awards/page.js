@@ -27,13 +27,13 @@ export default function AwardsPage() {
   const awards = getAwards();
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="awards-page">
       <PageHeader title="Awards" description="Research awards and academic distinctions." />
 
       {awards.length > 0 ? (
-        <div className="space-y-4">
+        <div>
           {awards.map((award) => (
-            <article key={`${award.name}-${award.date}`} className="rounded-xl border border-border bg-white/80 p-4 sm:p-5 transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-accent/30">
+            <article key={`${award.name}-${award.date}`} className="record-row">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1">{award.date}</p>

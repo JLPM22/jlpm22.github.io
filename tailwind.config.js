@@ -10,24 +10,24 @@ module.exports = {
             colors: {
                 // Green theme
                 accent: {
-                    DEFAULT: '#10b981',
-                    light: '#34d399',
-                    dark: '#059669',
+                    DEFAULT: '#168560',
+                    light: '#42a982',
+                    dark: '#106b4d',
                     glow: 'rgba(16, 185, 129, 0.15)',
                 },
                 bg: {
-                    DEFAULT: '#f8faf9',
+                    DEFAULT: '#fafbf8',
                     card: '#ffffff',
-                    subtle: '#f1f7f4',
+                    subtle: '#f0f3ee',
                 },
                 border: {
-                    DEFAULT: '#e2ebe6',
+                    DEFAULT: '#dce3db',
                     glow: 'rgba(16, 185, 129, 0.4)',
                 },
                 text: {
-                    DEFAULT: '#1a2e24',
-                    secondary: '#4b6358',
-                    muted: '#5a7a69',
+                    DEFAULT: '#202d27',
+                    secondary: '#526158',
+                    muted: '#64736a',
                 },
                 danger: '#ef4444',
                 warning: '#f59e0b',
@@ -42,12 +42,12 @@ module.exports = {
                 lg: '20px',
             },
             boxShadow: {
-                card: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                card: '0 4px 18px rgba(32, 45, 39, 0.035)',
                 glow: '0 4px 20px rgba(16, 185, 129, 0.15)',
                 'glow-lg': '0 8px 30px rgba(16, 185, 129, 0.2)',
             },
             backgroundImage: {
-                'gradient-primary': 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                'gradient-primary': 'linear-gradient(135deg, #168560 0%, #106b4d 100%)',
                 'gradient-critical': 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)',
                 'gradient-backlog': 'linear-gradient(135deg, #6b7280 0%, #9ca3af 100%)',
             },

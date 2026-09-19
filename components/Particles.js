@@ -1,32 +1,50 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Particles({ className }) {
     const canvasRef = useRef(null);
+    const [enabled, setEnabled] = useState(false);
 
     useEffect(() => {
+        const desktop = window.matchMedia('(min-width: 900px) and (hover: hover) and (pointer: fine)');
+        const updateEnabled = () => setEnabled(desktop.matches && !document.hidden);
+        updateEnabled();
+        desktop.addEventListener('change', updateEnabled);
+        document.addEventListener('visibilitychange', updateEnabled);
+        return () => {
+            desktop.removeEventListener('change', updateEnabled);
+            document.removeEventListener('visibilitychange', updateEnabled);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!enabled) return;
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
+        if (!ctx) return;
         let animationFrameId;
+        let previousFrameTime = null;
         let particles = [];
         let mouse = { x: null, y: null };
+        const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let reducedMotion = motionPreference.matches;
 
         // Configuration
         const particleCount = 60;
         const connectionDistance = 150;
         const mouseConnectionDistance = 200;
         const particleColor = 'rgba(16, 185, 129, 0.4)';
-        const particleSpeed = 0.5;
+        const particleSpeed = 0.24;
 
         // Central exclusion zone (content area)
         const getExclusionZone = () => {
             const w = canvas.width;
-            const maxW = Math.min(1024, w * 0.75);
+            const maxW = Math.min(1080, w * 0.75);
             return {
                 left: (w - maxW) / 2,
                 right: (w + maxW) / 2,
-                top: 64,
+                top: 80,
                 bottom: canvas.height,
             };
         };
@@ -74,9 +92,9 @@ export default function Particles({ className }) {
                 this.size = Math.random() * 2 + 1;
             }
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
+            update(frameScale) {
+                this.x += this.vx * frameScale;
+                this.y += this.vy * frameScale;
 
                 if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
@@ -86,7 +104,7 @@ export default function Particles({ className }) {
                     const zone = getExclusionZone();
                     const cx = (zone.left + zone.right) / 2;
                     const dx = this.x - cx;
-                    this.vx += (dx > 0 ? 0.1 : -0.1);
+                    this.vx += (dx > 0 ? 0.1 : -0.1) * frameScale;
                     const maxSpeed = particleSpeed * 2;
                     this.vx = Math.max(-maxSpeed, Math.min(maxSpeed, this.vx));
                     this.vy = Math.max(-maxSpeed, Math.min(maxSpeed, this.vy));
@@ -103,14 +121,19 @@ export default function Particles({ className }) {
 
         const init = () => {
             resize();
+            previousFrameTime = null;
             particles = Array.from({ length: particleCount }, () => new Particle());
         };
 
-        const animate = () => {
+        const animate = (timestamp) => {
+            // Gentle, refresh-rate-independent drift; reduced motion slows it further.
+            const elapsed = previousFrameTime === null ? 0 : Math.min(timestamp - previousFrameTime, 32);
+            previousFrameTime = timestamp;
+            const frameScale = (elapsed / (1000 / 60)) * (reducedMotion ? 0.5 : 1);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(p => {
-                p.update();
+                p.update(frameScale);
                 p.draw();
             });
 
@@ -165,24 +188,37 @@ export default function Particles({ className }) {
             animationFrameId = requestAnimationFrame(animate);
         };
 
-        window.addEventListener('resize', resize);
+        const handleResize = () => {
+            init();
+        };
+        const handleMotionPreference = () => {
+            reducedMotion = motionPreference.matches;
+        };
+
+        window.addEventListener('resize', handleResize);
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseleave', handleMouseLeave);
+        window.addEventListener('blur', handleMouseLeave);
+        motionPreference.addEventListener('change', handleMotionPreference);
 
         init();
-        animate();
+        animationFrameId = requestAnimationFrame(animate);
 
         return () => {
-            window.removeEventListener('resize', resize);
+            window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseleave', handleMouseLeave);
+            window.removeEventListener('blur', handleMouseLeave);
+            motionPreference.removeEventListener('change', handleMotionPreference);
             cancelAnimationFrame(animationFrameId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         };
-    }, []);
+    }, [enabled]);
 
     return (
         <canvas
             ref={canvasRef}
+            aria-hidden="true"
             className={`fixed inset-0 pointer-events-none z-0 ${className || ''}`}
         />
     );
