@@ -3,6 +3,7 @@ title: "Jose Luis Ponton"
 research_focus:
   - Generative AI
   - Human Motion
+  - Physics-Based Animation
   - Robotics
   - Computer Graphics
   - XR/VR

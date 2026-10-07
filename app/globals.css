@@ -57,6 +57,9 @@
   .about-copy strong { font-weight: 600; color: #304c3d; }
   .about-copy a { color: #168560; text-decoration: underline; text-decoration-color: #bacdc1; text-underline-offset: 4px; }
   .about-copy a:hover { text-decoration-color: currentColor; }
+  .research-keywords { margin-top: 16px; font-size: 13px; line-height: 1.7; }
+  .research-keywords-label { font-weight: 600; color: #526158; }
+  .research-keywords-values { color: #64736a; font-weight: 400; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin-top: 24px; }
   .primary-link, .secondary-link { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 44px; font-size: 13px; font-weight: 500; transition: background .2s, color .2s; }
   .primary-link { background: #168560; color: white; padding: 10px 18px; border-radius: 6px; }

@@ -4,7 +4,8 @@ import SelectedPaperCard from '@/components/SelectedPaperCard';
 import icons from '@/components/SocialIcons';
 
 export default function HomePage() {
-  const { htmlContent } = getAboutContent();
+  const { data, htmlContent } = getAboutContent();
+  const keywords = Array.isArray(data.research_focus) ? data.research_focus.filter(Boolean) : [];
   const selectedPapers = getSelectedPapers();
   const venueColors = getVenueColors();
   const coauthors = getCoauthors();
@@ -42,7 +43,15 @@ export default function HomePage() {
                 </a></>}
               </p>
             </div>
-            <div className="about-copy" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+            <div className="about-copy">
+              <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+              {keywords.length > 0 && (
+                <p className="research-keywords">
+                  <span className="research-keywords-label">Keywords:</span>{' '}
+                  <span className="research-keywords-values">{keywords.join(', ')}</span>
+                </p>
+              )}
+            </div>
             <div className="hero-actions">
               <a href="/publications" className="primary-link">View publications <span aria-hidden="true">&#8599;</span></a>
               <a href="/cv_joseluis_ponton.pdf" target="_blank" rel="noopener noreferrer" className="secondary-link" aria-label="Curriculum vitae"><span className="hidden sm:inline">Curriculum vitae</span><span className="sm:hidden">CV</span> <span aria-hidden="true">&#8599;</span></a>
