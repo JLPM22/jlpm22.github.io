@@ -14,7 +14,7 @@ function copyMediaFiles(src, dest) {
         });
     } else {
         const ext = path.extname(src).toLowerCase();
-        if (['.jpg', '.png', '.gif', '.mp4', '.webm', '.pdf'].includes(ext)) {
+        if (['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.mp4', '.webm', '.pdf'].includes(ext)) {
             fs.copyFileSync(src, dest);
         }
     }

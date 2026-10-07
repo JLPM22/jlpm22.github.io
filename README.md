@@ -62,6 +62,15 @@ Controls the **Teaching** page.
 Controls the **Service** page (reviewing, program committees, editorial roles).
 *   **Columns Expected**: `Role`, `Organization`, `Year`, `Description`.
 
+### 8. Experience & Education (`content/Academic - Experience.csv`)
+Controls the **Experience & Education** page at `/experience`.
+* **Columns**: `Company`, `Title`, `Description`, `Start Date`, `End Date`, `Type`, `Logo`, `URL`.
+* Set `Type` to `Work` or `Education`. Work appears first, grouped by company, with roles ordered by their start date (newest first). Education is grouped by institution.
+* Use dates such as `May, 2026` and `Now` for an ongoing role.
+* For `Logo`, enter only a filename from `content/logos/`, such as `mpi-logo.svg`. Leave it empty when there is no logo. A company logo can be specified on any of its rows. SVG, PNG, JPEG, WebP, and GIF images are copied to `/logos/` when the site starts or builds.
+* For `URL`, enter a full `https://` or `http://` address to make the company logo a link. Like the logo, the URL can be specified on any row for that company within the same section. Leave it empty for an unlinked logo.
+* The LinkedIn button uses `social.linkedin` in `content/profile.yml`.
+
 ---
 
 ## 💻 Running Locally

@@ -1,0 +1,46 @@
+.page { padding-bottom: 24px; }
+.linkedinLink { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 6px; background: #0a66c2; color: white; font-size: 14px; font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / 5%); transition: background .2s; }
+.linkedinLink:hover { background: #004182; }
+.linkedinLink:focus-visible { outline-color: #0a66c2; }
+.section { margin-top: 44px; }
+.section > h2 { scroll-margin-top: 104px; }
+.section + .section { margin-top: 64px; }
+.company { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 40px; padding-block: 32px; border-bottom: 1px solid #dce3db; }
+.companyHeading { min-width: 0; }
+.companyHeading h3 { font-size: 19px; font-weight: 600; line-height: 1.4; letter-spacing: -.015em; }
+.logo { width: 100%; display: flex; align-items: flex-start; }
+.logo[href] { border-radius: 4px; transition: opacity .2s; }
+.logo[href]:hover { opacity: .8; }
+.logo[href]:focus-visible { outline: 2px solid #168560; outline-offset: 6px; }
+.logoArtwork { display: block; width: var(--logo-width, 240px); max-width: 100%; }
+.logoArtwork img { display: block; width: 100%; height: auto; }
+/* Balance prominent wordmarks against the more detailed institutional logos. */
+.logoArtwork:has(img[src$="/mpi-logo.svg"]) { --logo-width: 280px; }
+.logoArtwork:has(img[src$="/meta-logo.svg"]) { --logo-width: 180px; }
+.logoArtwork:has(img[src$="/hyper-logo.png"]),
+.logoArtwork:has(img[src$="/cyens-logo.png"]) { --logo-width: 220px; }
+/* The UPC asset has a 32px left and 30px top transparent border.
+   Align its artwork bounds with other logos, allowing the full image to remain visible. */
+.logoArtwork:has(img[src$="/upc-logo.png"]) { position: relative; overflow: visible; aspect-ratio: 504 / 111; }
+.logoArtwork img[src$="/upc-logo.png"] { position: absolute; width: 112.5%; max-width: none; left: -6.3492%; top: -27.027%; }
+.roles { margin: 0; padding: 0; list-style: none; }
+.role { position: relative; padding: 0 0 28px 24px; border-left: 1px solid #dce3db; }
+.role:last-child { padding-bottom: 0; }
+.role::before { content: ''; position: absolute; left: -4px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: #aabfb1; box-shadow: 0 0 0 4px #fafbf8; }
+.dates { color: #64736a; font-size: 12px; line-height: 1.6; margin-bottom: 5px; }
+.role h4 { font-family: var(--font-outfit), sans-serif; color: #202d27; font-size: 18px; font-weight: 600; line-height: 1.4; text-wrap: pretty; }
+.description { margin-top: 8px; color: #526158; font-size: 14px; line-height: 1.8; white-space: pre-line; overflow-wrap: anywhere; }
+.description a { color: #168560; text-decoration: underline; text-decoration-color: #bacdc1; text-underline-offset: 3px; }
+.description a:hover { text-decoration-color: currentColor; }
+.empty { margin-top: 24px; color: #64736a; font-size: 14px; }
+@media (max-width: 767px) {
+  .section { margin-top: 32px; }
+  .section + .section { margin-top: 48px; }
+  .company { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 28px; }
+  .companyHeading { display: flex; align-items: center; gap: 16px; }
+  .companyHeading h3 { font-size: 18px; }
+  .logoArtwork { max-width: min(100%, 220px); }
+  .logoArtwork:has(img[src$="/mpi-logo.svg"]) { --logo-width: 260px; max-width: 100%; }
+  .role { margin-left: 3px; padding-left: 20px; }
+  .role h4 { font-size: 17px; }
+}

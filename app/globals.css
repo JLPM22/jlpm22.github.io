@@ -107,6 +107,10 @@
   .project-card:hover { border-color: #aabfb1; }
 }
 
+@media (min-width: 1280px) {
+  .site-navigation > .site-container { width: min(100% - 64px, 1280px); }
+}
+
 @media (min-width: 1024px) and (orientation: landscape) {
   .hero-role-short { display: none; }
   .hero-role-long { display: inline; }
