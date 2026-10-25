@@ -16,7 +16,7 @@ module.exports = {
                     glow: 'rgba(16, 185, 129, 0.15)',
                 },
                 bg: {
-                    DEFAULT: '#fafbf8',
+                    DEFAULT: '#fefffd',
                     card: '#ffffff',
                     subtle: '#f0f3ee',
                 },

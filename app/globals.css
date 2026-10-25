@@ -12,7 +12,7 @@
   html,
   body {
     font-family: var(--font-inter), system-ui, sans-serif;
-    background: #fafbf8;
+    background: #fefffd;
     color: #202d27;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -33,7 +33,7 @@
 @layer components {
   .site-container, .site-main { width: min(100% - 64px, 1080px); margin-inline: auto; }
   .site-main { padding-block: 64px 80px; position: relative; }
-  .site-navigation { background: rgb(250 251 248 / 94%); }
+  .site-navigation { background: rgb(254 255 253 / 94%); }
   .nav-identity { display: flex; align-items: center; gap: 14px; }
   .nav-name { white-space: nowrap; }
   .nav-socials { display: flex; align-items: center; gap: 2px; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(4px); transition: opacity .3s ease, transform .3s ease, visibility 0s linear .3s; }
