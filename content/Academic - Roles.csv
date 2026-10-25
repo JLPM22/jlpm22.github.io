@@ -1,8 +1,10 @@
-Name,Acronym,Role,Location,Start Date,End Date,URL,Proof
-CLIPE Workshop Creating Lively Interactive Populated Environments,CLIWEG24,IPC Member,"Limassol, Cyprus","April 23, 2024","April 23, 2024",https://www.clipe-itn.eu/eg2024workshop,CLIWEG24.pdf
-"18th ACM SIGGRAPH conference on Motion, Interaction and Games",MIG 2025,IPC Member,"Zurich, Switzerland","December 3, 2025","December 5, 2025",https://mig.siggraph.org/2025/,MIG25.pdf
-XXXV Spanish Conference on Computer Graphics,CEIG 2026,IPC Member,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/,CEIG26.pdf
-25th ACM SIGGRAPH / Eurographics Symposium On Computer Animation,SCA 2026,IPC Member,"Barcelona, Spain","July 8, 2026","July 10, 2026",https://computeranimation.org/,SCA2026.pdf
-XXXV Spanish Conference on Computer Graphics,CEIG 2026,Paper Awards Committee,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/,
-"19th annual ACM SIGGRAPH conference on Motion, Interaction and Games",MIG 2026,IPC Member,"Charleston, South Carolina, USA","December 11, 2026","December 13, 2026",https://mig.siggraph.org/2026/index.htm,
-48th Annual Conference of the European Association for Computer Graphics,EG 2027,IPC Member,"Lucca, Italy","May 10, 2027","May 14, 2027",https://eg2027.isti.cnr.it/,
+Name,Acronym,Column 9,Role,Location,Start Date,End Date,URL,Proof,Priority
+CLIPE Workshop Creating Lively Interactive Populated Environments,Eurographics Workshop CLIWEG,2024,IPC Member,"Limassol, Cyprus","April 23, 2024","April 23, 2024",https://www.clipe-itn.eu/eg2024workshop,CLIWEG24.pdf,50
+"18th ACM SIGGRAPH conference on Motion, Interaction and Games",ACM MIG,2025,IPC Member,"Zurich, Switzerland","December 3, 2025","December 5, 2025",https://mig.siggraph.org/2025/,MIG25.pdf,30
+XXXV Spanish Conference on Computer Graphics,CEIG,2026,IPC Member,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/,CEIG26.pdf,40
+25th ACM SIGGRAPH / Eurographics Symposium On Computer Animation,ACM SCA,2026,IPC Member,"Barcelona, Spain","July 8, 2026","July 10, 2026",https://computeranimation.org/,SCA2026.pdf,20
+XXXV Spanish Conference on Computer Graphics,CEIG,2026,Paper Awards Committee,"Valencia, Spain","June 1, 2026","June 3, 2026",https://eurographics.es/CEIG26/,,40
+"19th annual ACM SIGGRAPH conference on Motion, Interaction and Games",ACM MIG,2026,IPC Member,"Charleston, South Carolina, USA","December 11, 2026","December 13, 2026",https://mig.siggraph.org/2026/index.htm,MIG26.pdf,30
+48th Annual Conference of the European Association for Computer Graphics,Eurographics,2027,IPC Member,"Lucca, Italy","May 10, 2027","May 14, 2027",https://eg2027.isti.cnr.it/,,10
+ELLIS PhD Program 2026,ELLIS,2026,Evaluator,,"November 9, 2026","November 23, 2026",https://ellis.eu/,ELLIS_Profile_JoseLuis.pdf,10
+MP-AIX PhD Program Call 2026,MP-AIX,2026,Evaluator,,"November 9, 2026","November 23, 2026",https://ai.mpg.de/,,20

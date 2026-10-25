@@ -1,0 +1,68 @@
+.categories { display: grid; gap: 24px; }
+.category { min-width: 0; padding-bottom: 24px; border-bottom: 1px solid #e1e8e0; }
+.venueList { display: grid; gap: 6px; max-width: 680px; }
+.venue {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    align-items: start;
+    gap: 5px 14px;
+    padding: 6px 10px;
+    border: 1px solid #e1e8e0;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 96%);
+}
+.venueName { color: #202d27; font-size: 14px; font-weight: 600; line-height: 1.6; text-decoration: none; cursor: help; overflow-wrap: anywhere; }
+.editions { display: grid; gap: 4px; }
+
+.edition {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: baseline;
+    gap: 3px 10px;
+    line-height: 1.6;
+}
+
+.editionLink {
+    justify-self: start;
+    max-width: 100%;
+    color: #106b4d;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    text-underline-offset: 4px;
+}
+
+a.editionLink { text-decoration: underline; text-decoration-color: #bfd5c6; }
+a.editionLink:hover { text-decoration-color: currentColor; }
+.year { white-space: nowrap; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+.location {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+    color: #64736a;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+.location svg { width: 13px; height: 13px; flex-shrink: 0; align-self: flex-start; margin-top: 4px; color: #7f9185; }
+
+.reviewList { display: flex; flex-wrap: wrap; gap: 6px; }
+.reviewVenue {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    max-width: 100%;
+    padding: 2px 8px;
+    border: 1px solid #e1e8e0;
+    border-radius: 6px;
+    background: #f5f7f3;
+    color: #526158;
+    font-size: 12px;
+    line-height: 20px;
+}
+.reviewCount { flex-shrink: 0; color: #106b4d; font-size: 10px; font-weight: 600; }
+
+@media (max-width: 639px) {
+    .venue { grid-template-columns: minmax(0, 1fr); }
+}
