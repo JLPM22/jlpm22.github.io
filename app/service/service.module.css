@@ -47,6 +47,9 @@ a.editionLink:hover { text-decoration-color: currentColor; }
 }
 .location svg { width: 13px; height: 13px; flex-shrink: 0; align-self: flex-start; margin-top: 4px; color: #7f9185; }
 
+.reviewGroups { display: grid; gap: 12px; }
+.reviewGroup { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 6px 14px; align-items: start; }
+.reviewSubject { padding-top: 3px; color: #64736a; font-size: 12px; font-weight: 500; line-height: 20px; }
 .reviewList { display: flex; flex-wrap: wrap; gap: 6px; }
 .reviewVenue {
     display: inline-flex;
@@ -65,4 +68,5 @@ a.editionLink:hover { text-decoration-color: currentColor; }
 
 @media (max-width: 639px) {
     .venue { grid-template-columns: minmax(0, 1fr); }
+    .reviewGroup { grid-template-columns: minmax(0, 1fr); }
 }

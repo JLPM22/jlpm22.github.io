@@ -62,6 +62,22 @@ function sortVenuesByPriority(venues) {
     });
 }
 
+// Keep each venue in one subject group; uncategorized additions appear in Others.
+const reviewSubjects = {
+    'Computer Vision': ['CVPR', 'ICCV', 'ECCV', 'IEEE TPAMI', 'IJCV'],
+    'Computer Graphics': [
+        'SIGGRAPH', 'SIGGRAPH Asia', 'MIG', 'Computers & Graphics', 'IEEE TVCG',
+        'SCA', 'Eurographics', 'Computer Graphics Forum', 'Computer Graphics International',
+        'CEIG', 'Pacific Graphics', 'Visual Computer',
+    ],
+    'AI': ['ICLR', 'NeurIPS', 'ICML', 'AAAI', 'IJCAI'],
+    'HCI / VR': [
+        'CHI', 'Behaviour & Information Technology', 'Springer Virtual Reality',
+        'International Journal of Human-Computer Interaction', 'IEEE VR',
+    ],
+    'Others': [],
+};
+
 export default function ServicePage() {
     const categories = new Map();
     const reviewVenues = new Map();
@@ -82,7 +98,12 @@ export default function ServicePage() {
     }
 
     const sortedCategories = [...categories].sort(([a], [b]) => categoryOrder(a) - categoryOrder(b));
-    const sortedReviewVenues = [...reviewVenues].sort(([a], [b]) => a.localeCompare(b, 'en'));
+    const reviewGroups = Object.keys(reviewSubjects).map(subject => ({
+        subject,
+        venues: [...reviewVenues]
+            .filter(([venue]) => (Object.keys(reviewSubjects).find(key => reviewSubjects[key].includes(venue)) || 'Others') === subject)
+            .sort(([nameA, countA], [nameB, countB]) => countB - countA || nameA.localeCompare(nameB, 'en')),
+    })).filter(group => group.venues.length > 0);
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -105,22 +126,29 @@ export default function ServicePage() {
                     </section>
                 ))}
 
-                {sortedReviewVenues.length > 0 && (
+                {reviewGroups.length > 0 && (
                     <section aria-labelledby="service-peer-review">
                         <h2 id="service-peer-review" className="section-label mb-4">Peer review</h2>
-                        <ul className={styles.reviewList}>
-                            {sortedReviewVenues.map(([organization, count]) => (
-                                <li key={organization} className={styles.reviewVenue}>
-                                    <span>{organization}</span>
-                                    {count > 1 && (
-                                        <span className={styles.reviewCount} title={`${count} reviews across all years`}>
-                                            <span aria-hidden="true">×{count}</span>
-                                            <span className="sr-only">{count} reviews across all years</span>
-                                        </span>
-                                    )}
-                                </li>
+                        <div className={styles.reviewGroups}>
+                            {reviewGroups.map(({ subject, venues }, index) => (
+                                <section key={subject} aria-labelledby={`review-subject-${index}`} className={styles.reviewGroup}>
+                                    <h3 id={`review-subject-${index}`} className={styles.reviewSubject}>{subject}</h3>
+                                    <ul className={styles.reviewList}>
+                                        {venues.map(([organization, count]) => (
+                                            <li key={organization} className={styles.reviewVenue}>
+                                                <span>{organization}</span>
+                                                {count > 1 && (
+                                                    <span className={styles.reviewCount} title={`${count} reviews across all years`}>
+                                                        <span aria-hidden="true">×{count}</span>
+                                                        <span className="sr-only">{count} reviews across all years</span>
+                                                    </span>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
                             ))}
-                        </ul>
+                        </div>
                     </section>
                 )}
             </div>
