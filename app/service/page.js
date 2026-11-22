@@ -62,11 +62,13 @@ function sortVenuesByPriority(venues) {
     });
 }
 
+const featuredGraphicsVenue = 'ACM Transactions on Graphics';
+
 // Keep each venue in one subject group; uncategorized additions appear in Others.
 const reviewSubjects = {
     'Computer Vision': ['CVPR', 'ICCV', 'ECCV', 'IEEE TPAMI', 'IJCV'],
     'Computer Graphics': [
-        'SIGGRAPH', 'SIGGRAPH Asia', 'MIG', 'Computers & Graphics', 'IEEE TVCG',
+        featuredGraphicsVenue, 'SIGGRAPH', 'SIGGRAPH Asia', 'MIG', 'Computers & Graphics', 'IEEE TVCG',
         'SCA', 'Eurographics', 'Computer Graphics Forum', 'Computer Graphics International',
         'CEIG', 'Pacific Graphics', 'Visual Computer',
     ],
@@ -102,7 +104,10 @@ export default function ServicePage() {
         subject,
         venues: [...reviewVenues]
             .filter(([venue]) => (Object.keys(reviewSubjects).find(key => reviewSubjects[key].includes(venue)) || 'Others') === subject)
-            .sort(([nameA, countA], [nameB, countB]) => countB - countA || nameA.localeCompare(nameB, 'en')),
+            .sort(([nameA, countA], [nameB, countB]) => {
+                const featuredFirst = Number(nameB === featuredGraphicsVenue) - Number(nameA === featuredGraphicsVenue);
+                return featuredFirst || countB - countA || nameA.localeCompare(nameB, 'en');
+            }),
     })).filter(group => group.venues.length > 0);
 
     return (
